@@ -18,7 +18,6 @@ import javax.validation.groups.Default;
 
 @Getter
 @Setter
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TesterSignUpRequest {
 
     @Email

@@ -1,6 +1,10 @@
 package io.wisoft.testermatchingplatform.service.tester;
 
+import io.wisoft.testermatchingplatform.domain.apply.Apply;
+import io.wisoft.testermatchingplatform.domain.apply.ApplyRepository;
 import io.wisoft.testermatchingplatform.domain.category.CategoryRepository;
+import io.wisoft.testermatchingplatform.domain.quest.Quest;
+import io.wisoft.testermatchingplatform.domain.quest.QuestRepository;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
@@ -9,12 +13,18 @@ import io.wisoft.testermatchingplatform.handler.exception.auth.NicknameOverlapEx
 import io.wisoft.testermatchingplatform.handler.exception.category.CategoryNotFoundException;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterAuthException;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
+import io.wisoft.testermatchingplatform.web.dto.req.tester.QuestApplyRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterSignInRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterUpdateRequest;
+import io.wisoft.testermatchingplatform.web.dto.resp.tester.QuestApplyListResponse;
+import io.wisoft.testermatchingplatform.web.dto.resp.tester.QuestApplyResponse;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.TesterSignInResponse;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.TesterUpdateResponse;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +34,8 @@ public class TesterAuthService {
 
     private final TesterRepository testerRepository;
     private final CategoryRepository categoryRepository;
+    private final QuestRepository questRepository;
+    private final ApplyRepository applyRepository;
 
     @Transactional(readOnly = true)
     public TesterSignInResponse loginTester(TesterSignInRequest request) {
@@ -65,7 +77,7 @@ public class TesterAuthService {
         if (!testerUpdateRequest.getIntroPicture().isEmpty()) {
 
 //            이전 사진을 제거하고 새로운 사진을 저장할 수 있도록 하는 로직 필요
-            String profilePath = FileHandler.saveFileData(testerUpdateRequest.getIntroPicture());
+            String profilePath = FileHandler.saveProfileFileData(testerUpdateRequest.getIntroPicture());
             tester.setIntroPictureRef(profilePath);
 
         }
@@ -76,5 +88,33 @@ public class TesterAuthService {
         return response;
     }
 
+
+    @Transactional
+    public QuestApplyResponse applyQuest(QuestApplyRequest questApplyRequest, Long testerId) {
+        Tester tester = testerRepository.findById(testerId).orElseThrow();
+        Quest quest = questRepository.findById(questApplyRequest.getQuestId()).orElseThrow();
+
+        String requireConditionSubmitPath = FileHandler.saveApplyRequireFileData(questApplyRequest.getRequireConditionSubmit());
+        String preferConditionSubmitPath = FileHandler.saveApplyPreferFileData(questApplyRequest.getPreferConditionSubmit());
+
+        Apply apply = new Apply(
+                null, tester, quest, requireConditionSubmitPath, preferConditionSubmitPath
+        );
+
+        Apply save = applyRepository.save(apply);
+        QuestApplyResponse response = new QuestApplyResponse(save.getId());
+
+        return response;
+
+    }
+
+    // 단순 조회
+    @Transactional
+    public Page<QuestApplyListResponse> findApplyList(Long testerId) {
+        Pageable pageable = PageRequest.of(0, 50);
+        return applyRepository.findByTesterId(testerId, pageable)
+                .map(QuestApplyListResponse::from);
+
+    }
 
 }

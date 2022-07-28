@@ -15,4 +15,7 @@ public interface ApplyRepository extends JpaRepository<Apply, Long> {
 
     @EntityGraph("applyWithTester")
     Optional<Apply> findById(Long id);
+
+    @EntityGraph("applyWithTester")
+    Page<Apply> findByTesterId(Long Id, Pageable pageable);
 }
