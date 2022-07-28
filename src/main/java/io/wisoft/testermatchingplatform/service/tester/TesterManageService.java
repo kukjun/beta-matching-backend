@@ -59,7 +59,7 @@ public class TesterManageService {
             throw new PhoneNumberOverlapException(request.getPhoneNumber() + ": Phone Number Overlap");
         }
 
-        final String profileImagePath = FileHandler.saveFileData(request.getIntroPicture());
+        final String profileImagePath = FileHandler.saveProfileFileData(request.getIntroPicture());
 
         Tester tester = new Tester(
                 request.getEmail(),
