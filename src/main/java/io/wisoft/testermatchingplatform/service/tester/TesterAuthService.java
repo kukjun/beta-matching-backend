@@ -43,8 +43,12 @@ public class TesterAuthService {
             throw new TesterAuthException("email, password 가 일치하지 않습니다.");
         }
 
-        TesterSignInResponse response =
-                new TesterSignInResponse(testerRepository.findByEmail(request.getEmail()).orElseThrow().getId());
+        Tester testerDTO = testerRepository.findByEmail(request.getEmail()).orElseThrow();
+        TesterSignInResponse response = new TesterSignInResponse(
+                testerDTO.getId(),
+                testerDTO.getEmail(),
+                testerDTO.getNickname()
+        );
 
         return response;
     }

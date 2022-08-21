@@ -57,7 +57,7 @@ public class TesterController {
 //                .noContent().build();
 //    }
 
-    @PostMapping("/testers/signin")
+    @PostMapping("/testers/login")
     public ResponseEntity<TesterSignInResponse> loginTester(
             @RequestBody @Valid final TesterSignInRequest testerSignInRequest,
             HttpServletRequest httpServletRequest
