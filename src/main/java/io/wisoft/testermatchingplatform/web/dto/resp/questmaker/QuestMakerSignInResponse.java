@@ -8,8 +8,9 @@ import lombok.Getter;
 public class QuestMakerSignInResponse {
 
     private Long id;
+    private String nickname;
 
-    public static QuestMakerSignInResponse from(final Long id) {
-        return new QuestMakerSignInResponse(id);
+    public static QuestMakerSignInResponse from(final Long id, final String nickname) {
+        return new QuestMakerSignInResponse(id, nickname);
     }
 }
