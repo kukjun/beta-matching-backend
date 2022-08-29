@@ -1,7 +1,5 @@
 package io.wisoft.testermatchingplatform.web.controller.tester;
 
-import io.wisoft.testermatchingplatform.annotation.Login;
-import io.wisoft.testermatchingplatform.handler.FileHandler;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterAuthException;
 import io.wisoft.testermatchingplatform.handler.validator.image.ValidationSequence;
 import io.wisoft.testermatchingplatform.service.tester.TesterManageService;
@@ -11,38 +9,30 @@ import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterSignInRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterSignUpRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterUpdateRequest;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.wisoft.testermatchingplatform.web.jwt.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @RestController
+@RequiredArgsConstructor
 public class TesterController {
 
     final TesterAuthService testerAuthService;
     final TesterManageService testerManageService;
+    final JwtTokenProvider jwtTokenProvider;
 
-    @Autowired
-    TesterController(
-            TesterAuthService testerAuthService,
-            TesterManageService testerManageService
-    ) {
-        this.testerAuthService = testerAuthService;
-        this.testerManageService = testerManageService;
-    }
 
     @PostMapping("/testers")
     public ResponseEntity<SignUpResponse> registerTester(
             @ModelAttribute
-            @Validated(ValidationSequence.class)
-            final TesterSignUpRequest testerSignUpRequest) {
+            @Validated(ValidationSequence.class) final TesterSignUpRequest testerSignUpRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(testerManageService.signUp(testerSignUpRequest));
@@ -59,15 +49,12 @@ public class TesterController {
 
     @PostMapping("/testers/login")
     public ResponseEntity<TesterSignInResponse> loginTester(
-            @RequestBody @Valid final TesterSignInRequest testerSignInRequest,
-            HttpServletRequest httpServletRequest
+            @RequestBody @Valid final TesterSignInRequest testerSignInRequest
     ) {
+        String prefix = "Bearer ";
         TesterSignInResponse response = testerAuthService.loginTester(testerSignInRequest);
-        // 세션 등록
-        HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("currentTester", response.getId());
-        // 5분
-        session.setMaxInactiveInterval(1800);
+        String jwtToken = prefix + jwtTokenProvider.createJwtToken(response.getEmail(), response.getNickname());
+        response.setToken(jwtToken);
 
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
@@ -85,6 +72,7 @@ public class TesterController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(testerAuthService.applyQuest(questApplyRequest, testerId));
+
     }
 
     @GetMapping("/testers/{tester_id}/apply")
@@ -127,7 +115,6 @@ public class TesterController {
             throw new TesterAuthException("로그인된 사용자와는 다른 사용자 업데이트를 하려고 함.");
         }
     }
-
 
 
 }
