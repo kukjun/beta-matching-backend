@@ -78,7 +78,6 @@ public class QuestMakerManageController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    @GetMapping("/quests/{questId}/submits")
 
     private void loginCheck(Long id) {
         if (id == null) throw new QuestMakerNotLoginException("questmaker not login");
