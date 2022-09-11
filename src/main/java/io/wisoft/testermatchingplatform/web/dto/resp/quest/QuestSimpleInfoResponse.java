@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class QuestSimpleInfoResponse {
 
+    private Long id;
     private String title;
     private String content;
     private String categoryName;
@@ -23,6 +24,7 @@ public class QuestSimpleInfoResponse {
 
     public static QuestSimpleInfoResponse from(final Quest quest){
         return new QuestSimpleInfoResponse(
+                quest.getId(),
                 quest.getTitle(),
                 quest.getContent(),
                 quest.getCategory().getName(),
