@@ -135,7 +135,7 @@ public class FileHandler {
     private static String saveFile(final File file, final MultipartFile fileData) {
         try {
             fileData.transferTo(file);
-            return file.getAbsolutePath();
+            return file.getName();
         } catch (IOException e) {
             System.err.println(e.getMessage());
             throw new IllegalStateException("파일을 저장하는 데 실패하였습니다.");

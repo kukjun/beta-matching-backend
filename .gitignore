@@ -18,11 +18,11 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-application.yml
-application-dev.yml
-application-dev-jpa.yml
-application-prod-db.yml
-application-prod-jpa.yml
+src/main/resources/application.yml
+src/main/resources/application-dev.yml
+src/main/resources/application-dev-jpa.yml
+src/main/resources/application-prod-db.yml
+src/main/resources/application-prod-jpa.yml
 
 .idea
 *.iws
