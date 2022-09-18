@@ -3,6 +3,7 @@ package io.wisoft.testermatchingplatform.web.dto.req.tester;
 import io.wisoft.testermatchingplatform.handler.validator.image.Custom;
 import io.wisoft.testermatchingplatform.handler.validator.image.Image;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,7 +15,6 @@ import javax.validation.constraints.NotBlank;
 @Setter
 public class QuestApplyRequest {
 
-    @Email
     @NotBlank(message = "해당 항목은 필수 항목입니다.")
     private Long questId;
 
@@ -22,6 +22,6 @@ public class QuestApplyRequest {
     private MultipartFile requireConditionSubmit;
 
     @Image(groups = Custom.class)
-    private MultipartFile preferConditionSubmit;
+    private MultipartFile preferenceConditionSubmit;
 
 }

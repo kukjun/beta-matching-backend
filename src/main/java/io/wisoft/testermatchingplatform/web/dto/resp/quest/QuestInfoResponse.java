@@ -12,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestInfoResponse {
 
+    private Long id;
     private String title;
     private String content;
     private String categoryName;
@@ -31,6 +32,7 @@ public class QuestInfoResponse {
 
     public static QuestInfoResponse from(final Quest quest, final List<TaskResponse> taskList){
         return new QuestInfoResponse(
+                quest.getId(),
                 quest.getTitle(),
                 quest.getContent(),
                 quest.getCategory().getName(),

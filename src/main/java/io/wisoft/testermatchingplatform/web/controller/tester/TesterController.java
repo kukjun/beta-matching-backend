@@ -63,25 +63,18 @@ public class TesterController {
 
     @PostMapping("/testers/{tester_id}/apply")
     public ResponseEntity<QuestApplyResponse> applyQuest(
-            HttpServletRequest sessionRequest,
             @PathVariable("tester_id") Long testerId,
             @ModelAttribute QuestApplyRequest questApplyRequest
     ) {
-        Long currentTesterId = (Long) sessionRequest.getSession().getAttribute("currentTester");
-        TesterLoginCheck(testerId, currentTesterId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(testerAuthService.applyQuest(questApplyRequest, testerId));
-
     }
 
     @GetMapping("/testers/{tester_id}/apply")
     public ResponseEntity<Page<QuestApplyListResponse>> showApplyQuests(
-            HttpServletRequest sessionRequest,
             @PathVariable("tester_id") Long testerId
     ) {
-        Long currentTesterId = (Long) sessionRequest.getSession().getAttribute("currentTester");
-        TesterLoginCheck(testerId, currentTesterId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(testerAuthService.findApplyList(testerId));

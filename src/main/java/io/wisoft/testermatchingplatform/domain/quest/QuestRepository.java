@@ -21,7 +21,6 @@ public interface QuestRepository extends JpaRepository<Quest, Long> {
     Page<Quest> findByQuestMakerId(Long id,Pageable pageable);
 
     // 아이디로 퀘스트 하나 조회
-    @Override
     Optional<Quest> findById(Long id);
 
     //퀘스트 save
