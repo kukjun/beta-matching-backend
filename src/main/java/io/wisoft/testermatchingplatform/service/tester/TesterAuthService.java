@@ -96,10 +96,11 @@ public class TesterAuthService {
     @Transactional
     public QuestApplyResponse applyQuest(QuestApplyRequest questApplyRequest, Long testerId) {
         Tester tester = testerRepository.findById(testerId).orElseThrow();
+        System.out.println(questApplyRequest.getQuestId());
         Quest quest = questRepository.findById(questApplyRequest.getQuestId()).orElseThrow();
 
         String requireConditionSubmitPath = FileHandler.saveApplyRequireFileData(questApplyRequest.getRequireConditionSubmit());
-        String preferConditionSubmitPath = FileHandler.saveApplyPreferFileData(questApplyRequest.getPreferConditionSubmit());
+        String preferConditionSubmitPath = FileHandler.saveApplyPreferFileData(questApplyRequest.getPreferenceConditionSubmit());
 
         Apply apply = new Apply(
                 null, tester, quest, requireConditionSubmitPath, preferConditionSubmitPath
