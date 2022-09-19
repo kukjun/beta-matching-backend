@@ -8,6 +8,7 @@ import io.wisoft.testermatchingplatform.web.dto.req.tester.QuestApplyRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterSignInRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterSignUpRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterUpdateRequest;
+import io.wisoft.testermatchingplatform.web.dto.resp.apply.ApplyTesterDetailResponse;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.*;
 import io.wisoft.testermatchingplatform.web.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -78,6 +79,13 @@ public class TesterController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(testerAuthService.findApplyList(testerId));
+    }
+
+    @GetMapping("/apply/{apply_id}")
+    public ResponseEntity<ApplyTesterDetailResponse> showApply(
+            @PathVariable("apply_id") Long applyId
+    ) {
+        return ResponseEntity.status(HttpStatus.OK).body(testerAuthService.applyQuest(applyId));
     }
 
 

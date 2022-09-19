@@ -16,6 +16,7 @@ import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundE
 import io.wisoft.testermatchingplatform.web.dto.req.tester.QuestApplyRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterSignInRequest;
 import io.wisoft.testermatchingplatform.web.dto.req.tester.TesterUpdateRequest;
+import io.wisoft.testermatchingplatform.web.dto.resp.apply.ApplyTesterDetailResponse;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.QuestApplyListResponse;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.QuestApplyResponse;
 import io.wisoft.testermatchingplatform.web.dto.resp.tester.TesterSignInResponse;
@@ -110,8 +111,14 @@ public class TesterAuthService {
         QuestApplyResponse response = new QuestApplyResponse(save.getId());
 
         return response;
-
     }
+
+    @Transactional
+    public ApplyTesterDetailResponse applyQuest(Long applyId){
+        Apply apply = applyRepository.findById(applyId).orElseThrow();
+        return ApplyTesterDetailResponse.from(apply);
+    }
+
 
     // 단순 조회
     @Transactional
