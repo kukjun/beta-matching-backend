@@ -1,19 +1,21 @@
 package io.wisoft.testermatchingplatform.config;
 
-import io.wisoft.testermatchingplatform.handler.interceptor.questmakerlogin.QuestMakerLoginArgumentResolver;
-import io.wisoft.testermatchingplatform.handler.interceptor.questmakerlogin.QuestMakerLoginCheckInterceptor;
+import io.wisoft.testermatchingplatform.jwt.JwtAuthResolver;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
 @EnableWebMvc
 @Configuration
+@RequiredArgsConstructor
 public class WebMvcConfig implements WebMvcConfigurer {
+
+    private  final JwtAuthResolver authAccountResolver;
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -25,17 +27,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(new QuestMakerLoginCheckInterceptor())
-                .order(1)
-                .addPathPatterns("/questMakers");
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(authAccountResolver);
     }
-
-    @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolverList){
-        resolverList.add(new QuestMakerLoginArgumentResolver());
-    }
-
-
-
 }
