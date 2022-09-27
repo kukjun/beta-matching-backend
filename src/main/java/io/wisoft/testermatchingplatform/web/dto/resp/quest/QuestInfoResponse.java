@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.resp.quest;
 
-import io.wisoft.testermatchingplatform.domain.quest.Quest;
+import io.wisoft.testermatchingplatform.domain.test.Test;
 import io.wisoft.testermatchingplatform.web.dto.resp.task.TaskResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestInfoResponse {
 
-    private Long id;
     private String title;
     private String content;
     private String categoryName;
@@ -29,25 +28,23 @@ public class QuestInfoResponse {
     private String requireCondition;
     private String preferenceCondition;
     private List<TaskResponse> taskList;
-
-    public static QuestInfoResponse from(final Quest quest, final List<TaskResponse> taskList){
+    public static QuestInfoResponse from(final Test test, final List<TaskResponse> taskList) {
         return new QuestInfoResponse(
-                quest.getId(),
-                quest.getTitle(),
-                quest.getContent(),
-                quest.getCategory().getName(),
-                quest.getRegisterTime(),
-                quest.getQuestRelateTime().getRecruitmentTimeStart(),
-                quest.getQuestRelateTime().getRecruitmentTimeLimit(),
-                quest.getQuestRelateTime().getDurationTimeStart(),
-                quest.getQuestRelateTime().getDurationTimeLimit(),
-                quest.getQuestRelateTime().getModifyTimeStart(),
-                quest.getQuestRelateTime().getModifyTimeLimit(),
-                quest.getQuestMaker().getNickname(),
-                quest.getParticipantCapacity(),
-                quest.getReward(),
-                quest.getRequireCondition(),
-                quest.getPreferenceCondition(),
+                test.getTitle(),
+                test.getContent(),
+                test.getCategory().getName(),
+                test.getRegisterTime(),
+                test.getTestRelateTime().getRecruitmentTimeStart(),
+                test.getTestRelateTime().getRecruitmentTimeLimit(),
+                test.getTestRelateTime().getDurationTimeStart(),
+                test.getTestRelateTime().getDurationTimeLimit(),
+                test.getTestRelateTime().getModifyTimeStart(),
+                test.getTestRelateTime().getModifyTimeLimit(),
+                test.getMaker().getNickname(),
+                test.getParticipantCapacity(),
+                test.getReward(),
+                test.getRequireCondition(),
+                test.getPreferenceCondition(),
                 taskList
         );
     }

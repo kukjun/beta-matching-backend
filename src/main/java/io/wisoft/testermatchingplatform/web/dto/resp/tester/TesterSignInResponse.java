@@ -1,22 +1,25 @@
 package io.wisoft.testermatchingplatform.web.dto.resp.tester;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class TesterSignInResponse {
     private Long id;
-    private String email;
-    private String nickname;
+    private String accessToken;
 
-    private String token;
-
-    public TesterSignInResponse(Long id, String email, String nickname) {
+    public TesterSignInResponse(Long id) {
         this.id = id;
-        this.email = email;
-        this.nickname = nickname;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public static TesterSignInResponse from(final Long id) {
+        return new TesterSignInResponse(
+                id
+        );
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

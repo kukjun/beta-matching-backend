@@ -18,7 +18,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(io.wisoft.testermatchingplatform.handler.exception.auth.EmailOverlapException.class)
+    @ExceptionHandler(EmailOverlapException.class)
     public ResponseEntity<ErrorResponse> emailOverlap(final EmailOverlapException e) {
         ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
 

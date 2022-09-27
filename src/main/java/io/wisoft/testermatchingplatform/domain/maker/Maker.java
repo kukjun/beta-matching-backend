@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.domain.tester;
+package io.wisoft.testermatchingplatform.domain.maker;
 
 import io.wisoft.testermatchingplatform.domain.BaseTime;
 import lombok.Data;
@@ -7,13 +7,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 
 @Data
 @Entity
-@Table(name = "tester")
+@Table(name = "maker")
 @NoArgsConstructor
-public class Tester extends BaseTime {
+public class Maker extends BaseTime {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -38,7 +37,7 @@ public class Tester extends BaseTime {
     private String phoneNumber;
 
     @NotNull
-    private String introMessage;
+    private String company;
 
     @NotNull
     private Long point;
@@ -46,6 +45,7 @@ public class Tester extends BaseTime {
     private String accountNumber;
 
     private String refreshToken;
+
 
     public void checkPassword(final String confirmPassword) {
         if (!this.password.equals(confirmPassword)) {

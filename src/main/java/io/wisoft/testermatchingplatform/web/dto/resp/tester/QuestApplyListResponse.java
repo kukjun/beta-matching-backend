@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class QuestApplyListResponse {
-    private Long id;
     private String QuestName;
     private boolean isApprove;
 
@@ -17,7 +16,6 @@ public class QuestApplyListResponse {
         boolean isApprove = false;
         if(apply.getPermissionTime() != null) isApprove = true;
         return new QuestApplyListResponse(
-                apply.getId(),
                 apply.getQuest().getTitle(),
                 isApprove
         );

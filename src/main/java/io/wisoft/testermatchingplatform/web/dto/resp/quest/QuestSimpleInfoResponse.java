@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.resp.quest;
 
-import io.wisoft.testermatchingplatform.domain.quest.Quest;
+import io.wisoft.testermatchingplatform.domain.test.Test;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -22,18 +22,18 @@ public class QuestSimpleInfoResponse {
     private int participantCapacity;
     private int reward;
 
-    public static QuestSimpleInfoResponse from(final Quest quest){
+    public static QuestSimpleInfoResponse from(final Test test){
         return new QuestSimpleInfoResponse(
-                quest.getId(),
-                quest.getTitle(),
-                quest.getContent(),
-                quest.getCategory().getName(),
-                quest.getRegisterTime(),
-                quest.getQuestRelateTime().getRecruitmentTimeStart(),
-                quest.getQuestRelateTime().getRecruitmentTimeLimit(),
-                quest.getQuestMaker().getNickname(),
-                quest.getParticipantCapacity(),
-                quest.getReward()
+                test.getId(),
+                test.getTitle(),
+                test.getContent(),
+                test.getCategory().getName(),
+                test.getRegisterTime(),
+                test.getTestRelateTime().getRecruitmentTimeStart(),
+                test.getTestRelateTime().getRecruitmentTimeLimit(),
+                test.getMaker().getNickname(),
+                test.getParticipantCapacity(),
+                test.getReward()
         );
     }
 }
