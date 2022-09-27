@@ -10,23 +10,13 @@ import java.util.UUID;
 
 public class FileHandler {
 
-    private static final String DEFAULT_PROFILE_FILE_PATH = System.getProperty("user.dir") + "/profile/";
-    private static final String DEFAULT_APPLY_REQUIRE_FILE_PATH = System.getProperty("user.dir") + "/auth/require/";
-    private static final String DEFAULT_APPLY_PREFER_FILE_PATH = System.getProperty("user.dir") + "/auth/prefer/";
+    private static final String DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH = System.getProperty("user.dir") + "/image/test";
 
     static {
-        final File defaultProfileFileSaveDirectory = new File(DEFAULT_PROFILE_FILE_PATH);
-        final File defaultAuthRequireFileSaveDirectory = new File(DEFAULT_APPLY_REQUIRE_FILE_PATH);
-        final File defaultAuthPreferFileSaveDirectory = new File(DEFAULT_APPLY_PREFER_FILE_PATH);
+        final File defaultProfileFileSaveDirectory = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH);
 
         if (!defaultProfileFileSaveDirectory.exists()) {
             defaultProfileFileSaveDirectory.mkdir();
-        }
-        if (!defaultAuthRequireFileSaveDirectory.exists()) {
-            defaultAuthRequireFileSaveDirectory.mkdirs();
-        }
-        if (!defaultAuthPreferFileSaveDirectory.exists()) {
-            defaultAuthPreferFileSaveDirectory.mkdirs();
         }
 
 
@@ -34,7 +24,7 @@ public class FileHandler {
 
     public static String saveProfileFileData(final MultipartFile fileData) {
         if (fileData.isEmpty()) {
-            throw new IllegalArgumentException("프로필 이미지를 전송해야 합니다.");
+            throw new IllegalArgumentException("이미지를 전송해야 합니다.");
         }
 
         final String extension = fileData
@@ -42,72 +32,14 @@ public class FileHandler {
                 .split("/")[1];
 
         final String fileName = UUID.randomUUID().toString();
-        final File file = new File(DEFAULT_PROFILE_FILE_PATH + fileName + "." + extension);
+        final File file = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH + fileName + "." + extension);
 
         return saveFile(file, fileData);
     }
 
-    public static byte[] getProfileFileData(final String fileName) {
+    public static byte[] getTestRepresentationFileData(final String fileName) {
         try {
-            final File file = new File(DEFAULT_PROFILE_FILE_PATH + fileName);
-
-            return Files.readAllBytes(file.toPath());
-        } catch (NoSuchFileException e) {
-            System.err.println("No file " + fileName);
-            throw new IllegalArgumentException("존재하지 않는 파일명입니다.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            throw new IllegalStateException("파일을 읽어오는 데 실패하였습니다.");
-        }
-    }
-
-    public static String saveApplyRequireFileData(final MultipartFile fileData) {
-        if (fileData.isEmpty()) {
-            return null;
-        }
-
-        final String extension = fileData
-                .getContentType()
-                .split("/")[1];
-
-        final String fileName = UUID.randomUUID().toString();
-        final File file = new File(DEFAULT_APPLY_REQUIRE_FILE_PATH + fileName + "." + extension);
-
-        return saveFile(file, fileData);
-    }
-
-    public static byte[] getApplyRequireFileData(final String fileName) {
-        try {
-            final File file = new File(DEFAULT_APPLY_REQUIRE_FILE_PATH + fileName);
-
-            return Files.readAllBytes(file.toPath());
-        } catch (NoSuchFileException e) {
-            System.err.println("No file " + fileName);
-            throw new IllegalArgumentException("존재하지 않는 파일명입니다.");
-        } catch (IOException e) {
-            System.err.println(e.getMessage());
-            throw new IllegalStateException("파일을 읽어오는 데 실패하였습니다.");
-        }
-    }
-
-    public static String saveApplyPreferFileData(final MultipartFile fileData) {
-        if (fileData.isEmpty()) {
-            return null;
-        }
-
-        final String extension = fileData
-                .getContentType()
-                .split("/")[1];
-
-        final String fileName = UUID.randomUUID().toString();
-        final File file = new File(DEFAULT_APPLY_PREFER_FILE_PATH + fileName + "." + extension);
-
-        return saveFile(file, fileData);
-    }
-
-    public static byte[] getApplyPreferFileData(final String fileName) {
-        try {
-            final File file = new File(DEFAULT_APPLY_PREFER_FILE_PATH + fileName);
+            final File file = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH + fileName);
 
             return Files.readAllBytes(file.toPath());
         } catch (NoSuchFileException e) {
@@ -148,3 +80,4 @@ public class FileHandler {
         return splitFilePath[splitFilePath.length - 1];
     }
 }
+

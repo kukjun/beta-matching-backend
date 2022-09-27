@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.web.controller.api;
+o.wisoft.testermatchingplatform.web.controller.api;
 
 import io.wisoft.testermatchingplatform.handler.FileHandler;
 import org.springframework.http.HttpHeaders;
@@ -12,39 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ImageController {
 
-    @GetMapping("/api/profile/{profile_image_reference}")
-    public ResponseEntity<byte[]> profileImage(
-            @PathVariable("profile_image_reference") final String profileImageName
+    @GetMapping("/api/image/{test_representation_image}")
+    public ResponseEntity<byte[]> getTestRepresentationImage(
+            @PathVariable("test_representation_image") final String testRepresentationImage
     ) {
 
-        final byte[] fileData = FileHandler.getProfileFileData(profileImageName);
-        final String contentType = FileHandler.getImageContentType(profileImageName);
-        final HttpHeaders headers = generateContentTypeHeader(contentType);
-
-        return new ResponseEntity<>(
-                fileData, headers, HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/api/apply/require/{require_image_reference}")
-    public ResponseEntity<byte[]> requireImage(
-            @PathVariable("require_image_reference") final String applyRequireImageName
-    ) {
-        final byte[] fileData = FileHandler.getApplyRequireFileData(applyRequireImageName);
-        final String contentType = FileHandler.getImageContentType(applyRequireImageName);
-        final HttpHeaders headers = generateContentTypeHeader(contentType);
-
-        return new ResponseEntity<>(
-                fileData, headers, HttpStatus.OK
-        );
-    }
-
-    @GetMapping("/api/apply/prefer/{prefer_image_reference}")
-    public ResponseEntity<byte[]> preferImage(
-            @PathVariable("prefer_image_reference") final String applyPreferImageName
-    ) {
-        final byte[] fileData = FileHandler.getApplyPreferFileData(applyPreferImageName);
-        final String contentType = FileHandler.getImageContentType(applyPreferImageName);
+        final byte[] fileData = FileHandler.getTestRepresentationFileData(testRepresentationImage);
+        final String contentType = FileHandler.getImageContentType(testRepresentationImage);
         final HttpHeaders headers = generateContentTypeHeader(contentType);
 
         return new ResponseEntity<>(
