@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@WebFilter(urlPatterns = "/makers/*")
+//@WebFilter(urlPatterns = "/makers/*")
 public class JwtMakerTokenCheckFilter extends OncePerRequestFilter {
 
     public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
