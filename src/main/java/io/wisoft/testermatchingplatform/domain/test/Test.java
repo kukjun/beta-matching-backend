@@ -18,26 +18,22 @@ import java.util.UUID;
 public class Test extends BaseTime {
 
     @Id
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
     @Column(unique = true)
-    @NotNull
     private String title;
 
-    @NotNull
     private int participantCapacity;
     @Embedded
     private TestRelateTime testRelateTime;
 
-    @NotNull
     private String content;
 
-    @NotNull
     private int reward;
 
     private String symbolImageRoot;
 
-    @NotNull
     @LastModifiedDate
     private Timestamp modifyTime;
 
