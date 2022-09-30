@@ -6,11 +6,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface MakerRepository extends JpaRepository<Maker,String> {
+public interface MakerRepository extends JpaRepository<Maker, UUID> {
 
     Optional<Maker> findByEmail(String email);
+
+
 
     @Query("update Maker q set q.refreshToken = ?2 where q.id = ?1")
     @Modifying

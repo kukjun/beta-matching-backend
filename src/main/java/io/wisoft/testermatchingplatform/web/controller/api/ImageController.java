@@ -1,4 +1,5 @@
-o.wisoft.testermatchingplatform.web.controller.api;
+package io.wisoft.testermatchingplatform.web.controller.api;
+
 
 import io.wisoft.testermatchingplatform.handler.FileHandler;
 import org.springframework.http.HttpHeaders;

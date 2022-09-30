@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -17,10 +18,10 @@ public class Tester extends BaseTime {
 
     @Id
     @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid")
-    @Column(columnDefinition = "BINARY(16)")
+    @GenericGenerator(name="uuid2",strategy = "uuid2")
+    @Column(columnDefinition = "BYTEA(16)")
     @NotNull
-    private String id;
+    private UUID id;
 
     @NotNull
     @Column(unique = true)
