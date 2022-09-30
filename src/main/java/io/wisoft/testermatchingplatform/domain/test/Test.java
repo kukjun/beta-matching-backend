@@ -4,12 +4,12 @@ import io.wisoft.testermatchingplatform.domain.BaseTime;
 import io.wisoft.testermatchingplatform.domain.maker.Maker;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -18,11 +18,8 @@ import java.sql.Timestamp;
 public class Test extends BaseTime {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid")
-    @Column(columnDefinition = "BINARY(16)")
     @NotNull
-    private String id;
+    private UUID id;
     @Column(unique = true)
     @NotNull
     private String title;

@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface TesterRepository extends JpaRepository<Tester,String> {
+public interface TesterRepository extends JpaRepository<Tester, UUID> {
 
     public Optional<Tester> findByEmail(String email);
 

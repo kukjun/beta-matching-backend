@@ -3,10 +3,10 @@ package io.wisoft.testermatchingplatform.domain.maker;
 import io.wisoft.testermatchingplatform.domain.BaseTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -14,12 +14,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class Maker extends BaseTime {
 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid")
-    @Column(columnDefinition = "BINARY(16)")
-    @NotNull
-    private String id;
+    private UUID id;
 
     @NotNull
     @Column(unique = true)
