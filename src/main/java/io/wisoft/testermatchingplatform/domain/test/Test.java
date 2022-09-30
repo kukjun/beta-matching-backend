@@ -15,6 +15,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "test")
 @NoArgsConstructor
+@NamedEntityGraph(name = "TestWithMaker", attributeNodes = @NamedAttributeNode("maker"))
 public class Test extends BaseTime {
 
     @Id
@@ -37,7 +38,7 @@ public class Test extends BaseTime {
     @LastModifiedDate
     private Timestamp modifyTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "MAKER_ID")
     private Maker maker;
 }

@@ -17,8 +17,8 @@ public interface MakerRepository extends JpaRepository<Maker, UUID> {
 
     @Query("update Maker q set q.refreshToken = ?2 where q.id = ?1")
     @Modifying
-    void setRefreshToken(Long id, String token);
+    void setRefreshToken(UUID id, String token);
 
     @Query("select q.refreshToken from Maker q where q.id = ?1")
-    String getRefreshToken(Long id);
+    String getRefreshToken(UUID id);
 }
