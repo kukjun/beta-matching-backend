@@ -18,19 +18,13 @@ import java.util.UUID;
 public class TesterReview extends BaseTime {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid")
-    @Column(columnDefinition = "BYTEA(16)")
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
     private int starPoint;
 
-    @NotNull
     private String comment;
 
-    @NotNull
     @JoinColumn(name = "APPLY_INFORMATION_ID")
     @ManyToOne
     private ApplyInformation applyInformation;

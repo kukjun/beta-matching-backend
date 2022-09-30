@@ -17,10 +17,7 @@ import java.util.UUID;
 public class MakerReview extends BaseTime {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid")
-    @Column(columnDefinition = "BYTEA(16)")
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
     private int starPoint;
