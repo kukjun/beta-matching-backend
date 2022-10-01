@@ -28,6 +28,14 @@ public class MakerNoAuthService {
 
     @Transactional
     public MakerLoginResponse login(MakerLoginRequest request) {
-        return null;
+        Maker maker = makerRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new RuntimeException("login fail")
+        );
+        System.out.println(maker.getEmail());
+        maker.checkPassword(request.getPassword());
+        return new MakerLoginResponse(
+                maker.getId(), maker.getNickname()
+        );
+
     }
 }
