@@ -20,10 +20,7 @@ import java.util.UUID;
 public class ApplyInformation extends BaseTime {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid")
-    @Column(columnDefinition = "BYTEA(16)")
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
 
     private Timestamp approveTime;

@@ -17,31 +17,22 @@ import java.util.UUID;
 public class Tester extends BaseTime {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name="uuid2",strategy = "uuid2")
-    @Column(columnDefinition = "BYTEA(16)")
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @NotNull
     @Column(unique = true)
     private String email;
 
-    @NotNull
     private String password;
 
-    @NotNull
     @Column(unique = true)
     private String nickname;
 
-    @NotNull
     @Column(unique = true)
     private String phoneNumber;
 
-    @NotNull
     private String introMessage;
 
-    @NotNull
     private Long point;
 
     private String accountNumber;
