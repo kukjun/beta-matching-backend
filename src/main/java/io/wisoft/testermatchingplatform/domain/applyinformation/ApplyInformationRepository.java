@@ -7,4 +7,6 @@ import java.util.UUID;
 
 @Repository
 public interface ApplyInformationRepository extends JpaRepository<ApplyInformation, UUID> {
+
+    int countByTestId(UUID id);
 }

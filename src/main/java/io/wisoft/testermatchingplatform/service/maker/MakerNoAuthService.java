@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.service;
+package io.wisoft.testermatchingplatform.service.maker;
 
 import io.wisoft.testermatchingplatform.domain.maker.Maker;
 import io.wisoft.testermatchingplatform.domain.maker.MakerRepository;

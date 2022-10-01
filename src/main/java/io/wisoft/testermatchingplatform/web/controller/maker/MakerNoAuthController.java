@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.controller.maker;
 
-import io.wisoft.testermatchingplatform.service.MakerNoAuthService;
+import io.wisoft.testermatchingplatform.service.maker.MakerNoAuthService;
 import io.wisoft.testermatchingplatform.web.dto.request.MakerLoginRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.MakerRegisterRequest;
 import io.wisoft.testermatchingplatform.web.dto.response.MakerLoginResponse;
