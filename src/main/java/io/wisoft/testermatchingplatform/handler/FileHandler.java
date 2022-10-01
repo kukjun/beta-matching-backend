@@ -10,13 +10,13 @@ import java.util.UUID;
 
 public class FileHandler {
 
-    private static final String DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH = System.getProperty("user.dir") + "/image/test";
+    private static final String DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH = System.getProperty("user.dir") + "/image/test/";
 
     static {
-        final File defaultProfileFileSaveDirectory = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH);
+        final File defaultTestRepresentationFileSaveDirectory = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH);
 
-        if (!defaultProfileFileSaveDirectory.exists()) {
-            defaultProfileFileSaveDirectory.mkdir();
+        if (!defaultTestRepresentationFileSaveDirectory.exists()) {
+            defaultTestRepresentationFileSaveDirectory.mkdir();
         }
 
 

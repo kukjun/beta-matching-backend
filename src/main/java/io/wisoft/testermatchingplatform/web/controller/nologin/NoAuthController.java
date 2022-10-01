@@ -17,10 +17,10 @@ public class NoAuthController {
 
     private final NoAuthService noAuthService;
 
-//    @GetMapping("/tests/many_apply")
-//    public ResponseEntity<ManyApplyResponse> big4(){
-//        return ResponseEntity.ok().body();
-//    }
+    @GetMapping("/tests/many_apply")
+    public ResponseEntity<List<ManyApplyResponse>> big4(){
+        return ResponseEntity.ok().body(noAuthService.manyApply());
+    }
 
     @GetMapping("/tests/fast_deadline")
     public ResponseEntity<List<FastDeadlineResponse>> deadLine4(){
