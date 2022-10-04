@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,5 +22,5 @@ public interface TestRepository extends JpaRepository<Test, UUID> {
     List<Test> findAllByOrderByRegisterTime();
 
     @EntityGraph("TestWithMaker")
-    List<Test> findTop4ByOrderByTestRelateTime_DurationTimeLimit();
+    List<Test> findTop4ByTestRelateTime_DurationTimeLimitAfterOrderByTestRelateTime_DurationTimeLimit(Date date);
 }

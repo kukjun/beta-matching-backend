@@ -6,15 +6,13 @@ import io.wisoft.testermatchingplatform.domain.maker.MakerRepository;
 import io.wisoft.testermatchingplatform.domain.test.Test;
 import io.wisoft.testermatchingplatform.domain.test.TestRepository;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
-import io.wisoft.testermatchingplatform.web.dto.response.nologin.CountResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.nologin.DetailTestResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.nologin.FastDeadlineResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.nologin.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +29,7 @@ public class NoAuthService {
     private final ApplyInformationRepository applyInformationRepository;
 
     @Transactional
-    public CountResponse counts(){
+    public CountResponse counts() {
         Long totalTesterCount = testerRepository.count();
         Long totalMakerCount = makerRepository.count();
         Long totalContinueTestCount = testRepository.countContinueTest();
@@ -47,11 +45,11 @@ public class NoAuthService {
     }
 
     @Transactional
-    public List<TestListResponse> testList(){
+    public List<TestListResponse> testList() {
         List<Test> testList = testRepository.findAllByOrderByRegisterTime();
 
         List<TestListResponse> testListResponses = new ArrayList<>();
-        for(Test test:testList){
+        for (Test test : testList) {
             testListResponses.add(
                     new TestListResponse(
                             test.getId(),
@@ -69,11 +67,11 @@ public class NoAuthService {
     }
 
     @Transactional
-    public List<FastDeadlineResponse> fastDeadline(){
-        List<Test> testList = testRepository.findTop4ByOrderByTestRelateTime_DurationTimeLimit();
+    public List<FastDeadlineResponse> fastDeadline() {
+        List<Test> testList = testRepository.findTop4ByTestRelateTime_DurationTimeLimitAfterOrderByTestRelateTime_DurationTimeLimit(new Date());
 
         List<FastDeadlineResponse> fastDeadlineResponses = new ArrayList<>();
-        for(Test test:testList){
+        for (Test test : testList) {
             fastDeadlineResponses.add(
                     new FastDeadlineResponse(
                             test.getId(),
@@ -92,7 +90,34 @@ public class NoAuthService {
     }
 
     @Transactional
-    public DetailTestResponse detailTest(final UUID id){
+    public List<ManyApplyResponse> manyApply() {
+        List<UUID> top4 = applyInformationRepository.getTop4Test();
+
+        List<ManyApplyResponse> manyApplies = new ArrayList<>();
+        for (UUID uuid : top4) {
+            Test test = testRepository.findById(uuid).orElseThrow(
+
+            );
+            manyApplies.add(
+                    new ManyApplyResponse(
+                            test.getId(),
+                            test.getTitle(),
+                            test.getMaker().getNickname(),
+                            test.getMaker().getCompany(),
+                            test.getTestRelateTime().getRecruitmentTimeLimit(),
+                            test.getReward(),
+                            applyInformationRepository.countByTestId(uuid),
+                            test.getParticipantCapacity(),
+                            test.getSymbolImageRoot()
+                    )
+            );
+        }
+
+        return manyApplies;
+    }
+
+    @Transactional
+    public DetailTestResponse detailTest(final UUID id) {
         Test test = testRepository.findById(id).orElseThrow(
                 // 예외 처리
         );
