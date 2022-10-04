@@ -41,4 +41,8 @@ public class Test extends BaseTime {
     @ManyToOne
     @JoinColumn(name = "MAKER_ID")
     private Maker maker;
+
+    public Test(UUID id) {
+        this.id = id;
+    }
 }

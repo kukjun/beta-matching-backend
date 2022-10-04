@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "apply_information")
 @NoArgsConstructor
+@NamedEntityGraph(name = "ApplyInfoWithTest", attributeNodes = @NamedAttributeNode("test"))
 public class ApplyInformation extends BaseTime {
 
     @Id

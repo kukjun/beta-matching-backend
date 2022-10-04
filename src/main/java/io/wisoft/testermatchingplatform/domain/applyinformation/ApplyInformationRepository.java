@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain.applyinformation;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,4 +15,28 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     List<UUID> getTop4Test();
 
     int countByTestId(UUID id);
+
+    @Query(value = "select a.test.id from ApplyInformation a,Test t " +
+            "where a.test.id = t.id AND a.tester.id = ?1 AND t.testRelateTime.recruitmentTimeStart <= current_date AND t.testRelateTime.recruitmentTimeLimit >= current_date")
+    List<UUID> getOnlyApplyTestId(UUID id);
+
+    @Query(value = "select a.test.id from ApplyInformation a,Test t " +
+            "where a.test.id = t.id AND a.tester.id = ?1 AND a.approveCheck = true AND t.testRelateTime.recruitmentTimeLimit < current_date AND t.testRelateTime.durationTimeStart > current_date")
+    List<UUID> getApproveTestId(UUID id);
+
+
+    @Query(value = "select a.test.id from ApplyInformation a,Test t " +
+            "where a.test.id = t.id AND a.tester.id = ?1 AND a.approveCheck = true AND t.testRelateTime.recruitmentTimeStart <= current_date AND t.testRelateTime.durationTimeLimit >= current_date")
+    List<UUID> getProgressTestId(UUID id);
+
+    @Query(value = "select a.test.id from ApplyInformation a,Test t " +
+            "where a.test.id = t.id AND a.tester.id = ?1 AND a.completeCheck = false AND t.testRelateTime.durationTimeLimit < current_date")
+    List<UUID> getNotCompleteTestId(UUID id);
+
+
+    @Query(value = "select a.test.id from ApplyInformation a,Test t " +
+            "where a.test.id = t.id AND a.tester.id = ?1 AND a.completeCheck = true AND t.testRelateTime.durationTimeLimit < current_date")
+    List<UUID> getCompleteTestId(UUID id);
 }
+
+

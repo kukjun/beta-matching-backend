@@ -11,6 +11,8 @@ import java.util.UUID;
 @Repository
 public interface TesterRepository extends JpaRepository<Tester, UUID> {
 
+    Optional<Tester> findByEmail(String email);
+
     @Query("update Maker q set q.refreshToken = ?2 where q.id = ?1")
     @Modifying
     void setRefreshToken(UUID id, String token);

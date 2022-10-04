@@ -5,10 +5,9 @@ import lombok.Getter;
 
 import java.util.UUID;
 
-@AllArgsConstructor
 @Getter
-public class TesterRegisterResponse {
+@AllArgsConstructor
+public class ApplyTestResponse {
 
-    private UUID id;
-
+    private UUID applyId;
 }

@@ -44,4 +44,8 @@ public class Tester extends BaseTime {
             throw new IllegalArgumentException("confirmPassword and password not equal");
         }
     }
+
+    public Tester(UUID id) {
+        this.id = id;
+    }
 }
