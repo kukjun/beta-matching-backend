@@ -32,6 +32,12 @@ public class TesterNoAuthService {
 
     @Transactional
     public TesterLoginResponse login(TesterLoginRequest request) {
-        return null;
+        Tester tester = testerRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new RuntimeException("login fail")
+        );
+       tester.checkPassword(request.getPassword());
+        return new TesterLoginResponse(
+                tester.getId(), tester.getNickname()
+        );
     }
 }

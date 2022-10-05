@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "apply_information")
 @NoArgsConstructor
+@NamedEntityGraph(name = "ApplyInfoWithTest", attributeNodes = @NamedAttributeNode("test"))
 public class ApplyInformation extends BaseTime {
 
     @Id
@@ -38,4 +39,8 @@ public class ApplyInformation extends BaseTime {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TESTER_ID")
     private Tester tester;
+
+    public ApplyInformation(UUID id) {
+        this.id = id;
+    }
 }
