@@ -39,4 +39,8 @@ public class ApplyInformation extends BaseTime {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TESTER_ID")
     private Tester tester;
+
+    public ApplyInformation(UUID id) {
+        this.id = id;
+    }
 }

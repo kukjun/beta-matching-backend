@@ -2,8 +2,11 @@ package io.wisoft.testermatchingplatform.web.controller.tester;
 
 import io.wisoft.testermatchingplatform.service.tester.TesterAuthService;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.ApplyTestRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.tester.CreateReviewRequest;
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.ApplyTestResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.tester.CreateReviewResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.tester.ExchangePointResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterTestListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,17 +38,16 @@ public class TesterAuthController {
 
     // 포인트 교환
     @GetMapping("/{tester_id}/exchange")
-    public ResponseEntity exchangePoint(@PathVariable UUID tester_id){
-
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<ExchangePointResponse> exchangePoint(@PathVariable String tester_id){
+        ExchangePointResponse exchangePointResponse = testerAuthService.exchangePoint(UUID.fromString(tester_id));
+        return ResponseEntity.ok().body(exchangePointResponse);
     }
 
     // 리뷰 완료하고 포인트 받기
     @PostMapping("/apply/{apply_id}/review")
-    public ResponseEntity createReview(@PathVariable UUID apply_id){
-
-
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<CreateReviewResponse> createReview(@PathVariable String apply_id, @RequestBody CreateReviewRequest createReviewRequest){
+        CreateReviewResponse createReviewResponse = testerAuthService.createReview(UUID.fromString(apply_id),createReviewRequest.getStarPoint(),createReviewRequest.getComment());
+        return ResponseEntity.ok().body(createReviewResponse);
     }
 
 }

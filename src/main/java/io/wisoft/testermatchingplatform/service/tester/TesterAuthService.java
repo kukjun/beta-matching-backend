@@ -6,6 +6,7 @@ import io.wisoft.testermatchingplatform.domain.test.Test;
 import io.wisoft.testermatchingplatform.domain.test.TestRepository;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
+import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,38 @@ public class TesterAuthService {
     private final TesterReviewRepository testerReviewRepository;
 
     private final ApplyInformationRepository applyInformationRepository;
+
+    // 보유 포인트, 계좌 조회하기
+    @Transactional
+    public ExchangePointResponse exchangePoint(final UUID testerId){
+        Tester tester = testerRepository.findById( testerId).orElseThrow(
+
+        );
+        return new ExchangePointResponse(
+                tester.getPoint(),
+                tester.getAccountNumber()
+        );
+    }
+    
+    // 리뷰쓰고 포인트 받기
+    @Transactional
+    public CreateReviewResponse createReview(final UUID applyId, final int starPoint, final String comment){
+        // 리뷰 저장
+        TesterReview testerReview = new TesterReview();
+        testerReview.setStarPoint(starPoint);
+        testerReview.setComment(comment);
+        testerReview.setApplyInformation(new ApplyInformation(applyId));
+        testerReviewRepository.save(testerReview);
+        // 포인트 증가 및 값 반환
+        // request 값으로 testerID를 넘겨주면 좋을것같다.
+        ApplyInformation applyInfo = applyInformationRepository.findById(applyId).orElseThrow(
+
+        );
+        Tester tester = applyInfo.getTester();
+        Test test = applyInfo.getTest();
+        tester.setPoint(tester.getPoint() + test.getReward());
+        return new CreateReviewResponse(testerRepository.save(tester).getPoint());
+    }
 
     // 테스트 신청하기
     @Transactional
