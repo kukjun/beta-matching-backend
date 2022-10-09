@@ -16,6 +16,13 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
 
     int countByTestId(UUID id);
 
+
+    @Query(value = "SELECT COUNT(a.id) > 0 FROM ApplyInformation a WHERE a.id=?1 AND a.approveTime is not null")
+    boolean isApprove(UUID id);
+
+    List<ApplyInformation> findByTestId(UUID id);
+
+
     @Query(value = "select a.test.id from ApplyInformation a,Test t " +
             "where a.test.id = t.id AND a.tester.id = ?1 AND t.testRelateTime.recruitmentTimeStart <= current_date AND t.testRelateTime.recruitmentTimeLimit >= current_date")
     List<UUID> getOnlyApplyTestId(UUID id);
@@ -37,6 +44,8 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     @Query(value = "select a.test.id from ApplyInformation a,Test t " +
             "where a.test.id = t.id AND a.tester.id = ?1 AND a.completeCheck = true AND t.testRelateTime.durationTimeLimit < current_date")
     List<UUID> getCompleteTestId(UUID id);
+
+
 }
 
 

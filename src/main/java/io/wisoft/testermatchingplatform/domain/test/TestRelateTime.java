@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Embeddable
@@ -21,4 +22,13 @@ public class TestRelateTime {
     private Date durationTimeStart;
     @NotNull
     private Date durationTimeLimit;
+
+//    @NotNull
+//    private LocalDate recruitmentTimeStart;
+//    @NotNull
+//    private LocalDate recruitmentTimeLimit;
+//    @NotNull
+//    private LocalDate durationTimeStart;
+//    @NotNull
+//    private LocalDate durationTimeLimit;
 }

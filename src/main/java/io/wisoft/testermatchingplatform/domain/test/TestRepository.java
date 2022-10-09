@@ -18,9 +18,12 @@ public interface TestRepository extends JpaRepository<Test, UUID> {
     @Query("SELECT COUNT(t) FROM Test t WHERE current_date >= DATE(t.testRelateTime.recruitmentTimeStart) AND current_date  <= DATE(t.testRelateTime.recruitmentTimeLimit)")
     Long countContinueTest();
 
+
     @EntityGraph("TestWithMaker")
     List<Test> findAllByOrderByRegisterTime();
 
     @EntityGraph("TestWithMaker")
     List<Test> findTop4ByTestRelateTime_DurationTimeLimitAfterOrderByTestRelateTime_DurationTimeLimit(Date date);
+
+    List<Test> findByMaker_Id(UUID id);
 }
