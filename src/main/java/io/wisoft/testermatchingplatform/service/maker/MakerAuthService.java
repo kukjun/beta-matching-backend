@@ -11,8 +11,8 @@ import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
-import io.wisoft.testermatchingplatform.web.controller.maker.CompleteResponse;
-import io.wisoft.testermatchingplatform.web.controller.maker.CreateTesterReviewResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.maker.CompleteResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.maker.CreateTesterReviewResponse;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
@@ -46,13 +46,15 @@ public class MakerAuthService {
         Test test = request.toEntity(maker, symbolImageRoot);
 
         // check Logic 들어가야함.
-        // Point가 가능한 결과값인가?
-        if (isAvailablePaymentPoint(maker, test)) {
+        long needPoint = (long) test.getReward() * test.getParticipantCapacity();
+        if (maker.checkAvailableCreateTest(needPoint)) {
+            maker.setPoint(maker.getPoint() - needPoint);
+            makerRepository.save(maker);
             return new CreateTestResponse(testRepository.save(test).getId());
+        } else {
+            return new CreateTestResponse(null);
         }
 
-        // Point 가 불가능하면 어떻게 처리할 것인가?
-        return new CreateTestResponse(testRepository.save(test).getId());
     }
 
     // Test 수정
@@ -60,12 +62,18 @@ public class MakerAuthService {
     public PatchTestResponse patchTest(UUID makerId, UUID testId, PatchTestRequest request) {
         Maker maker = makerRepository.findById(makerId).orElseThrow();
         Test test = testRepository.findById(testId).orElseThrow();
+        maker.setPoint(maker.getPoint() + ((long) test.getReward() * test.getParticipantCapacity()));
         String symbolImageRoot = FileHandler.saveProfileFileData(request.getSymbolImage());
         test = request.toEntity(test, symbolImageRoot);
 
-        // 차액만큼을 돌려주는 절차가 필요함.
-
-        return new PatchTestResponse(testRepository.save(test).getId());
+        long needPoint = (long) test.getReward() * test.getParticipantCapacity();
+        if(maker.checkAvailableCreateTest(needPoint)) {
+            maker.setPoint(maker.getPoint() - needPoint);
+            makerRepository.save(maker);
+            return new PatchTestResponse(testRepository.save(test).getId());
+        } else {
+            return new PatchTestResponse(null);
+        }
     }
 
     // Maker가 만든 Test List 조회
@@ -119,15 +127,6 @@ public class MakerAuthService {
         );
     }
 
-
-    private boolean isAvailablePaymentPoint(Maker maker, Test test) {
-        if (maker.getPoint() >= (long) test.getReward() * test.getParticipantCapacity()) {
-            maker.setPoint(maker.getPoint() - ((long) test.getReward() * test.getParticipantCapacity()));
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Transactional
     public ApplyResponse findApply(UUID testId) {

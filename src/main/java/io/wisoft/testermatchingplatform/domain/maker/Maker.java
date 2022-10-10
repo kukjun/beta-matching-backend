@@ -43,4 +43,10 @@ public class Maker extends BaseTime {
             throw new IllegalArgumentException("confirmPassword and password not equal");
         }
     }
+
+    public boolean checkAvailableCreateTest(Long needPoint) {
+        return point >= needPoint;
+    }
+
+
 }
