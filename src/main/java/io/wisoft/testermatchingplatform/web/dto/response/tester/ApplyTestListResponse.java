@@ -14,7 +14,7 @@ public class ApplyTestListResponse{
     private String title;
     private String makerNickname;
     private String company;
-    private Date deadlineRemain;
+    private Long deadlineRemain;
     private int reward;
     private int apply;
     private int participantCapacity;

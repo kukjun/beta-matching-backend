@@ -50,13 +50,15 @@ public class NoAuthService {
 
         List<TestListResponse> testListResponses = new ArrayList<>();
         for (Test test : testList) {
+            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
             testListResponses.add(
                     new TestListResponse(
                             test.getId(),
                             test.getTitle(),
                             test.getMaker().getNickname(),
                             test.getMaker().getCompany(),
-                            test.getTestRelateTime().getRecruitmentTimeLimit(),
+                            days,
                             test.getReward(),
                             applyInformationRepository.countByTestId(test.getId()),
                             test.getSymbolImageRoot()
@@ -72,13 +74,15 @@ public class NoAuthService {
 
         List<FastDeadlineResponse> fastDeadlineResponses = new ArrayList<>();
         for (Test test : testList) {
+            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
             fastDeadlineResponses.add(
                     new FastDeadlineResponse(
                             test.getId(),
                             test.getTitle(),
                             test.getMaker().getNickname(),
                             test.getMaker().getCompany(),
-                            test.getTestRelateTime().getRecruitmentTimeLimit(),
+                            days,
                             test.getReward(),
                             applyInformationRepository.countByTestId(test.getId()),
                             test.getParticipantCapacity(),
@@ -98,13 +102,16 @@ public class NoAuthService {
             Test test = testRepository.findById(uuid).orElseThrow(
 
             );
+            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
             manyApplies.add(
+
                     new ManyApplyResponse(
                             test.getId(),
                             test.getTitle(),
                             test.getMaker().getNickname(),
                             test.getMaker().getCompany(),
-                            test.getTestRelateTime().getRecruitmentTimeLimit(),
+                            days,
                             test.getReward(),
                             applyInformationRepository.countByTestId(uuid),
                             test.getParticipantCapacity(),

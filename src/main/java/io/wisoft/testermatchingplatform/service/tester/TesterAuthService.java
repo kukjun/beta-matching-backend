@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class TesterAuthService {
                 tester.getAccountNumber()
         );
     }
-    
+
     // 리뷰쓰고 포인트 받기
     @Transactional
     public CreateReviewResponse createReview(final UUID applyId, final int starPoint, final String comment){
@@ -89,12 +90,14 @@ public class TesterAuthService {
             Test test = testRepository.findById(uuid).orElseThrow(
 
             );
+            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
             ApplyTestListResponse applyTestListResponse = new ApplyTestListResponse(
                     test.getId(),
                     test.getTitle(),
                     test.getMaker().getNickname(),
                     test.getMaker().getCompany(),
-                    test.getTestRelateTime().getRecruitmentTimeLimit(),
+                    days,
                     test.getReward(),
                     test.getParticipantCapacity(),
                     applyInformationRepository.countByTestId(test.getId()),

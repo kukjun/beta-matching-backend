@@ -18,7 +18,7 @@ public class TestListResponse {
 
     private final String company;
 
-    private final Date deadlineRemain;
+    private final Long deadlineRemain;
 
     private final int reward;
 
