@@ -1,14 +1,9 @@
 package io.wisoft.testermatchingplatform.service.tester;
 
-import io.wisoft.testermatchingplatform.domain.maker.Maker;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
-import io.wisoft.testermatchingplatform.web.dto.request.MakerLoginRequest;
-import io.wisoft.testermatchingplatform.web.dto.request.MakerRegisterRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterLoginRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterRegisterRequest;
-import io.wisoft.testermatchingplatform.web.dto.response.MakerLoginResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.MakerRegisterResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterLoginResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterRegisterResponse;
 import lombok.RequiredArgsConstructor;
