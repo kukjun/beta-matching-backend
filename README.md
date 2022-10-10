@@ -2,9 +2,13 @@
 
 ---
 
+<br>
+
 ## 소개
 
 ---
+
+<br>
 
 ### Tester Matching Platform 이란,
 
@@ -16,7 +20,7 @@
 
 
 
-
+<br>
 
 ---
 
@@ -26,7 +30,7 @@
 
 
 
-
+<br>
 
 ---
 
@@ -36,31 +40,46 @@
 
 [요구사항 문서](https://www.notion.so/kukjun/d696548da742483a9dec0fed9951900f)
 
+<br>
+
 ### 
 
 ### Database 개발
 
 [Database 설계](https://www.notion.so/kukjun/Database-22c5c8876f5b41148bdb63f3493d7dcd)
 
-
+<br>
 
 ### API 문서
 
 [API 문서](https://www.notion.so/kukjun/API-ac017f3405604a1ca63614e471f9db14)
 
+<br>
 
+### Backend 구조 설계 및 개발 진행 방향
 
-### Backend 구조 설계 및 개발 진행 방향 - 미구현
+Backend 구조는 역할을 각각 맡아서 처리하도록 함.
 
+* NoLogin, Tester API는 `임희영` 작성 진행.
+* Maker API는 `이국준` 작성 진행.
 
+API 문서를 분리해서 개발하고, 코드 리뷰 과정을 통해서 서로의 코드의 문제점을 파악하고 개선하도록 진행기로 함.
 
-### API 문서 내용 개발 - 미구현
+<br>
 
+### API 문서 내용 개발
 
+1. 1차적으로 API 구현을 완료
+* Frontend 연동을 위해, API 동작을 테스트 해 본결과 정상적으로 동작함을 확인함.
+2. 해당 API에서 너무 비효율적인 로직 수정 및 프론트 엔드 연동 <- 구현중
+* Frontend 연동 진행중
+* 너무 많은 DB 접근 발견, 이를 수정
+
+<br>
 
 ### 보안 / 인가 절차 적용 - 미구현
 
-
+<br>
 
 ### 추가 구현 사항 - 미구현
 
