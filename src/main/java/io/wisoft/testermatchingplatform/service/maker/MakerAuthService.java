@@ -62,14 +62,13 @@ public class MakerAuthService {
     public PatchTestResponse patchTest(UUID makerId, UUID testId, PatchTestRequest request) {
         Maker maker = makerRepository.findById(makerId).orElseThrow();
         Test test = testRepository.findById(testId).orElseThrow();
-        maker.setPoint(maker.getPoint() + ((long) test.getReward() * test.getParticipantCapacity()));
+        long beforePoint = ((long) test.getReward() * test.getParticipantCapacity());
         String symbolImageRoot = FileHandler.saveProfileFileData(request.getSymbolImage());
         test = request.toEntity(test, symbolImageRoot);
 
         long needPoint = (long) test.getReward() * test.getParticipantCapacity();
-        if(maker.checkAvailableCreateTest(needPoint)) {
-            maker.setPoint(maker.getPoint() - needPoint);
-            makerRepository.save(maker);
+        if(maker.checkAvailableCreateTest(needPoint-beforePoint)) {
+            maker.setPoint(maker.getPoint() - (needPoint-beforePoint));
             return new PatchTestResponse(testRepository.save(test).getId());
         } else {
             return new PatchTestResponse(null);
@@ -215,7 +214,6 @@ public class MakerAuthService {
                 successApplyUUIDDTO.add(applyInformationRepository.save(applyInformation).getId());
             }
         }
-
         return new ConfirmApplyResponse(successApplyUUIDDTO);
     }
 }
