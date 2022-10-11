@@ -1,6 +1,5 @@
 package io.wisoft.testermatchingplatform.service.nologin;
 
-import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.domain.maker.MakerRepository;
 import io.wisoft.testermatchingplatform.domain.test.Test;
@@ -71,7 +70,7 @@ public class NoAuthService {
 
     @Transactional
     public List<FastDeadlineResponse> fastDeadline() {
-        List<Test> testList = testRepository.findTop4ByTestRelateTime_DurationTimeLimitAfterOrderByTestRelateTime_DurationTimeLimit(new Date());
+        List<Test> testList = testRepository.findTop4ByTestRelateTime_RecruitmentTimeLimitGreaterThanEqualOrderByTestRelateTime_RecruitmentTimeLimit(new Date());
 
         List<FastDeadlineResponse> fastDeadlineResponses = new ArrayList<>();
         for (Test test : testList) {
