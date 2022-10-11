@@ -23,7 +23,7 @@ public interface TestRepository extends JpaRepository<Test, UUID> {
             "t.recruitment_time_start,t.recruitment_time_limit," +
             "t.duration_time_start,t.duration_time_limit " +
             "from test t, apply_information a " +
-            "where a.test_id = t.id " +
+            "where a.test_id = t.id and t.recruitment_time_limit >= now()" +
             "group by t.id order by count(t.id) desc limit 4", nativeQuery = true)
     List<Test> getTop4Test();
 
@@ -32,7 +32,7 @@ public interface TestRepository extends JpaRepository<Test, UUID> {
     List<Test> findAllByOrderByRegisterTime();
 
     @EntityGraph("TestWithMaker")
-    List<Test> findTop4ByTestRelateTime_DurationTimeLimitAfterOrderByTestRelateTime_DurationTimeLimit(Date date);
+    List<Test> findTop4ByTestRelateTime_RecruitmentTimeLimitGreaterThanEqualOrderByTestRelateTime_RecruitmentTimeLimit(Date date);
 
     List<Test> findByMaker_Id(UUID id);
 }
