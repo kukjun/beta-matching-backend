@@ -8,7 +8,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class TesterTestListResponse {
-    List<ApplyTestListResponse> applyTestListResponseList;
-    List<ApproveTestListResponse> approveTestListResponseList;
-    List<QuitTestListResponse> quitTestListResponseList;
+    List<ApplyTestDTO> applyTestListResponseList;
+    List<ApproveTestDTO> approveTestListResponseList;
+    List<QuitTestDTO> quitTestListResponseList;
 }

@@ -96,13 +96,9 @@ public class NoAuthService {
 
     @Transactional
     public List<ManyApplyResponse> manyApply() {
-        List<UUID> top4 = applyInformationRepository.getTop4Test();
-
+        List<Test> top4 = testRepository.getTop4Test();
         List<ManyApplyResponse> manyApplies = new ArrayList<>();
-        for (UUID uuid : top4) {
-            Test test = testRepository.findById(uuid).orElseThrow(
-
-            );
+        for (Test test : top4) {
             long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
             long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
             manyApplies.add(
@@ -114,7 +110,7 @@ public class NoAuthService {
                             test.getMaker().getCompany(),
                             days,
                             test.getReward(),
-                            applyInformationRepository.countByTestId(uuid),
+                            applyInformationRepository.countByTestId(test.getId()),
                             test.getParticipantCapacity(),
                             test.getSymbolImageRoot()
                     )

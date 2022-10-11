@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain.applyinformation;
 
+import io.wisoft.testermatchingplatform.domain.test.Test;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,6 +45,10 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     @Query(value = "select a.test.id from ApplyInformation a,Test t " +
             "where a.test.id = t.id AND a.tester.id = ?1 AND a.completeCheck = true AND t.testRelateTime.durationTimeLimit < current_date")
     List<UUID> getCompleteTestId(UUID id);
+
+    @EntityGraph("ApplyInfoWithTest")
+    @Query(value = "select a from Test t,ApplyInformation a WHERE a.test.id = t.id AND a.tester.id = ?1")
+    List<ApplyInformation> getApplyTestList(UUID id);
 
 
 }
