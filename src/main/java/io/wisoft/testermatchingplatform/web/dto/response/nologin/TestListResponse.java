@@ -26,4 +26,7 @@ public class TestListResponse {
 
     private final String symbolImageRoot;
 
+    private final int participantCapacity;
+
+
 }
