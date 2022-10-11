@@ -15,7 +15,7 @@ public class DetailTestResponse {
 
     private final String title;
 
-    private final String makerNickName;
+    private final String makerNickname;
 
     private final String company;
 
@@ -35,9 +35,11 @@ public class DetailTestResponse {
 
     private final int reward;
 
-    private final int apply;
+    private final int applyCount;
 
     private final int participantCapacity;
+
+    private final long deadLine;
 
     private final String symbolImageRoot;
 

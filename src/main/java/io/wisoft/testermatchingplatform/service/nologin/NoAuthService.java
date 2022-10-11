@@ -61,7 +61,8 @@ public class NoAuthService {
                             days,
                             test.getReward(),
                             applyInformationRepository.countByTestId(test.getId()),
-                            test.getSymbolImageRoot()
+                            test.getSymbolImageRoot(),
+                            test.getParticipantCapacity()
                     )
             );
         }
@@ -128,6 +129,8 @@ public class NoAuthService {
         Test test = testRepository.findById(id).orElseThrow(
                 // 예외 처리
         );
+        long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+        long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
         return new DetailTestResponse(
                 test.getId(),
                 test.getTitle(),
@@ -141,6 +144,7 @@ public class NoAuthService {
                 test.getReward(),
                 applyInformationRepository.countByTestId(test.getId()),
                 test.getParticipantCapacity(),
+                days,
                 test.getSymbolImageRoot()
         );
     }
