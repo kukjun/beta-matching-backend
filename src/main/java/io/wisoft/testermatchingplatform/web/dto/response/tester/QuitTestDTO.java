@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class QuitTestListResponse {
+public class QuitTestDTO {
 
     private UUID id;
     private String title;
