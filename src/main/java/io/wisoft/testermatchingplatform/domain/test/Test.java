@@ -61,7 +61,7 @@ public class Test extends BaseTime {
         Calendar recruitmentLimit = Calendar.getInstance();
         recruitmentLimit.setTime(testRelateTime.getRecruitmentTimeLimit());
 
-        return (current.getTimeInMillis() - recruitmentLimit.getTimeInMillis()) / (1000 * 24 * 60 * 60);
+        return (recruitmentLimit.getTimeInMillis() - current.getTimeInMillis()) / (1000 * 24 * 60 * 60);
     }
 
     public Period getPeriod() {

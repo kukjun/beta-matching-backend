@@ -9,6 +9,6 @@ import java.util.UUID;
 @Getter
 @Setter
 public class CompleteRequest {
-    List<UUID> requestCompleteDTO;
+    private List<UUID> completeTesterIdDTOList;
 
 }

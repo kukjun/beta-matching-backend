@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
+
 public class ApplyTestRequest {
     private String testId;
 }

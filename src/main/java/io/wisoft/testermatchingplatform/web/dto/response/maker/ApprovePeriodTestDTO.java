@@ -12,8 +12,8 @@ public class ApprovePeriodTestDTO {
     private String makerNickname;
     private String company;
     private int reward;
-    private int applyCount;
-    private int participant;
+    private int participantCapacity;
+    private int apply;
     private String symbolImageRoot;
 
     private String state;
@@ -25,8 +25,8 @@ public class ApprovePeriodTestDTO {
         dto.makerNickname = test.getMaker().getNickname();
         dto.company = test.getMaker().getCompany();
         dto.reward =test.getReward();
-        dto.applyCount = applyCount;
-        dto.participant = test.getParticipantCapacity();
+        dto.apply = applyCount;
+        dto.participantCapacity = test.getParticipantCapacity();
         dto.symbolImageRoot = test.getSymbolImageRoot();
         dto.state = state;
 

@@ -35,7 +35,7 @@ public class DetailTestResponse {
 
     private final int reward;
 
-    private final int applyCount;
+    private final int apply;
 
     private final int participantCapacity;
 

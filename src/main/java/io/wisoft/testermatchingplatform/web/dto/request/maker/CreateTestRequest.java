@@ -5,14 +5,16 @@ import io.wisoft.testermatchingplatform.domain.test.Test;
 import io.wisoft.testermatchingplatform.domain.test.TestRelateTime;
 import io.wisoft.testermatchingplatform.handler.validator.image.Custom;
 import io.wisoft.testermatchingplatform.handler.validator.image.Image;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.text.SimpleDateFormat;
 
 @Getter
-@Setter
+@AllArgsConstructor
 public class CreateTestRequest {
 
     private String title;

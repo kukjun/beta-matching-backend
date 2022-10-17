@@ -20,6 +20,7 @@ public class TesterNoAuthService {
     @Transactional
     public TesterRegisterResponse register(TesterRegisterRequest request) {
         Tester entity = TesterRegisterRequest.toEntity(request);
+        System.out.println(entity.getEmail());
         return new TesterRegisterResponse(
                 testerRepository.save(entity).getId()
         );
