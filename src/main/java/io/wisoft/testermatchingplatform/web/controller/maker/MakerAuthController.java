@@ -5,6 +5,7 @@ import io.wisoft.testermatchingplatform.web.dto.request.maker.ConfirmApplyReques
 import io.wisoft.testermatchingplatform.web.dto.request.maker.CreateTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.CreateTesterReviewRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.PatchTestRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.maker.CompleteTesterListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.PaymentResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class MakerAuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    // 내가 만든 Test 조회하기
+    //    // 내가 만든 Test 조회하기
     @GetMapping("/{maker_id}/tests")
     public ResponseEntity<TestsFromMakerResponse> findTests(
             @PathVariable("maker_id") UUID makerId
@@ -60,12 +61,21 @@ public class MakerAuthController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // Test 수행인원 List 조회하기
+    // Test 수행인원 List 조회하기 (수행인원 완료를 위함)
     @GetMapping("/tests/{test_id}/perform")
     public ResponseEntity<PerformListResponse> findPerformInformation(
             @PathVariable("test_id") UUID testId
     ) {
         PerformListResponse response = makerAuthService.findPerformList(testId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    // Test 수행인원 List 조회하기 (수행인원 Review 작성을 위함)
+    @GetMapping("/tests/{test_id}/perform/review")
+    public ResponseEntity<CompleteTesterListResponse> findCompleteTester(
+            @PathVariable("test_id") UUID testId
+    ) {
+        CompleteTesterListResponse response = makerAuthService.findCompleteTester(testId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -80,7 +90,7 @@ public class MakerAuthController {
 
     // json List 값 받기 테스트 못함 - Test Data 부재
 
-    //
+    // 선정인원 완료 처리하기
     @PostMapping("/tests/{test_id}/complete")
     public ResponseEntity<CompleteResponse> changeApplyState(
             @PathVariable("test_id") UUID testId,
@@ -90,6 +100,7 @@ public class MakerAuthController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
+    // 수행인원에 대한 Review 작성하기
     @PostMapping("/{maker_id}/tests/perform/review")
     public ResponseEntity<CreateTesterReviewResponse> createReviews(
             @PathVariable("maker_id") UUID makerId,
@@ -99,6 +110,7 @@ public class MakerAuthController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
+    // 신청자를 수행인원으로 변경
     @PostMapping("/tests/{test_id}/perform")
     public ResponseEntity<ConfirmApplyResponse> confirmApply(
             @PathVariable("test_id") UUID testId,

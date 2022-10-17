@@ -4,11 +4,9 @@ import io.wisoft.testermatchingplatform.service.tester.TesterAuthService;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.ApplyTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.CreateReviewRequest;
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.tester.ApplyTestResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.tester.CreateReviewResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.tester.ExchangePointResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterTestListResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +46,15 @@ public class TesterAuthController {
     public ResponseEntity<CreateReviewResponse> createReview(@PathVariable String apply_id, @RequestBody CreateReviewRequest createReviewRequest){
         CreateReviewResponse createReviewResponse = testerAuthService.createReview(UUID.fromString(apply_id),createReviewRequest.getStarPoint(),createReviewRequest.getComment());
         return ResponseEntity.ok().body(createReviewResponse);
+    }
+
+    @GetMapping("/{tester_id}/tests/{test_id}")
+    public ResponseEntity<ApplyInformationIdResponse> findApplyInformationId(
+            @PathVariable("tester_id") UUID testerId,
+            @PathVariable("test_id") UUID testId
+    ) {
+        ApplyInformationIdResponse response = testerAuthService.findApplyTest(testerId, testId);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

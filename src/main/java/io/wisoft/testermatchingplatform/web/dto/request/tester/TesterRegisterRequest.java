@@ -6,10 +6,12 @@ import io.wisoft.testermatchingplatform.domain.maker.Maker;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.web.dto.request.MakerRegisterRequest;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class TesterRegisterRequest {
 
     private String email;

@@ -14,7 +14,7 @@ public class TestListResponse {
 
     private final String title;
 
-    private final String makerNickName;
+    private final String makerNickname;
 
     private final String company;
 

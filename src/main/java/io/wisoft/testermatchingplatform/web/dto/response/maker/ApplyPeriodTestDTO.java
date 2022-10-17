@@ -13,7 +13,7 @@ public class ApplyPeriodTestDTO {
     private String company;
     private Long deadlineRemain;
     private int reward;
-    private int applyCount;
+    private int apply;
     private int participantCapacity;
     private String symbolImageRoot;
 
@@ -25,7 +25,7 @@ public class ApplyPeriodTestDTO {
         dto.company = test.getMaker().getCompany();
         dto.deadlineRemain = test.calculateDeadlineRemain();
         dto.reward =test.getReward();
-        dto.applyCount = applyCount;
+        dto.apply = applyCount;
         dto.participantCapacity = test.getParticipantCapacity();
         dto.symbolImageRoot = test.getSymbolImageRoot();
 

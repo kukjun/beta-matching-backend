@@ -17,6 +17,7 @@ import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
@@ -40,7 +41,7 @@ public class MakerAuthService {
 
     // Test 생성
     @Transactional
-    public CreateTestResponse createTest(UUID makerId, CreateTestRequest request) {
+    public CreateTestResponse createTest(UUID makerId, @RequestBody CreateTestRequest request) {
         Maker maker = makerRepository.findById(makerId).orElseThrow();
         String symbolImageRoot = FileHandler.saveProfileFileData(request.getSymbolImage());
         Test test = request.toEntity(maker, symbolImageRoot);
@@ -49,7 +50,6 @@ public class MakerAuthService {
         long needPoint = (long) test.getReward() * test.getParticipantCapacity();
         if (maker.checkAvailableCreateTest(needPoint)) {
             maker.setPoint(maker.getPoint() - needPoint);
-            makerRepository.save(maker);
             return new CreateTestResponse(testRepository.save(test).getId());
         } else {
             return new CreateTestResponse(null);
@@ -59,7 +59,7 @@ public class MakerAuthService {
 
     // Test 수정
     @Transactional
-    public PatchTestResponse patchTest(UUID makerId, UUID testId, PatchTestRequest request) {
+    public PatchTestResponse patchTest(UUID makerId, UUID testId, @RequestBody PatchTestRequest request) {
         Maker maker = makerRepository.findById(makerId).orElseThrow();
         Test test = testRepository.findById(testId).orElseThrow();
         long beforePoint = ((long) test.getReward() * test.getParticipantCapacity());
@@ -67,8 +67,8 @@ public class MakerAuthService {
         test = request.toEntity(test, symbolImageRoot);
 
         long needPoint = (long) test.getReward() * test.getParticipantCapacity();
-        if(maker.checkAvailableCreateTest(needPoint-beforePoint)) {
-            maker.setPoint(maker.getPoint() - (needPoint-beforePoint));
+        if (maker.checkAvailableCreateTest(needPoint - beforePoint)) {
+            maker.setPoint(maker.getPoint() - (needPoint - beforePoint));
             return new PatchTestResponse(testRepository.save(test).getId());
         } else {
             return new PatchTestResponse(null);
@@ -96,9 +96,9 @@ public class MakerAuthService {
                 case AFTER_RECRUITMENT:
                     int staticApplyCount = applyInformationRepository.countByTestId(test.getId());
                     if (applyInformationRepository.isApprove(test.getId())) {
-                        approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromEntity(test, staticApplyCount, "before Approve"));
-                    } else {
                         approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromEntity(test, staticApplyCount, "Approve"));
+                    } else {
+                        approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromEntity(test, staticApplyCount, "before Approve"));
                     }
                     break;
                 case PROGRESS:
@@ -139,9 +139,9 @@ public class MakerAuthService {
             List<SimpleReviewDTO> simpleReviewDTOList = testerReviewRepository.findByTesterId(tester.getId());
             if (applyInformation.getApproveTime() == null) {
                 // from 말고 명시할만한 내용 ..?
-                applyDTOList.add(ApplyDTO.from(tester.getNickname(), "not Verify", simpleReviewDTOList));
+                applyDTOList.add(ApplyDTO.from(applyInformation.getId(), tester.getNickname(), "not Verify", simpleReviewDTOList));
             } else {
-                applyDTOList.add(ApplyDTO.from(tester.getNickname(), "Verify", simpleReviewDTOList));
+                applyDTOList.add(ApplyDTO.from(applyInformation.getId(), tester.getNickname(), "Verify", simpleReviewDTOList));
             }
         }
         return new ApplyResponse(applyDTOList);
@@ -154,13 +154,29 @@ public class MakerAuthService {
         for (ApplyInformation applyInformation : applyInformationList) {
             Tester tester = testerRepository.findById(applyInformation.getTester().getId()).orElseThrow();
             if (applyInformation.getCompleteTime() == null) {
-                performDTOList.add(PerformDTO.fromEntity(tester, "not Complete"));
+                performDTOList.add(PerformDTO.fromEntity(applyInformation.getId(), tester, "not Complete"));
             } else {
-                performDTOList.add(PerformDTO.fromEntity(tester, "Complete"));
+                performDTOList.add(PerformDTO.fromEntity(applyInformation.getId(), tester, "Complete"));
             }
         }
         return new PerformListResponse(performDTOList);
+    }
 
+    @Transactional
+    public CompleteTesterListResponse findCompleteTester(UUID testId) {
+        List<ApplyInformation> applyInformationList = applyInformationRepository.findByTestId(testId);
+        List<CompleteTesterDTO> completeTesterDTOList = new ArrayList<>();
+
+        for(ApplyInformation applyInformation : applyInformationList) {
+            System.out.println(applyInformation.getTester());
+            Tester tester = testerRepository.findById(applyInformation.getTester().getId()).orElseThrow();
+            if (applyInformation.getCompleteTime() != null) {
+                completeTesterDTOList.add(CompleteTesterDTO.fromEntity(applyInformation.getId(), tester, "Complete"));
+            } else {
+                completeTesterDTOList.add(CompleteTesterDTO.fromEntity(applyInformation.getId(), tester, "not Complete"));
+            }
+        }
+        return new CompleteTesterListResponse(completeTesterDTOList);
     }
 
     @Transactional
@@ -170,8 +186,8 @@ public class MakerAuthService {
     }
 
     @Transactional
-    public CompleteResponse changeApplyState(CompleteRequest completeRequest) {
-        List<UUID> requestDTOList = completeRequest.getRequestCompleteDTO();
+    public CompleteResponse changeApplyState(@RequestBody CompleteRequest completeRequest) {
+        List<UUID> requestDTOList = completeRequest.getCompleteTesterIdDTOList();
         List<UUID> responseDTOList = new ArrayList<>();
         for (UUID requestDTO : requestDTOList) {
             ApplyInformation applyInformation = applyInformationRepository.findById(requestDTO).orElseThrow();
@@ -183,12 +199,12 @@ public class MakerAuthService {
     }
 
     @Transactional
-    public CreateTesterReviewResponse createReviews(CreateTesterReviewRequest request, UUID makerId) {
+    public CreateTesterReviewResponse createReviews(@RequestBody CreateTesterReviewRequest request, UUID makerId) {
         List<TesterReviewDTO> testerReviewDTOList = request.getTesterReviewDTOList();
         List<UUID> testerReviewIdList = new ArrayList<>();
         int remainPoint = 0;
         for (TesterReviewDTO testerReviewDTO : testerReviewDTOList) {
-            ApplyInformation applyInformation = applyInformationRepository.findById(testerReviewDTO.getApplyInformationId()).orElseThrow();
+            ApplyInformation applyInformation = applyInformationRepository.findById(testerReviewDTO.getId()).orElseThrow();
             if (applyInformation.getCompleteTime() == null) {
                 remainPoint += applyInformation.getTest().getReward();
             }
@@ -203,17 +219,29 @@ public class MakerAuthService {
 
 
     @Transactional
-    public ConfirmApplyResponse confirmApply(UUID testId, ConfirmApplyRequest request) {
-        List<ApproveInformationDTO> approveInformationDTOList = request.getApproveInformationDTOList();
+    public ConfirmApplyResponse confirmApply(UUID testId, @RequestBody ConfirmApplyRequest request) {
+        List<UUID> approveTesterList = request.getApproveTesterList();
         List<UUID> successApplyUUIDDTO = new ArrayList<>();
 
-        for (ApproveInformationDTO approveInformationDTO : approveInformationDTOList) {
-            ApplyInformation applyInformation = applyInformationRepository.findById(approveInformationDTO.getId()).orElseThrow();
-            applyInformation = approveInformationDTO.toEntity(applyInformation);
-            if (applyInformation.getApproveCheck()) {
-                successApplyUUIDDTO.add(applyInformationRepository.save(applyInformation).getId());
+        for (UUID approveTesterId : approveTesterList) {
+            System.out.println(approveTesterId);
+            ApplyInformation applyInformation = applyInformationRepository.findById(
+                    approveTesterId
+            ).orElseThrow();
+            applyInformation.setApproveTime(new Timestamp(new Date().getTime()));
+            applyInformation.setApproveCheck(true);
+            successApplyUUIDDTO.add(applyInformation.getId());
+        }
+
+        List<ApplyInformation> applyInformationList = applyInformationRepository.findByTestId(testId);
+        for (ApplyInformation applyInformation : applyInformationList) {
+            if (applyInformation.getApproveTime() == null) {
+                applyInformation.setApproveTime(new Timestamp(new Date().getTime()));
             }
         }
+
         return new ConfirmApplyResponse(successApplyUUIDDTO);
     }
+
+
 }

@@ -166,6 +166,10 @@ public class TesterAuthService {
         );
     }
 
+    public ApplyInformationIdResponse findApplyTest(UUID testerId, UUID testId) {
+        UUID applyInformationId = applyInformationRepository.getApplyInformationId(testerId, testId);
+        return new ApplyInformationIdResponse(applyInformationId);
+    }
 //    private List<ApplyTestDTO> getApplyTestListResponse(final UUID id) {
 //        List<ApplyTestDTO> applyTestListResponseList = new ArrayList<>();
 //        List<UUID> onlyApplyTestId = applyInformationRepository.getOnlyApplyTestId(id);

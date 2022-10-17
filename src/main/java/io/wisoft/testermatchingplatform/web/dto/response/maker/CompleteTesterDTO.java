@@ -1,24 +1,25 @@
 package io.wisoft.testermatchingplatform.web.dto.response.maker;
 
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
+import lombok.Data;
 import lombok.Getter;
 
 import java.util.UUID;
 
 @Getter
-public class PerformDTO {
+public class CompleteTesterDTO {
     private UUID id;
     private String nickname;
-    private String phoneNumber;
-    private String email;
+    private long starPoint;
+    private String comment;
     private String status;
 
-    public static PerformDTO fromEntity(UUID id ,Tester tester, String status) {
-        PerformDTO dto = new PerformDTO();
+    public static CompleteTesterDTO fromEntity(UUID id, Tester tester, String status) {
+        CompleteTesterDTO dto = new CompleteTesterDTO();
         dto.id = id;
         dto.nickname = tester.getNickname();
-        dto.phoneNumber = tester.getPhoneNumber();
-        dto.email = tester.getEmail();
+        dto.starPoint=0;
+        dto.comment = "";
         dto.status = status;
         return dto;
     }

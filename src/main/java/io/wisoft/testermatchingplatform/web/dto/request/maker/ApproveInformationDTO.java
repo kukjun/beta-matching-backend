@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
@@ -12,13 +13,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ApproveInformationDTO {
-    private UUID id;
-    private boolean state;
+public class ApproveInformationDTO implements Serializable {
+    private String id;
 
     public ApplyInformation toEntity(ApplyInformation applyInformation) {
         applyInformation.setApproveTime(new Timestamp(new Date().getTime()));
-        applyInformation.setApproveCheck(state);
+        applyInformation.setApproveCheck(true);
         return applyInformation;
     }
 }
