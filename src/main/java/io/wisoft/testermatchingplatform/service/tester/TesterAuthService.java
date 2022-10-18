@@ -10,6 +10,7 @@ import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -64,7 +65,12 @@ public class TesterAuthService {
 
     // 테스트 신청하기
     @Transactional
-    public ApplyTestResponse applyTest(final UUID testerId, final UUID testId) {
+    public ApplyTestResponse applyTest(final UUID testerId, final UUID testId) throws Exception {
+        UUID uuid = applyInformationRepository.getApplyInfoUUIDByIdAndTesterId(testerId,testId);
+        if (uuid != null){
+            // 이미 신청된 정보 -> 예외 처리 "이미 신청되었습니다"
+            throw new Exception();
+        }
         ApplyInformation applyInformation = new ApplyInformation();
         applyInformation.setTest(new Test(testId));
         applyInformation.setTester(new Tester(testerId));
@@ -95,8 +101,8 @@ public class TesterAuthService {
                                     test.getMaker().getCompany(),
                                     days,
                                     test.getReward(),
-                                    test.getParticipantCapacity(),
                                     applyInformationRepository.countByTestId(test.getId()),
+                                    test.getParticipantCapacity(),
                                     test.getSymbolImageRoot()
                             )
                     );
@@ -170,104 +176,5 @@ public class TesterAuthService {
         UUID applyInformationId = applyInformationRepository.getApplyInformationId(testerId, testId);
         return new ApplyInformationIdResponse(applyInformationId);
     }
-//    private List<ApplyTestDTO> getApplyTestListResponse(final UUID id) {
-//        List<ApplyTestDTO> applyTestListResponseList = new ArrayList<>();
-//        List<UUID> onlyApplyTestId = applyInformationRepository.getOnlyApplyTestId(id);
-//        for (UUID uuid : onlyApplyTestId) {
-//            Test test = testRepository.findById(uuid).orElseThrow(
-//
-//            );
-//            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
-//            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
-//            ApplyTestDTO applyTestDTO = new ApplyTestDTO(
-//                    test.getId(),
-//                    test.getTitle(),
-//                    test.getMaker().getNickname(),
-//                    test.getMaker().getCompany(),
-//                    days,
-//                    test.getReward(),
-//                    test.getParticipantCapacity(),
-//                    applyInformationRepository.countByTestId(test.getId()),
-//                    test.getSymbolImageRoot()
-//            );
-//            applyTestListResponseList.add(applyTestDTO);
-//        }
-//        return applyTestListResponseList;
-//    }
-//
-//    private List<ApproveTestDTO> getApproveTestListResponse(final UUID id) {
-//        List<ApproveTestDTO> approveTestListResponseList = new ArrayList<>();
-//        List<UUID> approveTestId = applyInformationRepository.getApproveTestId(id);
-//        for (UUID uuid : approveTestId) {
-//            Test test = testRepository.findById(uuid).orElseThrow(
-//
-//            );
-//            ApproveTestDTO approveTestDTO = new ApproveTestDTO(
-//                    test.getId(),
-//                    test.getTitle(),
-//                    test.getMaker().getNickname(),
-//                    test.getMaker().getCompany(),
-//                    test.getReward(),
-//                    "approve",
-//                    test.getSymbolImageRoot()
-//            );
-//            approveTestListResponseList.add(approveTestDTO);
-//        }
-//        List<UUID> progressTestId = applyInformationRepository.getProgressTestId(id);
-//        for (UUID uuid : progressTestId) {
-//            Test test = testRepository.findById(uuid).orElseThrow(
-//
-//            );
-//            ApproveTestDTO approveTestDTO = new ApproveTestDTO(
-//                    test.getId(),
-//                    test.getTitle(),
-//                    test.getMaker().getNickname(),
-//                    test.getMaker().getCompany(),
-//                    test.getReward(),
-//                    "progress",
-//                    test.getSymbolImageRoot()
-//            );
-//            approveTestListResponseList.add(approveTestDTO);
-//        }
-//
-//        return approveTestListResponseList;
-//    }
-//
-//    private List<QuitTestDTO> getQuitTestListResponse(final UUID id) {
-//        List<QuitTestDTO> quitTestListResponseList = new ArrayList<>();
-//        List<UUID> notCompleteTestId = applyInformationRepository.getNotCompleteTestId(id);
-//        for (UUID uuid : notCompleteTestId) {
-//            Test test = testRepository.findById(uuid).orElseThrow(
-//
-//            );
-//            QuitTestDTO quitTestDTO = new QuitTestDTO(
-//                    test.getId(),
-//                    test.getTitle(),
-//                    test.getMaker().getNickname(),
-//                    test.getMaker().getCompany(),
-//                    test.getReward(),
-//                    "not complete",
-//                    test.getSymbolImageRoot()
-//            );
-//            quitTestListResponseList.add(quitTestDTO);
-//        }
-//
-//        List<UUID> completeTestId = applyInformationRepository.getCompleteTestId(id);
-//        for (UUID uuid : completeTestId) {
-//            Test test = testRepository.findById(uuid).orElseThrow(
-//
-//            );
-//            QuitTestDTO quitTestDTO = new QuitTestDTO(
-//                    test.getId(),
-//                    test.getTitle(),
-//                    test.getMaker().getNickname(),
-//                    test.getMaker().getCompany(),
-//                    test.getReward(),
-//                    "complete",
-//                    test.getSymbolImageRoot()
-//            );
-//            quitTestListResponseList.add(quitTestDTO);
-//        }
-//        return quitTestListResponseList;
-//    }
+
 }

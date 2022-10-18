@@ -27,9 +27,10 @@ public interface TestRepository extends JpaRepository<Test, UUID> {
             "group by t.id order by count(t.id) desc limit 4", nativeQuery = true)
     List<Test> getTop4Test();
 
-
     @EntityGraph("TestWithMaker")
-    List<Test> findAllByOrderByRegisterTime();
+    @Query(value = "select t from Test t where t.testRelateTime.recruitmentTimeLimit >= current_date")
+    List<Test> findAllByTest();
+
 
     @EntityGraph("TestWithMaker")
     List<Test> findTop4ByTestRelateTime_RecruitmentTimeLimitGreaterThanEqualOrderByTestRelateTime_RecruitmentTimeLimit(Date date);

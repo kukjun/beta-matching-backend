@@ -29,7 +29,7 @@ public class TesterAuthController {
 
     // 테스트 신청하기
     @PostMapping("/{tester_id}/apply")
-    public ResponseEntity<ApplyTestResponse> applyTest(@PathVariable String tester_id,@RequestBody ApplyTestRequest applyTestRequest){
+    public ResponseEntity<ApplyTestResponse> applyTest(@PathVariable String tester_id,@RequestBody ApplyTestRequest applyTestRequest) throws Exception {
         ApplyTestResponse applyTestResponse = testerAuthService.applyTest(UUID.fromString(tester_id),UUID.fromString(applyTestRequest.getTestId()));
         return ResponseEntity.ok().body(applyTestResponse);
     }

@@ -45,7 +45,7 @@ public class NoAuthService {
 
     @Transactional
     public List<TestListResponse> testList() {
-        List<Test> testList = testRepository.findAllByOrderByRegisterTime();
+        List<Test> testList = testRepository.findAllByTest();
 
         List<TestListResponse> testListResponses = new ArrayList<>();
         for (Test test : testList) {
@@ -96,6 +96,16 @@ public class NoAuthService {
     @Transactional
     public List<ManyApplyResponse> manyApply() {
         List<Test> top4 = testRepository.getTop4Test();
+        // 임시, 임의로 부족한 테스트 추가해주기 -> left outer join 쿼리로 수정해보자.
+        if (top4.size() < 4){
+            int garbageTest = 4 - top4.size();
+            List<Test> testList = testRepository.findAllByTest();
+            for (int i=0;i<garbageTest;i++){
+                if (testList.size() <= i) break;
+                top4.add(testList.get(i));
+            }
+        }
+
         List<ManyApplyResponse> manyApplies = new ArrayList<>();
         for (Test test : top4) {
             long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
