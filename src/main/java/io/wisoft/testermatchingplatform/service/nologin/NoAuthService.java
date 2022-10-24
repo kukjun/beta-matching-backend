@@ -99,10 +99,13 @@ public class NoAuthService {
         // 임시, 임의로 부족한 테스트 추가해주기 -> left outer join 쿼리로 수정해보자.
         if (top4.size() < 4){
             int garbageTest = 4 - top4.size();
+            int count  = 0;
             List<Test> testList = testRepository.findAllByTest();
-            for (int i=0;i<garbageTest;i++){
-                if (testList.size() <= i) break;
+            for (int i=0;i<testList.size();i++){
+                if (count == garbageTest) break;
+                if (applyInformationRepository.countByTestId(testList.get(i).getId()) != 0) continue;
                 top4.add(testList.get(i));
+                count++;
             }
         }
 

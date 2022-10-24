@@ -3,14 +3,12 @@ package io.wisoft.testermatchingplatform.web.controller.tester;
 import io.wisoft.testermatchingplatform.service.tester.TesterAuthService;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.ApplyTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.CreateReviewRequest;
-import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -19,6 +17,7 @@ import java.util.UUID;
 public class TesterAuthController {
 
     private final TesterAuthService testerAuthService;
+
 
     // 테스트 신청 목록 조회하기
     @GetMapping("/{tester_id}/apply")

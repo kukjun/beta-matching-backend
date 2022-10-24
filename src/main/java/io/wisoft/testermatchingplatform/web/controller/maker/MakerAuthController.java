@@ -5,8 +5,6 @@ import io.wisoft.testermatchingplatform.web.dto.request.maker.ConfirmApplyReques
 import io.wisoft.testermatchingplatform.web.dto.request.maker.CreateTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.CreateTesterReviewRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.PatchTestRequest;
-import io.wisoft.testermatchingplatform.web.dto.response.maker.CompleteTesterListResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.maker.PaymentResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
