@@ -8,6 +8,6 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class CreateTesterReviewResponse {
+public class CreateTestersReviewResponse {
     List<UUID> testerReviewUUID;
 }

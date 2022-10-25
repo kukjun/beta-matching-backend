@@ -28,4 +28,8 @@ public class TesterReview extends BaseTime {
     @JoinColumn(name = "APPLY_INFORMATION_ID")
     @ManyToOne
     private ApplyInformation applyInformation;
+
+//    public boolean isExistReview(UUID applyInformationId) {
+//
+//    }
 }

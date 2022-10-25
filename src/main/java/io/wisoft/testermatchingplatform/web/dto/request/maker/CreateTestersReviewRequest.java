@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.request.maker;
 
-import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
+import io.wisoft.testermatchingplatform.web.dto.request.maker.dto.TesterReviewDTO;
 import lombok.*;
 
 import java.util.List;
@@ -10,9 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CreateTesterReviewRequest {
+public class CreateTestersReviewRequest {
     private List<TesterReviewDTO> testerReviewDTOList;
-
-
 
 }

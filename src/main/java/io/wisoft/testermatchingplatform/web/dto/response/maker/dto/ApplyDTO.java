@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.web.dto.response.maker;
+package io.wisoft.testermatchingplatform.web.dto.response.maker.dto;
 
 
 import lombok.Getter;
