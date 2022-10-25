@@ -18,13 +18,13 @@ public class MakerNoAuthController {
 
     @PostMapping("/register")
     public ResponseEntity<MakerRegisterResponse> register(@RequestBody MakerRegisterRequest request) {
-        MakerRegisterResponse response = makerNoAuthService.register(request);
+        MakerRegisterResponse response = makerNoAuthService.makerRegister(request);
         return ResponseEntity.status(202).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<MakerLoginResponse> login(@RequestBody MakerLoginRequest request) {
-        MakerLoginResponse response = makerNoAuthService.login(request);
+        MakerLoginResponse response = makerNoAuthService.makerLogin(request);
         return ResponseEntity.status(200).body(response);
     }
 }

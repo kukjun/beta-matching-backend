@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.web.dto.response.maker;
+package io.wisoft.testermatchingplatform.web.dto.response.maker.dto;
 
 import io.wisoft.testermatchingplatform.domain.test.Test;
 import lombok.Getter;
@@ -6,23 +6,30 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class ProgressPeriodTestDTO {
+public class ApplyPeriodTestDTO {
     private UUID id;
     private String title;
     private String makerNickname;
     private String company;
+    private Long deadlineRemain;
     private int reward;
+    private int apply;
+    private int participantCapacity;
     private String symbolImageRoot;
 
-    public static ProgressPeriodTestDTO fromEntity(Test test) {
-        ProgressPeriodTestDTO dto = new ProgressPeriodTestDTO();
+    public static ApplyPeriodTestDTO fromEntity(Test test, int applyCount) {
+        ApplyPeriodTestDTO dto = new ApplyPeriodTestDTO();
         dto.id = test.getId();
         dto.title = test.getTitle();
         dto.makerNickname = test.getMaker().getNickname();
         dto.company = test.getMaker().getCompany();
+        dto.deadlineRemain = test.calculateDeadlineRemain();
         dto.reward =test.getReward();
+        dto.apply = applyCount;
+        dto.participantCapacity = test.getParticipantCapacity();
         dto.symbolImageRoot = test.getSymbolImageRoot();
 
         return dto;
     }
+
 }
