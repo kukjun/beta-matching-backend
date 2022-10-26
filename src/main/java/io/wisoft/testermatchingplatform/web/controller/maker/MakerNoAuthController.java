@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.web.controller.maker;
 
+import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import io.wisoft.testermatchingplatform.service.maker.MakerNoAuthService;
 import io.wisoft.testermatchingplatform.web.dto.request.MakerLoginRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.MakerRegisterRequest;
@@ -9,12 +10,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/makers")
 @RequiredArgsConstructor
 public class MakerNoAuthController {
 
     private final MakerNoAuthService makerNoAuthService;
+
+    public static final String BEARER_PREFIX = "Bearer ";
+
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/register")
     public ResponseEntity<MakerRegisterResponse> register(@RequestBody MakerRegisterRequest request) {
@@ -23,8 +30,10 @@ public class MakerNoAuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MakerLoginResponse> login(@RequestBody MakerLoginRequest request) {
-        MakerLoginResponse response = makerNoAuthService.makerLogin(request);
+    public ResponseEntity<MakerLoginResponse> login(@RequestBody MakerLoginRequest request, HttpServletResponse header) {
+        MakerLoginResponse response = makerNoAuthService.login(request);
+        String accessToken = jwtProvider.createJwtAccessToken(response.getId(),"maker");
+        header.setHeader("ACCESS_TOKEN", BEARER_PREFIX + accessToken);
         return ResponseEntity.status(200).body(response);
     }
 }
