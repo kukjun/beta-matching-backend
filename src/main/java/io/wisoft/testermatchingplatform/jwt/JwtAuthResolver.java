@@ -13,7 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class JwtAuthResolver implements HandlerMethodArgumentResolver {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -26,7 +26,7 @@ public class JwtAuthResolver implements HandlerMethodArgumentResolver {
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String jwt = webRequest.getHeader("ACCESS_TOKEN");
-        Long id = Long.parseLong(jwtTokenProvider.getSubject(jwt));
+        Long id = Long.parseLong(jwtProvider.getSubject(jwt));
         return id;
     }
 }

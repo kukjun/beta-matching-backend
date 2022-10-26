@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.controller.tester;
 
-import io.wisoft.testermatchingplatform.jwt.JwtTokenProvider;
+import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import io.wisoft.testermatchingplatform.service.tester.TesterNoAuthService;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterLoginRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterRegisterRequest;
@@ -24,7 +24,7 @@ public class TesterNoAuthController {
 
     public static final String BEARER_PREFIX = "Bearer ";
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @PostMapping("/register")
     public ResponseEntity<TesterRegisterResponse> register(@RequestBody TesterRegisterRequest request) {
@@ -35,7 +35,7 @@ public class TesterNoAuthController {
     @PostMapping("/login")
     public ResponseEntity<TesterLoginResponse> login(@RequestBody TesterLoginRequest request, HttpServletResponse header) {
         TesterLoginResponse response = testerNoAuthService.login(request);
-        String accessToken = jwtTokenProvider.createJwtAccessToken(response.getId(),"tester");
+        String accessToken = jwtProvider.createJwtAccessToken(response.getId(),"tester");
         header.setHeader("ACCESS_TOKEN",BEARER_PREFIX+ accessToken);
         System.out.println(accessToken);
         return ResponseEntity.status(200).body(response);

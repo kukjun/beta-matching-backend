@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Component
-public class JwtTokenProvider {
+public class JwtProvider {
 
     private static final String secretKey = "kukjunfighting";
     public String createJwtAccessToken(UUID id, String roles) {
