@@ -1,10 +1,9 @@
 package io.wisoft.testermatchingplatform.web.controller.maker;
 
 import io.wisoft.testermatchingplatform.service.maker.MakerAuthService;
-import io.wisoft.testermatchingplatform.web.dto.request.maker.ConfirmApplyRequest;
-import io.wisoft.testermatchingplatform.web.dto.request.maker.CreateTestRequest;
-import io.wisoft.testermatchingplatform.web.dto.request.maker.CreateTesterReviewRequest;
-import io.wisoft.testermatchingplatform.web.dto.request.maker.PatchTestRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
+import io.wisoft.testermatchingplatform.web.dto.response.maker.FindCompleteTesterListResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.maker.FindPaymentResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,10 +31,10 @@ public class MakerAuthController {
 
     //    // 내가 만든 Test 조회하기
     @GetMapping("/{maker_id}/tests")
-    public ResponseEntity<TestsFromMakerResponse> findTests(
+    public ResponseEntity<findTestsResponse> findTests(
             @PathVariable("maker_id") UUID makerId
     ) {
-        TestsFromMakerResponse response = makerAuthService.findTests(makerId);
+        findTestsResponse response = makerAuthService.findTests(makerId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -52,37 +51,37 @@ public class MakerAuthController {
 
     // Test 신청자 List 조회하기
     @GetMapping("/tests/{test_id}/apply")
-    public ResponseEntity<ApplyResponse> findApplyInformation(
+    public ResponseEntity<FindApplyResponse> findApplyInformation(
             @PathVariable("test_id") UUID testId
     ) {
-        ApplyResponse response = makerAuthService.findApply(testId);
+        FindApplyResponse response = makerAuthService.findApply(testId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // Test 수행인원 List 조회하기 (수행인원 완료를 위함)
     @GetMapping("/tests/{test_id}/perform")
-    public ResponseEntity<PerformListResponse> findPerformInformation(
+    public ResponseEntity<FindPerformListResponse> findPerformInformation(
             @PathVariable("test_id") UUID testId
     ) {
-        PerformListResponse response = makerAuthService.findPerformList(testId);
+        FindPerformListResponse response = makerAuthService.findPerformList(testId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // Test 수행인원 List 조회하기 (수행인원 Review 작성을 위함)
     @GetMapping("/tests/{test_id}/perform/review")
-    public ResponseEntity<CompleteTesterListResponse> findCompleteTester(
+    public ResponseEntity<FindCompleteTesterListResponse> findCompleteTester(
             @PathVariable("test_id") UUID testId
     ) {
-        CompleteTesterListResponse response = makerAuthService.findCompleteTester(testId);
+        FindCompleteTesterListResponse response = makerAuthService.findCompleteTester(testId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     // 보유 포인트 / 계좌 조회
     @GetMapping("/{maker_id}/exchange")
-    public ResponseEntity<PaymentResponse> findPayment(
+    public ResponseEntity<FindPaymentResponse> findPayment(
             @PathVariable("maker_id") UUID makerId
     ) {
-        PaymentResponse response = makerAuthService.findPayment(makerId);
+        FindPaymentResponse response = makerAuthService.findPayment(makerId);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -90,21 +89,21 @@ public class MakerAuthController {
 
     // 선정인원 완료 처리하기
     @PostMapping("/tests/{test_id}/complete")
-    public ResponseEntity<CompleteResponse> changeApplyState(
+    public ResponseEntity<ChangeApplyStateResponse> changeApplyState(
             @PathVariable("test_id") UUID testId,
             @RequestBody CompleteRequest request
     ) {
-        CompleteResponse response = makerAuthService.changeApplyState(request);
+        ChangeApplyStateResponse response = makerAuthService.changeApplyState(request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
     // 수행인원에 대한 Review 작성하기
     @PostMapping("/{maker_id}/tests/perform/review")
-    public ResponseEntity<CreateTesterReviewResponse> createReviews(
+    public ResponseEntity<CreateTestersReviewResponse> createReviews(
             @PathVariable("maker_id") UUID makerId,
-            @RequestBody CreateTesterReviewRequest request
+            @RequestBody CreateTestersReviewRequest request
     ) {
-        CreateTesterReviewResponse response = makerAuthService.createReviews(request, makerId);
+        CreateTestersReviewResponse response = makerAuthService.createTestersReview(request, makerId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 

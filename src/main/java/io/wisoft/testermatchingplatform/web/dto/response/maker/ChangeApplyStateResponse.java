@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class ApplyResponse {
-    private List<ApplyDTO> applyDTOList;
+public class ChangeApplyStateResponse {
+    private List<UUID> CompleteSuccessUUIDDTO;
+
 }

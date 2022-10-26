@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.web.dto.request.maker;
+package io.wisoft.testermatchingplatform.web.dto.request.maker.dto;
 
 import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;

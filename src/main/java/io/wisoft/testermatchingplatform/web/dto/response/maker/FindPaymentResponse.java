@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PaymentResponse {
+public class FindPaymentResponse {
     private long point;
     private String accountNumber;
 }
