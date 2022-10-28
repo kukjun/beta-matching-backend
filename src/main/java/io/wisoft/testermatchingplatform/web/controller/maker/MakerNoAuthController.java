@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/makers")
 @RequiredArgsConstructor
 public class MakerNoAuthController {
-
     private final MakerNoAuthServiceImpl makerNoAuthService;
 
     public static final String BEARER_PREFIX = "Bearer ";

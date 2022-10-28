@@ -3,7 +3,6 @@ package io.wisoft.testermatchingplatform.handler;
 import io.wisoft.testermatchingplatform.handler.exception.auth.EmailOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.NicknameOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.PhoneNumberOverlapException;
-import io.wisoft.testermatchingplatform.handler.exception.tester.TesterAuthException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +38,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
-
-    @ExceptionHandler(TesterAuthException.class)
-    public ResponseEntity<ErrorResponse> authFail(final TesterAuthException e) {
-        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(errorResponse);
-    }
-
 
     private ErrorResponse generateErrorResponseWithMessage(String errorMessage) {
         final ErrorResponse errorResponse = new ErrorResponse();

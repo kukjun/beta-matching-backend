@@ -1,7 +1,6 @@
 package io.wisoft.testermatchingplatform.jwt;
 
 import io.jsonwebtoken.*;
-import io.wisoft.testermatchingplatform.handler.exception.auth.JwtAuthException;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.DatatypeConverter;

@@ -9,8 +9,8 @@ import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundE
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class NoAuthServiceImpl {
+public class NoAuthServiceImpl implements NoAuthService{
 
 
     private final TesterRepository testerRepository;
@@ -29,7 +29,7 @@ public class NoAuthServiceImpl {
 
     private final ApplyInformationRepository applyInformationRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public CountResponse counts() {
         Long totalTesterCount = testerRepository.count();
         Long totalMakerCount = makerRepository.count();
@@ -44,7 +44,7 @@ public class NoAuthServiceImpl {
         );
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<TestListResponse> testList() {
         List<Test> testList = testRepository.findAllByTest();
 
@@ -58,7 +58,7 @@ public class NoAuthServiceImpl {
         return testListResponses;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<FastDeadlineResponse> fastDeadline() {
         List<Test> testList = testRepository.findTop4ByTestRelateTime_RecruitmentTimeLimitGreaterThanEqualOrderByTestRelateTime_RecruitmentTimeLimit(new Date());
 
@@ -72,7 +72,7 @@ public class NoAuthServiceImpl {
         return fastDeadlineResponses;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<ManyApplyResponse> manyApply() {
         List<Test> top4 = testRepository.getTop4Test();
         // 임시, 임의로 부족한 테스트 추가해주기 -> left outer join 쿼리로 수정해보자.
@@ -99,7 +99,7 @@ public class NoAuthServiceImpl {
         return manyApplies;
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public DetailTestResponse detailTest(final UUID id) {
         Test test = testRepository.findById(id).orElseThrow(
                 () -> new TesterNotFoundException("테스트 정보 오류")

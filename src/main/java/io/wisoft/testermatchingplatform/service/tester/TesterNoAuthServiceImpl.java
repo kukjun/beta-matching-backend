@@ -9,8 +9,8 @@ import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterLoginRespo
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterRegisterResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +18,7 @@ public class TesterNoAuthServiceImpl implements TesterNoAuthService{
 
     private final TesterRepository testerRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public TesterRegisterResponse register(TesterRegisterRequest request) {
         Tester entity = TesterRegisterRequest.toEntity(request);
         return new TesterRegisterResponse(
@@ -26,8 +26,9 @@ public class TesterNoAuthServiceImpl implements TesterNoAuthService{
         );
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public TesterLoginResponse login(TesterLoginRequest request) {
+        System.out.println(12343);
         Tester tester = testerRepository.findByEmail(request.getEmail()).orElseThrow(
                 () -> new TesterNotFoundException("존재하지 않는 이메일입니다.")
         );

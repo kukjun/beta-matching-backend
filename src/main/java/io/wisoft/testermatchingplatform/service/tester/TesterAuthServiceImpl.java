@@ -16,8 +16,8 @@ import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.ApproveTestD
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.QuitTestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +33,7 @@ public class TesterAuthServiceImpl implements TesterAuthService {
 
     private final ApplyInformationRepository applyInformationRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ExchangePointResponse exchangePoint(final UUID testerId) {
         Tester tester = testerRepository.findById(testerId).orElseThrow(
                 () -> new TesterNotFoundException("테스터 정보 오류")
@@ -81,7 +81,7 @@ public class TesterAuthServiceImpl implements TesterAuthService {
         return new ApplyTestResponse(applyInformationRepository.save(applyInformation).getId());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public TesterTestListResponse selectApplyTestList(final UUID id) {
         List<ApplyInformation> list = applyInformationRepository.getApplyTestList(id);
         List<ApplyTestDTO> applyTestDTOList = new ArrayList<>();
