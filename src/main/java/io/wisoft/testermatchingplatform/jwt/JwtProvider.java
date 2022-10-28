@@ -59,7 +59,7 @@ public class JwtProvider {
         try {
             Claims claims = getTokenData(token);
             return !claims.getExpiration().before(new Date());
-        } catch (JwtException | NullPointerException exception) {
+        } catch (JwtAuthException | NullPointerException exception) {
             return false;
         }
     }

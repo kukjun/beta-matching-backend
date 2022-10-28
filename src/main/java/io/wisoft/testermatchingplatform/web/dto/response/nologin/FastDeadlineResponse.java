@@ -1,9 +1,9 @@
 package io.wisoft.testermatchingplatform.web.dto.response.nologin;
 
+import io.wisoft.testermatchingplatform.domain.test.Test;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -28,4 +28,18 @@ public class FastDeadlineResponse {
 
     private final String symbolImageRoot;
 
+
+    public static FastDeadlineResponse fromEntity(Test test,long days,int applyCount){
+        return new FastDeadlineResponse(
+                test.getId(),
+                test.getTitle(),
+                test.getMaker().getNickname(),
+                test.getMaker().getCompany(),
+                days,
+                test.getReward(),
+                applyCount,
+                test.getParticipantCapacity(),
+                test.getSymbolImageRoot()
+        );
+    }
 }

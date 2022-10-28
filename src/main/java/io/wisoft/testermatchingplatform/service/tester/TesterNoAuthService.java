@@ -1,39 +1,20 @@
 package io.wisoft.testermatchingplatform.service.tester;
 
-import io.wisoft.testermatchingplatform.domain.tester.Tester;
-import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterLoginRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterRegisterRequest;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterLoginResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterRegisterResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-@Service
-@RequiredArgsConstructor
-public class TesterNoAuthService {
 
-    private final TesterRepository testerRepository;
-
+public interface TesterNoAuthService{
+    
+    // 테스터 회원가입
     @Transactional
-    public TesterRegisterResponse register(TesterRegisterRequest request) {
-        Tester entity = TesterRegisterRequest.toEntity(request);
-        System.out.println(entity.getEmail());
-        return new TesterRegisterResponse(
-                testerRepository.save(entity).getId()
-        );
-    }
+    public TesterRegisterResponse register(TesterRegisterRequest request);
 
+    // 테스터 로그인
     @Transactional
-    public TesterLoginResponse login(TesterLoginRequest request) {
-        Tester tester = testerRepository.findByEmail(request.getEmail()).orElseThrow(
-                () -> new RuntimeException("login fail")
-        );
-       tester.checkPassword(request.getPassword());
-        return new TesterLoginResponse(
-                tester.getId(), tester.getNickname()
-        );
-    }
+    public TesterLoginResponse login(TesterLoginRequest request) ;
 }

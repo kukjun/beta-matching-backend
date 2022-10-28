@@ -2,10 +2,7 @@ package io.wisoft.testermatchingplatform.handler;
 
 import io.wisoft.testermatchingplatform.handler.exception.auth.EmailOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.NicknameOverlapException;
-import io.wisoft.testermatchingplatform.handler.exception.category.CategoryNotFoundException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.PhoneNumberOverlapException;
-import io.wisoft.testermatchingplatform.handler.exception.tester.TesterAuthException;
-import io.wisoft.testermatchingplatform.handler.exception.tester.GradeNotFoundException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,32 +38,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(errorResponse);
     }
-
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ErrorResponse> categoryNotFound(final CategoryNotFoundException e) {
-        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
-    }
-
-    @ExceptionHandler(TesterAuthException.class)
-    public ResponseEntity<ErrorResponse> authFail(final TesterAuthException e) {
-        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(errorResponse);
-    }
-
-    @ExceptionHandler(GradeNotFoundException.class)
-    public ResponseEntity<ErrorResponse> gradeNotFound(final GradeNotFoundException e) {
-        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(errorResponse);
-    }
-
-
 
     private ErrorResponse generateErrorResponseWithMessage(String errorMessage) {
         final ErrorResponse errorResponse = new ErrorResponse();

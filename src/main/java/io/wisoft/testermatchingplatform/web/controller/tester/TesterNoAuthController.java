@@ -1,7 +1,8 @@
 package io.wisoft.testermatchingplatform.web.controller.tester;
 
+
 import io.wisoft.testermatchingplatform.jwt.JwtProvider;
-import io.wisoft.testermatchingplatform.service.tester.TesterNoAuthService;
+import io.wisoft.testermatchingplatform.service.tester.TesterNoAuthServiceImpl;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterLoginRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.TesterRegisterRequest;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.TesterLoginResponse;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 @RequiredArgsConstructor
 public class TesterNoAuthController {
 
-    private final TesterNoAuthService testerNoAuthService;
+    private final TesterNoAuthServiceImpl testerNoAuthService;
 
     public static final String BEARER_PREFIX = "Bearer ";
 
