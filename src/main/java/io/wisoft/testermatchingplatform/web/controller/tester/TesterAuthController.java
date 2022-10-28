@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.controller.tester;
 
-import io.wisoft.testermatchingplatform.service.tester.TesterAuthService;
+import io.wisoft.testermatchingplatform.service.tester.TesterAuthServiceImpl;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.ApplyTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.CreateReviewRequest;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequestMapping("/testers")
 public class TesterAuthController {
 
-    private final TesterAuthService testerAuthService;
+    private final TesterAuthServiceImpl testerAuthService;
 
 
     // 테스트 신청 목록 조회하기
@@ -28,7 +28,7 @@ public class TesterAuthController {
 
     // 테스트 신청하기
     @PostMapping("/{tester_id}/apply")
-    public ResponseEntity<ApplyTestResponse> applyTest(@PathVariable String tester_id,@RequestBody ApplyTestRequest applyTestRequest) throws Exception {
+    public ResponseEntity<ApplyTestResponse> applyTest(@PathVariable String tester_id, @RequestBody ApplyTestRequest applyTestRequest) throws Exception {
         ApplyTestResponse applyTestResponse = testerAuthService.applyTest(UUID.fromString(tester_id),UUID.fromString(applyTestRequest.getTestId()));
         return ResponseEntity.ok().body(applyTestResponse);
     }
@@ -47,6 +47,7 @@ public class TesterAuthController {
         return ResponseEntity.ok().body(createReviewResponse);
     }
 
+    // 테스트 수정
     @GetMapping("/{tester_id}/tests/{test_id}")
     public ResponseEntity<ApplyInformationIdResponse> findApplyInformationId(
             @PathVariable("tester_id") UUID testerId,

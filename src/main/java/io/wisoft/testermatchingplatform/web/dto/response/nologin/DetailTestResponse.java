@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.web.dto.response.nologin;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.wisoft.testermatchingplatform.domain.test.Test;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -42,5 +43,24 @@ public class DetailTestResponse {
     private final long deadLine;
 
     private final String symbolImageRoot;
+
+    public static DetailTestResponse fromEntity(Test test, long days, int applyCount){
+        return new DetailTestResponse(
+                test.getId(),
+                test.getTitle(),
+                test.getMaker().getNickname(),
+                test.getMaker().getCompany(),
+                test.getTestRelateTime().getRecruitmentTimeStart(),
+                test.getTestRelateTime().getRecruitmentTimeLimit(),
+                test.getTestRelateTime().getDurationTimeStart(),
+                test.getTestRelateTime().getDurationTimeLimit(),
+                test.getContent(),
+                test.getReward(),
+                applyCount,
+                test.getParticipantCapacity(),
+                days,
+                test.getSymbolImageRoot()
+        );
+    }
 
 }

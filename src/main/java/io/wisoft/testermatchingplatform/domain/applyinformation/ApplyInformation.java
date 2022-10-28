@@ -1,15 +1,12 @@
 package io.wisoft.testermatchingplatform.domain.applyinformation;
 
 import io.wisoft.testermatchingplatform.domain.BaseTime;
-import io.wisoft.testermatchingplatform.domain.maker.Maker;
 import io.wisoft.testermatchingplatform.domain.test.Test;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
@@ -21,9 +18,11 @@ import java.util.UUID;
 @NamedEntityGraph(name = "ApplyInfoWithTest", attributeNodes = @NamedAttributeNode("test"))
 public class ApplyInformation extends BaseTime {
 
+
     public enum Status {
         APPLY, APPROVE, PROGRESS, NOT_COMPLETE, COMPLETE, NOTHING
     }
+
 
     public Status getStatus() {
         Date date = new Date();
@@ -70,5 +69,13 @@ public class ApplyInformation extends BaseTime {
 
     public ApplyInformation(UUID id) {
         this.id = id;
+    }
+
+
+    public ApplyInformation(Test test, Tester tester, boolean approveCheck, boolean completeCheck) {
+        this.test = test;
+        this.tester = tester;
+        this.approveCheck = approveCheck;
+        this.completeCheck = completeCheck;
     }
 }

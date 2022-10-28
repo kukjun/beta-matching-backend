@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.jwt;
 
 import io.jsonwebtoken.*;
+import io.wisoft.testermatchingplatform.handler.exception.auth.JwtAuthException;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.DatatypeConverter;
@@ -59,7 +60,7 @@ public class JwtProvider {
         try {
             Claims claims = getTokenData(token);
             return !claims.getExpiration().before(new Date());
-        } catch (JwtException | NullPointerException exception) {
+        } catch (JwtAuthException | NullPointerException exception) {
             return false;
         }
     }

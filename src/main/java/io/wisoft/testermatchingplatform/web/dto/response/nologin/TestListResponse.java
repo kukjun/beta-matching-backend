@@ -1,9 +1,9 @@
 package io.wisoft.testermatchingplatform.web.dto.response.nologin;
 
+import io.wisoft.testermatchingplatform.domain.test.Test;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Getter
@@ -29,4 +29,17 @@ public class TestListResponse {
     private final int participantCapacity;
 
 
+    public static TestListResponse fromEntity(Test test,int applyCount, long days){
+        return new TestListResponse(
+                test.getId(),
+                test.getTitle(),
+                test.getMaker().getNickname(),
+                test.getMaker().getCompany(),
+                days,
+                test.getReward(),
+                applyCount,
+                test.getSymbolImageRoot(),
+                test.getParticipantCapacity()
+        );
+    }
 }

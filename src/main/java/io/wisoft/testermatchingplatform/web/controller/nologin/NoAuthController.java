@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.web.controller.nologin;
 
-import io.wisoft.testermatchingplatform.service.nologin.NoAuthService;
+
+import io.wisoft.testermatchingplatform.service.nologin.NoAuthServiceImpl;
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class NoAuthController {
 
-    private final NoAuthService noAuthService;
+    private final NoAuthServiceImpl noAuthService;
 
     @GetMapping("/tests/many_apply")
     public ResponseEntity<List<ManyApplyResponse>> big4(){

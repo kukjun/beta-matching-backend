@@ -1,9 +1,8 @@
 package io.wisoft.testermatchingplatform.web.controller.maker;
 
-import io.wisoft.testermatchingplatform.service.maker.MakerAuthService;
+
+import io.wisoft.testermatchingplatform.service.maker.MakerAuthServiceImpl;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
-import io.wisoft.testermatchingplatform.web.dto.response.maker.FindCompleteTesterListResponse;
-import io.wisoft.testermatchingplatform.web.dto.response.maker.FindPaymentResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RequestMapping("/makers")
 public class MakerAuthController {
-    private final MakerAuthService makerAuthService;
+    private final MakerAuthServiceImpl makerAuthService;
 
     // Test 생성하기
     @PostMapping("/{maker_id}/tests")
