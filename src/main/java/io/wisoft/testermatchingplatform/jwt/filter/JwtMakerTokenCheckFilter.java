@@ -49,7 +49,7 @@ public class JwtMakerTokenCheckFilter extends OncePerRequestFilter {
                 accessToken = jwtProvider.createJwtAccessToken(id, "maker");
             }
             // client에 전송할 header setting
-            response.setHeader(ACCESS_TOKEN, accessToken);
+            response.setHeader(ACCESS_TOKEN, BEARER_PREFIX + accessToken);
         }
         filterChain.doFilter(request, response);
     }
