@@ -21,6 +21,9 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     @Query(value = "SELECT COUNT(a.id) > 0 FROM ApplyInformation a WHERE a.test.id=?1 AND a.approveTime is not null")
     boolean isApprove(UUID id);
 
+    @Query(value = "SELECT COUNT(a.id) > 0 FROM ApplyInformation a WHERE a.test.id=?1 AND a.completeTime is not null")
+    boolean isComplete(UUID id);
+
     List<ApplyInformation> findByTestId(UUID id);
 
     @Query(value = "select a.id from ApplyInformation a where a.tester.id = ?1 and a.test.id = ?2")

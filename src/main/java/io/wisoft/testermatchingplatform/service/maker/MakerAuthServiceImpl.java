@@ -12,6 +12,7 @@ import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
+import io.wisoft.testermatchingplatform.handler.exception.maker.*;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.dto.TesterReviewDTO;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.ChangeApplyStateResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.CreateTestersReviewResponse;
@@ -56,7 +57,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
             maker.setPoint(maker.getPoint() - needPoint);
             return new CreateTestResponse(testRepository.save(test).getId());
         } else {
-            return new CreateTestResponse(null);
+            throw new MakerCreateTestFailException("생성하기 위한 잔여 Point가 부족합니다.\n 필요한 Point: " + needPoint + ", 잔여 Point: " + maker.getPoint());
         }
 
     }
@@ -76,7 +77,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
             maker.setPoint(maker.getPoint() - (needPoint - beforePoint));
             return new PatchTestResponse(testRepository.save(test).getId());
         } else {
-            return new PatchTestResponse(null);
+            throw new MakerRevertTestFailException("수정하기 위한 잔여 Point가 부족합니다.\n 필요한 Point: " + needPoint + beforePoint + ", 잔여 Point: " + maker.getPoint());
         }
     }
 
@@ -104,19 +105,23 @@ public class MakerAuthServiceImpl implements MakerAuthService{
                     if (applyInformationRepository.isApprove(test.getId())) {
                         approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromEntity(test, staticApplyCount, "Approve"));
                     } else {
-                        approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromEntity(test, staticApplyCount, "before Approve"));
+                        approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromEntity(test, staticApplyCount, "Before Approve"));
                     }
                     break;
                 case PROGRESS:
                     if (applyInformationRepository.isApprove(test.getId())) {
-                        progressPeriodTestDTOList.add(ProgressPeriodTestDTO.fromEntity(test));
+                        if (applyInformationRepository.isComplete(test.getId())) {
+                            progressPeriodTestDTOList.add(ProgressPeriodTestDTO.fromEntity(test, "Complete"));
+                        } else {
+                            progressPeriodTestDTOList.add(ProgressPeriodTestDTO.fromEntity(test, "Before Complete"));
+                        }
                     }
                     break;
                 case COMPLETE:
                     if (makerReviewRepository.isWriteReview(test.getId())) {
-                        completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "before write Review"));
+                        completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "Before Write Review"));
                     } else {
-                        completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "write Review"));
+                        completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "Write Review"));
                     }
                     break;
                 default:
@@ -145,7 +150,6 @@ public class MakerAuthServiceImpl implements MakerAuthService{
 
             List<SimpleReviewDTO> simpleReviewDTOList = testerReviewRepository.findByTesterId(tester.getId());
             if (applyInformation.getApproveTime() == null) {
-                // from 말고 명시할만한 내용 ..?
                 applyDTOList.add(ApplyDTO.from(applyInformation.getId(), tester.getNickname(), "not Verify", simpleReviewDTOList));
             } else {
                 applyDTOList.add(ApplyDTO.from(applyInformation.getId(), tester.getNickname(), "Verify", simpleReviewDTOList));
@@ -203,7 +207,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
         for (UUID requestDTO : requestDTOList) {
             ApplyInformation applyInformation = applyInformationRepository.findById(requestDTO).orElseThrow();
             if(applyInformation.getApproveCheck()) {
-                throw new RuntimeException("예외 발생. 이미 ApproveCheck 수행한 내용 조회");
+                throw new MakerCompleteOverlapException("수행완료 처리를 이미 한 다음 다시 사용자들을 수행완료 처리하려고 함.");
             }
             applyInformation.setCompleteTime(new Timestamp(new Date().getTime()));
             applyInformation.setCompleteCheck(true);
@@ -224,7 +228,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
                 remainPoint += applyInformation.getTest().getReward();
             }
             if (!testerReviewRepository.existsByApplyInformation_Id(applyInformation.getId())) {
-                throw new RuntimeException("해당하는 TesterReview 가 이미 존재합니다.");
+                throw new MakerReviewOverlapException("이미 한번 리뷰 절차를 진행한 후, 다시 사용자를 리뷰하려고 함");
             }
             TesterReview testerReview = testerReviewDTO.toEntity(applyInformation);
 
@@ -250,7 +254,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
                     approveTesterId
             ).orElseThrow();
             if(applyInformation.getApproveTime() != null) {
-                throw new RuntimeException("해당 Test 수행인원 선정은 이미 완료했습니다.");
+                throw new MakerApproveOverlapException("이미 한번 수행인원 선정 절차를 진행한 후 사용자를 다시 선정하려고 함.");
             }
             applyInformation.setApproveTime(new Timestamp(new Date().getTime()));
             applyInformation.setApproveCheck(true);

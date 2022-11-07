@@ -3,6 +3,7 @@ package io.wisoft.testermatchingplatform.handler;
 import io.wisoft.testermatchingplatform.handler.exception.auth.EmailOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.NicknameOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.PhoneNumberOverlapException;
+import io.wisoft.testermatchingplatform.handler.exception.maker.*;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +40,52 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(MakerCreateTestFailException.class)
+    public ResponseEntity<ErrorResponse> createTestFail(final MakerCreateTestFailException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerRevertTestFailException.class)
+    public ResponseEntity<ErrorResponse> revertTestFail(final MakerRevertTestFailException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerApproveOverlapException.class)
+    public ResponseEntity<ErrorResponse> approveOverlap(final MakerApproveOverlapException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerCompleteOverlapException.class)
+    public ResponseEntity<ErrorResponse> completeOverlap(final MakerCompleteOverlapException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerReviewOverlapException.class)
+    public ResponseEntity<ErrorResponse> reviewOverlap(final MakerReviewOverlapException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+
     private ErrorResponse generateErrorResponseWithMessage(String errorMessage) {
         final ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.add(errorMessage);
         return errorResponse;
     }
-
-
-
-
 
 }
 
