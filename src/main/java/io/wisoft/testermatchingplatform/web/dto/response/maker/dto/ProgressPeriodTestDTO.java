@@ -13,8 +13,9 @@ public class ProgressPeriodTestDTO {
     private String company;
     private int reward;
     private String symbolImageRoot;
+    private String state;
 
-    public static ProgressPeriodTestDTO fromEntity(Test test) {
+    public static ProgressPeriodTestDTO fromEntity(Test test, String state) {
         ProgressPeriodTestDTO dto = new ProgressPeriodTestDTO();
         dto.id = test.getId();
         dto.title = test.getTitle();
@@ -22,6 +23,7 @@ public class ProgressPeriodTestDTO {
         dto.company = test.getMaker().getCompany();
         dto.reward =test.getReward();
         dto.symbolImageRoot = test.getSymbolImageRoot();
+        dto.state = state;
 
         return dto;
     }
