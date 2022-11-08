@@ -119,9 +119,9 @@ public class MakerAuthServiceImpl implements MakerAuthService{
                     break;
                 case COMPLETE:
                     if (makerReviewRepository.isWriteReview(test.getId())) {
-                        completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "Before Write Review"));
-                    } else {
                         completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "Write Review"));
+                    } else {
+                        completePeriodTestDTOList.add(CompletePeriodTestDTO.fromEntity(test, "Before Write Review"));
                     }
                     break;
                 default:
@@ -206,7 +206,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
         List<UUID> responseDTOList = new ArrayList<>();
         for (UUID requestDTO : requestDTOList) {
             ApplyInformation applyInformation = applyInformationRepository.findById(requestDTO).orElseThrow();
-            if(applyInformation.getApproveCheck()) {
+            if(applyInformation.getCompleteTime() != null) {
                 throw new MakerCompleteOverlapException("수행완료 처리를 이미 한 다음 다시 사용자들을 수행완료 처리하려고 함.");
             }
             applyInformation.setCompleteTime(new Timestamp(new Date().getTime()));
