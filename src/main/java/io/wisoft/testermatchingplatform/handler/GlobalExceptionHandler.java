@@ -1,9 +1,14 @@
 package io.wisoft.testermatchingplatform.handler;
 
+import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyNotFoundException;
+import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.EmailOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.NicknameOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.auth.PhoneNumberOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.maker.*;
+import io.wisoft.testermatchingplatform.handler.exception.test.TestNotFoundException;
+import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
+import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotLoginException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,22 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(ApplyNotFoundException.class)
+    public ResponseEntity<ErrorResponse> applyNotFound(final ApplyNotFoundException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+
+    @ExceptionHandler(ApplyOverlapException.class)
+    public ResponseEntity<ErrorResponse> applyOverlap(final ApplyOverlapException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
     @ExceptionHandler(EmailOverlapException.class)
     public ResponseEntity<ErrorResponse> emailOverlap(final EmailOverlapException e) {
         ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
@@ -40,22 +61,6 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
-    @ExceptionHandler(MakerCreateTestFailException.class)
-    public ResponseEntity<ErrorResponse> createTestFail(final MakerCreateTestFailException e) {
-        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(errorResponse);
-    }
-
-    @ExceptionHandler(MakerRevertTestFailException.class)
-    public ResponseEntity<ErrorResponse> revertTestFail(final MakerRevertTestFailException e) {
-        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
-
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(errorResponse);
-    }
-
     @ExceptionHandler(MakerApproveOverlapException.class)
     public ResponseEntity<ErrorResponse> approveOverlap(final MakerApproveOverlapException e) {
         ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
@@ -72,6 +77,22 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(MakerCreateTestFailException.class)
+    public ResponseEntity<ErrorResponse> createTestFail(final MakerCreateTestFailException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerRevertTestFailException.class)
+    public ResponseEntity<ErrorResponse> revertTestFail(final MakerRevertTestFailException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
     @ExceptionHandler(MakerReviewOverlapException.class)
     public ResponseEntity<ErrorResponse> reviewOverlap(final MakerReviewOverlapException e) {
         ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
@@ -80,6 +101,47 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(TestNotFoundException.class)
+    public ResponseEntity<ErrorResponse> testNotFound(final TestNotFoundException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> makerNotFound(final MakerNotFoundException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(MakerNotLoginException.class)
+    public ResponseEntity<ErrorResponse> makerNotLogin(final MakerNotLoginException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+
+    @ExceptionHandler(TesterNotFoundException.class)
+    public ResponseEntity<ErrorResponse> testerNotFound(final TesterNotFoundException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+
+    @ExceptionHandler(TesterNotLoginException.class)
+    public ResponseEntity<ErrorResponse> testerNotLogin(final TesterNotLoginException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
 
     private ErrorResponse generateErrorResponseWithMessage(String errorMessage) {
         final ErrorResponse errorResponse = new ErrorResponse();
