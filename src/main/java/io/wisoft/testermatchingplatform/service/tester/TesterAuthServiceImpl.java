@@ -2,11 +2,11 @@ package io.wisoft.testermatchingplatform.service.tester;
 
 import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformationRepository;
+import io.wisoft.testermatchingplatform.domain.makerreview.MakerReview;
+import io.wisoft.testermatchingplatform.domain.makerreview.MakerReviewRepository;
 import io.wisoft.testermatchingplatform.domain.test.Test;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
-import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
-import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyNotFoundException;
 import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
@@ -29,7 +29,7 @@ public class TesterAuthServiceImpl implements TesterAuthService {
 
     private final TesterRepository testerRepository;
 
-    private final TesterReviewRepository testerReviewRepository;
+    private final MakerReviewRepository makerReviewRepository;
 
     private final ApplyInformationRepository applyInformationRepository;
 
@@ -47,12 +47,12 @@ public class TesterAuthServiceImpl implements TesterAuthService {
     @Transactional
     public CreateReviewResponse createReview(final UUID applyId, final int starPoint, final String comment) {
         // 리뷰 생성 및 db에 저장
-        TesterReview testerReview = new TesterReview(
+        MakerReview makerReview = new MakerReview(
                 starPoint,
                 comment,
                 new ApplyInformation(applyId)
         );
-        testerReviewRepository.save(testerReview);
+        makerReviewRepository.save(makerReview);
         // 포인트 증가 및 값 반환
         // request 값으로 testerID를 넘겨주면 좋을것같다.
         ApplyInformation applyInfo = applyInformationRepository.findById(applyId).orElseThrow(
