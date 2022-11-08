@@ -27,12 +27,6 @@ public class TesterReview extends BaseTime {
     @ManyToOne
     private ApplyInformation applyInformation;
 
-    public TesterReview(int starPoint,String comment, ApplyInformation applyInformation){
-        this.starPoint = starPoint;
-        this.comment = comment;
-        this.applyInformation = applyInformation;
-    }
-
 //    public boolean isExistReview(UUID applyInformationId) {
 //
 //    }

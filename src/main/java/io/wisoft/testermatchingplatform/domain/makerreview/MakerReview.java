@@ -4,10 +4,8 @@ import io.wisoft.testermatchingplatform.domain.BaseTime;
 import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformation;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Data
@@ -27,4 +25,10 @@ public class MakerReview extends BaseTime {
     @JoinColumn(name = "APPLY_INFORMATION_ID")
     @ManyToOne
     private ApplyInformation applyInformation;
+
+    public MakerReview(int starPoint, String comment, ApplyInformation applyInformation) {
+        this.starPoint = starPoint;
+        this.comment = comment;
+        this.applyInformation = applyInformation;
+    }
 }
