@@ -27,7 +27,7 @@ public class ApplyInformation extends BaseTime {
     public Status getStatus() {
         Date date = new Date();
         if (date.getTime() >= test.getTestRelateTime().getRecruitmentTimeStart().getTime()
-                && date.getTime() <= test.getTestRelateTime().getRecruitmentTimeLimit().getTime()
+                && date.getTime() <= test.getTestRelateTime().getDurationTimeStart().getTime()
                 && !approveCheck)
             return Status.APPLY;
         else if (date.getTime() >= test.getTestRelateTime().getRecruitmentTimeStart().getTime()
@@ -35,7 +35,7 @@ public class ApplyInformation extends BaseTime {
                 && approveCheck)
             return Status.APPROVE;
         else if (date.getTime() >= test.getTestRelateTime().getDurationTimeStart().getTime()
-                && date.getTime() <= test.getTestRelateTime().getRecruitmentTimeLimit().getTime()
+                && date.getTime() <= test.getTestRelateTime().getDurationTimeLimit().getTime()
                 && approveCheck && completeTime == null)
             return Status.PROGRESS;
         else if (date.getTime() >= test.getTestRelateTime().getDurationTimeStart().getTime()
