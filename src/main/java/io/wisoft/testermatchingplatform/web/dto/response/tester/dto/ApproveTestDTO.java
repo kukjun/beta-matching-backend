@@ -25,7 +25,7 @@ public class ApproveTestDTO {
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                "approve",
+                "승인",
                 test.getSymbolImageRoot()
         );
     }
@@ -37,7 +37,7 @@ public class ApproveTestDTO {
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                "progress",
+                "진행중",
                 test.getSymbolImageRoot()
         );
     }

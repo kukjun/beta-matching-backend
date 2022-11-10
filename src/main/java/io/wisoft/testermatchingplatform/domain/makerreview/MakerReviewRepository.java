@@ -9,7 +9,7 @@ import java.util.UUID;
 @Repository
 public interface MakerReviewRepository extends JpaRepository<MakerReview, UUID> {
 
-    @Query(value = "SELECT COUNT(m.id) > 0 FROM Test t, ApplyInformation a, MakerReview m WHERE t.id = a.test.id AND m.applyInformation.id = a.id AND t.id=?1")
-    boolean isWriteReview(UUID id);
+    @Query(value = "SELECT COUNT(m.id) > 0 FROM ApplyInformation a, MakerReview m WHERE m.applyInformation.id = a.id and a.id =?1")
+    boolean isMakerReview(UUID id);
 
 }

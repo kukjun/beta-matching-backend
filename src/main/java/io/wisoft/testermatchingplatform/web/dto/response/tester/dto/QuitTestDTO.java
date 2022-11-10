@@ -18,17 +18,28 @@ public class QuitTestDTO {
     private String status;
     private String symbolImageRoot;
 
-    public static QuitTestDTO fromCompleteEntity(Test test) {
+    public static QuitTestDTO fromCompleteReviewEntity(Test test) {
         return new QuitTestDTO(
                 test.getId(),
                 test.getTitle(),
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                "complete",
+                "완료",
                 test.getSymbolImageRoot()
         );
+    }
 
+    public static QuitTestDTO fromCompleteNotReviewEntity(Test test) {
+        return new QuitTestDTO(
+                test.getId(),
+                test.getTitle(),
+                test.getMaker().getNickname(),
+                test.getMaker().getCompany(),
+                test.getReward(),
+                "리뷰 작성전",
+                test.getSymbolImageRoot()
+        );
     }
 
     public static QuitTestDTO fromNotCompleteEntity(Test test) {
@@ -38,7 +49,7 @@ public class QuitTestDTO {
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                "not complete",
+                "검토중",
                 test.getSymbolImageRoot()
         );
 
