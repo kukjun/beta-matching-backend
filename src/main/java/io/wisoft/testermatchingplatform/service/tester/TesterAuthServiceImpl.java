@@ -5,11 +5,13 @@ import io.wisoft.testermatchingplatform.domain.applyinformation.ApplyInformation
 import io.wisoft.testermatchingplatform.domain.makerreview.MakerReview;
 import io.wisoft.testermatchingplatform.domain.makerreview.MakerReviewRepository;
 import io.wisoft.testermatchingplatform.domain.test.Test;
+import io.wisoft.testermatchingplatform.domain.test.TestRepository;
 import io.wisoft.testermatchingplatform.domain.tester.Tester;
 import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
 import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyNotFoundException;
 import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
+import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.ApplyTestDTO;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.ApproveTestDTO;
@@ -27,6 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TesterAuthServiceImpl implements TesterAuthService {
 
+    private final TestRepository testRepository;
     private final TesterRepository testerRepository;
 
     private final MakerReviewRepository makerReviewRepository;
@@ -108,7 +111,12 @@ public class TesterAuthServiceImpl implements TesterAuthService {
                     quitTestDTOList.add(QuitTestDTO.fromNotCompleteEntity(test));
                     break;
                 case COMPLETE:
-                    quitTestDTOList.add(QuitTestDTO.fromCompleteEntity(test));
+                    System.out.println(test.getTitle() + "l");
+                    if (makerReviewRepository.isMakerReview(applyInformation.getId())){
+                        quitTestDTOList.add(QuitTestDTO.fromCompleteReviewEntity(test));
+                    }else {
+                        quitTestDTOList.add(QuitTestDTO.fromCompleteNotReviewEntity(test));
+                    }
                     break;
                 default:
                     System.out.println("Error");
@@ -127,4 +135,5 @@ public class TesterAuthServiceImpl implements TesterAuthService {
         UUID applyInformationId = applyInformationRepository.getApplyInformationId(testerId, testId);
         return new ApplyInformationIdResponse(applyInformationId);
     }
+
 }

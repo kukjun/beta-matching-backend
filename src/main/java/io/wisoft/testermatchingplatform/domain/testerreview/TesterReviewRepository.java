@@ -18,4 +18,8 @@ public interface TesterReviewRepository extends JpaRepository<TesterReview, UUID
     List<SimpleReviewDTO> findByTesterId(UUID id);
 
     boolean existsByApplyInformation_Id(UUID uuid);
+
+    @Query(value = "SELECT COUNT(t.id) > 0 FROM ApplyInformation a, TesterReview t WHERE t.applyInformation.id = a.id AND t.id=?1")
+    boolean isTesterReview(UUID id);
+
 }

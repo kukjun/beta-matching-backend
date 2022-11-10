@@ -39,11 +39,11 @@ public class ApplyInformation extends BaseTime {
                 && approveCheck && completeTime == null)
             return Status.PROGRESS;
         else if (date.getTime() >= test.getTestRelateTime().getDurationTimeStart().getTime()
-                && approveCheck && completeTime != null && !completeCheck)
-            return Status.NOT_COMPLETE;
-        else if (date.getTime() >= test.getTestRelateTime().getDurationTimeStart().getTime()
                 && approveCheck && completeTime != null && completeCheck)
             return Status.COMPLETE;
+        else if (date.getTime() >= test.getTestRelateTime().getDurationTimeStart().getTime()
+                && approveCheck)
+            return Status.NOT_COMPLETE;
         else return Status.NOTHING;
     }
 
