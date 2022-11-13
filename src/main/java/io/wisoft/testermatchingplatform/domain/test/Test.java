@@ -43,7 +43,7 @@ public class Test extends BaseTime {
     @LastModifiedDate
     private Timestamp modifyTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MAKER_ID")
     private Maker maker;
 

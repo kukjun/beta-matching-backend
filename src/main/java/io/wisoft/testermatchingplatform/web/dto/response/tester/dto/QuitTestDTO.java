@@ -25,7 +25,7 @@ public class QuitTestDTO {
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                "완료",
+                "리뷰 작성완료",
                 test.getSymbolImageRoot()
         );
     }
