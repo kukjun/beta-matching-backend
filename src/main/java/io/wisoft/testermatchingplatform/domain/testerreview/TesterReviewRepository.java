@@ -19,7 +19,9 @@ public interface TesterReviewRepository extends JpaRepository<TesterReview, UUID
 
     boolean existsByApplyInformation_Id(UUID uuid);
 
-    @Query(value = "SELECT COUNT(t.id) > 0 FROM ApplyInformation a, TesterReview t WHERE t.applyInformation.id = a.id AND t.id=?1")
+    @Query(value = "SELECT COUNT(tr.id) > 0 " +
+            "FROM ApplyInformation a, TesterReview tr, Test t " +
+            "WHERE tr.applyInformation.id = a.id AND a.test.id= t.id AND t.id=?1")
     boolean isTesterReview(UUID id);
 
 }

@@ -1,6 +1,5 @@
 package io.wisoft.testermatchingplatform.domain.applyinformation;
 
-import io.wisoft.testermatchingplatform.domain.test.Test;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +23,11 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     @Query(value = "SELECT COUNT(a.id) > 0 FROM ApplyInformation a WHERE a.test.id=?1 AND a.completeTime is not null")
     boolean isComplete(UUID id);
 
+    @Query(value = "SELECT COUNT(a.id) > 0 FROM ApplyInformation  a WHERE a.test.id=?1 AND a.completeTime is null")
+    boolean isNotAllComplete(UUID uuid);
+
     List<ApplyInformation> findByTestId(UUID id);
+
 
     @Query(value = "select a.id from ApplyInformation a where a.tester.id = ?1 and a.test.id = ?2")
     UUID getApplyInformationId(UUID testerId, UUID testId);
