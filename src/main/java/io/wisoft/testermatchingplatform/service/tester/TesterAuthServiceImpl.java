@@ -112,9 +112,9 @@ public class TesterAuthServiceImpl implements TesterAuthService {
                     break;
                 case COMPLETE:
                     System.out.println(test.getTitle() + "l");
-                    if (makerReviewRepository.isMakerReview(applyInformation.getId())){
+                    if (makerReviewRepository.isMakerReview(applyInformation.getId())) {
                         quitTestDTOList.add(QuitTestDTO.fromCompleteReviewEntity(test));
-                    }else {
+                    } else {
                         quitTestDTOList.add(QuitTestDTO.fromCompleteNotReviewEntity(test));
                     }
                     break;
@@ -136,4 +136,46 @@ public class TesterAuthServiceImpl implements TesterAuthService {
         return new ApplyInformationIdResponse(applyInformationId);
     }
 
+
+    @Transactional(readOnly = true)
+    public List<TestListResponse> testListByDeadLine(UUID testerId) {
+        List<Test> testList = testRepository.findAllByTestByDeadLineExceptApply(testerId);
+        return testListResponses(testList);
+    }
+
+//    @Transactional(readOnly = true)
+//    public List<TestListResponse> testListByPopular(UUID testerId) {
+//        List<Test> testList = testRepository.findAllByTestByPopularExceptApply(testerId);
+//        List<TestListResponse> tests = testListResponses(testList);
+//
+//        return null;
+//    }
+
+    @Transactional
+    public List<TestListResponse> testListByCreated(UUID testerId) {
+        List<Test> testList = testRepository.findAllByTestByCreatedExceptApply(testerId);
+        return testListResponses(testList);
+    }
+
+    @Transactional(readOnly = true)
+    public List<TestListResponse> testListByTitle(UUID testerId, String title) {
+        List<Test> testList = testRepository.findAllByTestByTitleExceptApply(testerId,title);
+        return testListResponses(testList);
+    }
+
+    @Transactional(readOnly = true)
+    public void ApplyCancel(UUID testerId, UUID applyId) {
+        applyInformationRepository.deleteById(applyId);
+    }
+
+    private List<TestListResponse> testListResponses(List<Test> testList){
+        List<TestListResponse> testListResponses = new ArrayList<>();
+        for (Test test : testList) {
+            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
+            int applyCount = applyInformationRepository.countByTestId(test.getId());
+            testListResponses.add(TestListResponse.fromEntity(test, applyCount, days));
+        }
+        return testListResponses;
+    }
 }
