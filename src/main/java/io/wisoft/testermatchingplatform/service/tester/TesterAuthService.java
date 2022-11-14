@@ -1,8 +1,10 @@
 package io.wisoft.testermatchingplatform.service.tester;
 
+import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -25,4 +27,22 @@ public interface TesterAuthService {
 
     // ?
     public ApplyInformationIdResponse findApplyTest(UUID testerId, UUID testId);
+
+    @Transactional
+    public List<TestListResponse> testListByDeadLine(UUID testerId);
+
+
+//    @Transactional
+//    public List<TestListResponse> testListByPopular(UUID testerId);
+
+
+    @Transactional
+    public List<TestListResponse> testListByCreated(UUID testerId);
+
+
+    @Transactional
+    public List<TestListResponse> testListByTitle(UUID testerId,String title);
+
+    @Transactional
+    public void ApplyCancel(UUID tester_id,UUID apply_id);
 }

@@ -3,12 +3,14 @@ package io.wisoft.testermatchingplatform.web.controller.tester;
 import io.wisoft.testermatchingplatform.service.tester.TesterAuthServiceImpl;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.ApplyTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.CreateReviewRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -57,4 +59,34 @@ public class TesterAuthController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/{tester_id}/tests/deadline")
+    public ResponseEntity<List<TestListResponse>> testListByDeadLine(
+            @PathVariable("tester_id") UUID testerId
+    ){
+        return ResponseEntity.ok().body(testerAuthService.testListByDeadLine(testerId));
+    }
+
+    @GetMapping("/{tester_id}/tests/created")
+    public ResponseEntity<List<TestListResponse>> testListByCreated(
+            @PathVariable("tester_id") UUID testerId
+    ){
+        return ResponseEntity.ok().body(testerAuthService.testListByCreated(testerId));
+    }
+
+    @GetMapping("/{tester_id}/tests/")
+    public ResponseEntity<List<TestListResponse>> testListByCreated(
+            @PathVariable("tester_id") UUID testerId,
+            @RequestParam final String title
+    ){
+        return ResponseEntity.ok().body(testerAuthService.testListByTitle(testerId,title));
+    }
+
+    @DeleteMapping("/{tester_id}/apply/{apply_id}")
+    public ResponseEntity ApplyCancel(
+            @PathVariable("tester_id") UUID testerId,
+            @PathVariable("apply_id") UUID applyId
+    ){
+        testerAuthService.ApplyCancel(testerId,applyId);
+        return ResponseEntity.ok().body(null);
+    }
 }
