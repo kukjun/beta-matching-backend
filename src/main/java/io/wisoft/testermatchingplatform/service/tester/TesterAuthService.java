@@ -1,5 +1,9 @@
 package io.wisoft.testermatchingplatform.service.tester;
 
+import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,5 +48,11 @@ public interface TesterAuthService {
     public List<TestListResponse> testListByTitle(UUID testerId,String title);
 
     @Transactional
-    public void ApplyCancel(UUID tester_id,UUID apply_id);
+    public void applyCancel(UUID tester_id, UUID apply_id);
+
+    AccountResponse addAccount(UUID testerId, AccountRequest accountRequest);
+
+    AccountResponse updateAccount(UUID testerId, AccountRequest accountRequest);
+
+    CashResponse changePointToCash(UUID testerId, PointRequest pointRequest);
 }
