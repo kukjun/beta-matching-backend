@@ -12,7 +12,14 @@ import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
 import io.wisoft.testermatchingplatform.handler.exception.maker.*;
+import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
+import io.wisoft.testermatchingplatform.web.dto.request.CashRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.dto.TesterReviewDTO;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.PointResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.ChangeApplyStateResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.CreateTestersReviewResponse;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
@@ -270,5 +277,43 @@ public class MakerAuthServiceImpl implements MakerAuthService{
         return new ConfirmApplyResponse(successApplyUUIDDTO);
     }
 
+    @Transactional
+    public AccountResponse updateAccount(UUID makerId, AccountRequest accountRequest) {
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("메이커를 찾을 수 없습니다.")
+        );
+        maker.setAccountNumber(accountRequest.getAccount());
+        AccountResponse response = new AccountResponse();
+        response.setAccount(maker.getAccountNumber());
+        return response;
+    }
 
+    @Transactional
+    public CashResponse changePointToCash(UUID makerId, PointRequest pointRequest) {
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("메이커를 찾을 수 없습니다.")
+        );
+        if (maker.getPoint() < pointRequest.getPoint()) {
+            // 예외 이름 수정 필요
+            throw new RuntimeException("포인트가 부족합니다.");
+        }
+        else {
+            // 현금 전환 로직 필요
+            maker.setPoint(maker.getPoint() - pointRequest.getPoint());
+        }
+        CashResponse response = new CashResponse();
+        response.setCash(pointRequest.getPoint() * 19 / 20);
+        return response;
+    }
+
+    @Transactional
+    public PointResponse changeCashToPoint(UUID makerId, CashRequest cashRequest) {
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("메이커를 찾을 수 없습니다.")
+        );
+        maker.setPoint(maker.getPoint() + cashRequest.getCash());
+        PointResponse pointResponse = new PointResponse();
+        pointResponse.setPoint(maker.getPoint());
+        return pointResponse;
+    }
 }
