@@ -12,6 +12,7 @@ import io.wisoft.testermatchingplatform.domain.testerreview.TesterReview;
 import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
 import io.wisoft.testermatchingplatform.handler.exception.maker.*;
+import io.wisoft.testermatchingplatform.handler.exception.test.TestNotFoundException;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
 import io.wisoft.testermatchingplatform.web.dto.request.CashRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
@@ -39,7 +40,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class MakerAuthServiceImpl implements MakerAuthService{
+public class MakerAuthServiceImpl implements MakerAuthService {
 
     private final MakerRepository makerRepository;
     private final TestRepository testRepository;
@@ -82,7 +83,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
             maker.setPoint(maker.getPoint() - (needPoint - beforePoint));
             return new PatchTestResponse(testRepository.save(test).getId());
         } else {
-            throw new MakerRevertTestFailException("수정하기 위한 잔여 Point가 부족합니다.\n 필요한 Point: " + (needPoint-beforePoint ) + ", 잔여 Point: " + maker.getPoint());
+            throw new MakerRevertTestFailException("수정하기 위한 잔여 Point가 부족합니다.\n 필요한 Point: " + (needPoint - beforePoint) + ", 잔여 Point: " + maker.getPoint());
         }
     }
 
@@ -185,7 +186,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
         List<ApplyInformation> applyInformationList = applyInformationRepository.findByTestId(testId);
         List<CompleteTesterDTO> completeTesterDTOList = new ArrayList<>();
 
-        for(ApplyInformation applyInformation : applyInformationList) {
+        for (ApplyInformation applyInformation : applyInformationList) {
             System.out.println(applyInformation.getTester());
             Tester tester = testerRepository.findById(applyInformation.getTester().getId()).orElseThrow();
             if (applyInformation.getCompleteTime() != null) {
@@ -211,7 +212,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
         List<UUID> responseDTOList = new ArrayList<>();
         for (UUID requestDTO : requestDTOList) {
             ApplyInformation applyInformation = applyInformationRepository.findById(requestDTO).orElseThrow();
-            if(applyInformation.getCompleteTime() != null) {
+            if (applyInformation.getCompleteTime() != null) {
                 throw new MakerCompleteOverlapException("수행완료 처리를 이미 한 다음 다시 사용자들을 수행완료 처리하려고 함.");
             }
             applyInformation.setCompleteTime(new Timestamp(new Date().getTime()));
@@ -252,18 +253,24 @@ public class MakerAuthServiceImpl implements MakerAuthService{
     public ConfirmApplyResponse confirmApply(UUID testId, @RequestBody ConfirmApplyRequest request) {
         List<UUID> approveTesterList = request.getApproveTesterList();
         List<UUID> successApplyUUIDDTO = new ArrayList<>();
-
-        // 수행인원으로 정한 인원 수행 Check 진행
-        for (UUID approveTesterId : approveTesterList) {
-            ApplyInformation applyInformation = applyInformationRepository.findById(
-                    approveTesterId
-            ).orElseThrow();
-            if(applyInformation.getApproveTime() != null) {
-                throw new MakerApproveOverlapException("이미 한번 수행인원 선정 절차를 진행한 후 사용자를 다시 선정하려고 함.");
+        Test test = testRepository.findById(testId).orElseThrow(
+                () -> new TestNotFoundException("해당하는 Test를 찾을 수 없습니다.")
+        );
+        if (test.getParticipantCapacity() < approveTesterList.size()) {
+            throw new RuntimeException("선정하고자 하는 인원보다 수행인원이 더 많습니다.");
+        } else {
+            // 수행인원으로 정한 인원 수행 Check 진행
+            for (UUID approveTesterId : approveTesterList) {
+                ApplyInformation applyInformation = applyInformationRepository.findById(
+                        approveTesterId
+                ).orElseThrow();
+                if (applyInformation.getApproveTime() != null) {
+                    throw new MakerApproveOverlapException("이미 한번 수행인원 선정 절차를 진행한 후 사용자를 다시 선정하려고 함.");
+                }
+                applyInformation.setApproveTime(new Timestamp(new Date().getTime()));
+                applyInformation.setApproveCheck(true);
+                successApplyUUIDDTO.add(applyInformation.getId());
             }
-            applyInformation.setApproveTime(new Timestamp(new Date().getTime()));
-            applyInformation.setApproveCheck(true);
-            successApplyUUIDDTO.add(applyInformation.getId());
         }
 
         // 수행인원으로 선정하지 않은 인원도 선정시간 등록
@@ -296,8 +303,7 @@ public class MakerAuthServiceImpl implements MakerAuthService{
         if (maker.getPoint() < pointRequest.getPoint()) {
             // 예외 이름 수정 필요
             throw new RuntimeException("포인트가 부족합니다.");
-        }
-        else {
+        } else {
             // 현금 전환 로직 필요
             maker.setPoint(maker.getPoint() - pointRequest.getPoint());
         }
