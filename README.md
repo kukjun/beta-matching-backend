@@ -1,16 +1,24 @@
 # Tester Matching Platform - Backend
 
----
-
+<br>
 <br>
 
 ## 소개
 
----
+### BM?
+![소개](https://user-images.githubusercontent.com/63409722/202464271-51c09c5a-8e60-4f3b-9d4a-a7952679a3c8.png)
 
 <br>
 
-### Tester Matching Platform 이란,
+### 동작 과정
+![기대효과](https://user-images.githubusercontent.com/63409722/202464522-3d56e194-eb4c-44a4-86b5-0a42c6004015.png)
+
+---
+
+<br>
+<br>
+
+### BM 이란,
 
 테스터를 필요로 하는 여러 프로그램 제작자, 제작 회사와 테스터간 서로의 니즈를 충족시키기 위해서 개발한 플랫폼입니다.
 
@@ -18,19 +26,12 @@
 
 테스터를 구하는 사람은 테스터의 이전 테스트 기록, 포인트를 통한 보상 지급, 선정 시 Tester 정보 조희를 제공하고, 보상도 플랫폼을 통해서 제공해줄 수 있습니다.
 
-
-
 <br>
-
----
+<br>
 
 개요는 문서화해서 작성하고 있습니다.
 
 [Notion으로 정리한 개요 문서](https://www.notion.so/kukjun/6378aad79254427b9b95f8a842eb17bc)
-
-
-
-<br>
 
 ---
 
@@ -77,10 +78,17 @@ API 문서를 분리해서 개발하고, 코드 리뷰 과정을 통해서 서�
 
 <br>
 
-### 보안 / 인가 절차 적용 - 미구현
+### 보안 / 인가 절차 적용 - 구현
+
+1. 보안을 위한 JWT 적용
+* Spring Security없이, Filter 사용을 통해서 JWT를 적용
+2. JWT CORS Filter 오류 해결
 
 <br>
 
-### 추가 구현 사항 - 미구현
+### 추가 구현 사항 - 구현
+
+1. 추가 API 구현
+2. 오류 발생한 부분 코드 수정
 
 
