@@ -8,6 +8,7 @@ import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.PointResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
@@ -17,6 +18,9 @@ public interface MakerAuthService {
     CreateTestResponse createTest(UUID makerId, @RequestBody CreateTestRequest request);
 
     PatchTestResponse patchTest(UUID makerId, UUID testId, @RequestBody PatchTestRequest request);
+
+    @Transactional
+    PatchTestResponse patchTestExceptTest(UUID makerId, UUID testId, PatchTestExceptImageRequest request);
 
     findTestsResponse findTests(UUID makerId);
 

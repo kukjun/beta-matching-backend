@@ -54,6 +54,17 @@ public class MakerAuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    // Test 수정, 이미지 변경 X
+    @PatchMapping("/{maker_id}/tests/{test_id}/noImage")
+    public ResponseEntity<PatchTestResponse> patchTestExceptImage(
+            @PathVariable("maker_id") UUID makerId,
+            @PathVariable("test_id") UUID testId,
+            PatchTestExceptImageRequest request
+    ) {
+        PatchTestResponse response = makerAuthService.patchTestExceptTest(makerId, testId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
     // Test 신청자 List 조회하기
     @GetMapping("/tests/{test_id}/apply")
     public ResponseEntity<FindApplyResponse> findApplyInformation(

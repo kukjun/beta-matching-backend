@@ -13,7 +13,6 @@ import io.wisoft.testermatchingplatform.domain.testerreview.TesterReviewReposito
 import io.wisoft.testermatchingplatform.handler.FileHandler;
 import io.wisoft.testermatchingplatform.handler.exception.maker.*;
 import io.wisoft.testermatchingplatform.handler.exception.test.TestNotFoundException;
-import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
 import io.wisoft.testermatchingplatform.web.dto.request.CashRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.dto.TesterReviewDTO;
@@ -75,17 +74,39 @@ public class MakerAuthServiceImpl implements MakerAuthService {
         Maker maker = makerRepository.findById(makerId).orElseThrow();
         Test test = testRepository.findById(testId).orElseThrow();
         long beforePoint = ((long) test.getReward() * test.getParticipantCapacity());
+
         String symbolImageRoot = FileHandler.saveProfileFileData(request.getSymbolImage());
         test = request.toEntity(test, symbolImageRoot);
 
         long needPoint = (long) test.getReward() * test.getParticipantCapacity();
         if (maker.checkAvailableCreateTest(needPoint - beforePoint)) {
             maker.setPoint(maker.getPoint() - (needPoint - beforePoint));
-            return new PatchTestResponse(testRepository.save(test).getId());
+            return new PatchTestResponse(test.getId());
         } else {
             throw new MakerRevertTestFailException("수정하기 위한 잔여 Point가 부족합니다.\n 필요한 Point: " + (needPoint - beforePoint) + ", 잔여 Point: " + maker.getPoint());
         }
     }
+
+    @Override
+    @Transactional
+    public PatchTestResponse patchTestExceptTest(UUID makerId, UUID testId, PatchTestExceptImageRequest request) {
+        Maker maker = makerRepository.findById(makerId).orElseThrow();
+        Test test = testRepository.findById(testId).orElseThrow();
+        long beforePoint = ((long) test.getReward() * test.getParticipantCapacity());
+
+        test = request.toEntity(test);
+
+        long needPoint = (long) test.getReward() * test.getParticipantCapacity();
+        if (maker.checkAvailableCreateTest(needPoint - beforePoint)) {
+            maker.setPoint(maker.getPoint() - (needPoint - beforePoint));
+            return new PatchTestResponse(test.getId());
+        } else {
+            throw new MakerRevertTestFailException("수정하기 위한 잔여 Point가 부족합니다.\n 필요한 Point: " + (needPoint - beforePoint) + ", 잔여 Point: " + maker.getPoint());
+        }
+
+
+    }
+
 
     // Maker가 만든 Test List 조회
     @Override
@@ -322,4 +343,6 @@ public class MakerAuthServiceImpl implements MakerAuthService {
         pointResponse.setPoint(maker.getPoint());
         return pointResponse;
     }
+
+
 }
