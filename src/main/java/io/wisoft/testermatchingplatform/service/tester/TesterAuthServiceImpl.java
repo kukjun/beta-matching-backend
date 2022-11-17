@@ -15,15 +15,13 @@ import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListRespons
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.ApplyTestDTO;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.ApproveTestDTO;
+import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.PopularDto;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.QuitTestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -143,13 +141,22 @@ public class TesterAuthServiceImpl implements TesterAuthService {
         return testListResponses(testList);
     }
 
-//    @Transactional(readOnly = true)
-//    public List<TestListResponse> testListByPopular(UUID testerId) {
-//        List<Test> testList = testRepository.findAllByTestByPopularExceptApply(testerId);
-//        List<TestListResponse> tests = testListResponses(testList);
-//
-//        return null;
-//    }
+    @Transactional(readOnly = true)
+    public List<TestListResponse> testListByPopular(UUID testerId) {
+        List<PopularDto> testList = testRepository.findAllByTestByPopularExceptApply(testerId);
+
+        List<TestListResponse> testListResponses = new ArrayList<>();
+        for (PopularDto popTest : testList) {
+            Test test = testRepository.findById(popTest.getId()).orElseThrow(
+            );
+            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
+            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
+            int applyCount = popTest.getCount();
+            testListResponses.add(TestListResponse.fromEntity(test, applyCount, days));
+        }
+
+        return testListResponses;
+    }
 
     @Transactional
     public List<TestListResponse> testListByCreated(UUID testerId) {
