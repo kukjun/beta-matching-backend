@@ -66,6 +66,13 @@ public class TesterAuthController {
         return ResponseEntity.ok().body(testerAuthService.testListByDeadLine(testerId));
     }
 
+    @GetMapping("/{tester_id}/tests/popular")
+    public ResponseEntity<List<TestListResponse>> testListByPopular(
+            @PathVariable("tester_id") UUID testerId
+    ){
+        return ResponseEntity.ok().body(testerAuthService.testListByDeadLine(testerId));
+    }
+
     @GetMapping("/{tester_id}/tests/created")
     public ResponseEntity<List<TestListResponse>> testListByCreated(
             @PathVariable("tester_id") UUID testerId
