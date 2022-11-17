@@ -11,6 +11,10 @@ import io.wisoft.testermatchingplatform.domain.tester.TesterRepository;
 import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyNotFoundException;
 import io.wisoft.testermatchingplatform.handler.exception.apply.ApplyOverlapException;
 import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotFoundException;
+import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.dto.ApplyTestDTO;
@@ -170,10 +174,51 @@ public class TesterAuthServiceImpl implements TesterAuthService {
         return testListResponses(testList);
     }
 
-    @Transactional(readOnly = true)
-    public void ApplyCancel(UUID testerId, UUID applyId) {
-        applyInformationRepository.deleteById(applyId);
+    @Transactional
+    public void applyCancel(UUID testerId, UUID testId) {
+        applyInformationRepository.deleteApplyInformationByTesterIdAndTestId(testerId, testId);
     }
+
+    @Transactional
+    public AccountResponse addAccount(UUID testerId, AccountRequest accountRequest) {
+        Tester tester = testerRepository.findById(testerId).orElseThrow(
+                () -> new TesterNotFoundException("테스터를 찾을 수 없습니다.")
+        );
+        tester.setAccountNumber(accountRequest.getAccount());
+        AccountResponse response = new AccountResponse();
+        response.setAccount(tester.getAccountNumber());
+        return response;
+    }
+
+    @Transactional
+    public AccountResponse updateAccount(UUID testerId, AccountRequest accountRequest) {
+        Tester tester = testerRepository.findById(testerId).orElseThrow(
+                () -> new TesterNotFoundException("테스터를 찾을 수 없습니다.")
+        );
+        tester.setAccountNumber(accountRequest.getAccount());
+        AccountResponse response = new AccountResponse();
+        response.setAccount(tester.getAccountNumber());
+        return response;
+    }
+
+    @Transactional
+    public CashResponse changePointToCash(UUID testerId, PointRequest pointRequest) {
+        Tester tester = testerRepository.findById(testerId).orElseThrow(
+                () -> new TesterNotFoundException("테스터를 찾을 수 없습니다.")
+        );
+        if (tester.getPoint() < pointRequest.getPoint()) {
+            // 예외 수정 필요
+            throw new RuntimeException("포인트가 부족합니다.");
+        }
+        else {
+            // 현금 전환하는 로직 필요
+            tester.setPoint(tester.getPoint() - pointRequest.getPoint());
+        }
+        CashResponse response = new CashResponse();
+        response.setCash(pointRequest.getPoint() * 19 / 20);
+        return response;
+    }
+
 
     private List<TestListResponse> testListResponses(List<Test> testList){
         List<TestListResponse> testListResponses = new ArrayList<>();

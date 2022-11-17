@@ -1,11 +1,16 @@
 package io.wisoft.testermatchingplatform.web.controller.tester;
 
 import io.wisoft.testermatchingplatform.service.tester.TesterAuthServiceImpl;
+import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.ApplyTestRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.tester.CreateReviewRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.nologin.TestListResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.tester.*;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Fetch;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +85,7 @@ public class TesterAuthController {
         return ResponseEntity.ok().body(testerAuthService.testListByCreated(testerId));
     }
 
-    @GetMapping("/{tester_id}/tests/")
+    @GetMapping("/{tester_id}/tests")
     public ResponseEntity<List<TestListResponse>> testListByCreated(
             @PathVariable("tester_id") UUID testerId,
             @RequestParam final String title
@@ -88,12 +93,33 @@ public class TesterAuthController {
         return ResponseEntity.ok().body(testerAuthService.testListByTitle(testerId,title));
     }
 
-    @DeleteMapping("/{tester_id}/apply/{apply_id}")
+//    @PostMapping("/{tester_id}/account")
+//    public ResponseEntity<AccountResponse> addAccount(
+//            @PathVariable("tester_id") UUID testerId,
+//            @RequestBody final AccountRequest accountRequest) {
+//        return ResponseEntity.ok().body(testerAuthService.addAccount(testerId, accountRequest));
+//    }
+
+    @PatchMapping("/{tester_id}/account")
+    public ResponseEntity<AccountResponse> updateAccount(
+            @PathVariable("tester_id") UUID testerId,
+            @RequestBody final AccountRequest accountRequest) {
+        return ResponseEntity.ok().body(testerAuthService.updateAccount(testerId, accountRequest));
+    }
+
+    @PostMapping("/{tester_id}/exchange/point")
+    public ResponseEntity<CashResponse> changePointToCash(
+            @PathVariable("tester_id") UUID testerId,
+            @RequestBody final PointRequest pointRequest) {
+        return ResponseEntity.ok().body(testerAuthService.changePointToCash(testerId, pointRequest));
+    }
+
+    @DeleteMapping("/{tester_id}/apply/{test_id}")
     public ResponseEntity ApplyCancel(
             @PathVariable("tester_id") UUID testerId,
-            @PathVariable("apply_id") UUID applyId
+            @PathVariable("test_id") UUID testId
     ){
-        testerAuthService.ApplyCancel(testerId,applyId);
+        testerAuthService.applyCancel(testerId, testId);
         return ResponseEntity.ok().body(null);
     }
 }

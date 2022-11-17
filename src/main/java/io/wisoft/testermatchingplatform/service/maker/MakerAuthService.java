@@ -1,7 +1,14 @@
 package io.wisoft.testermatchingplatform.service.maker;
 
+import io.wisoft.testermatchingplatform.web.dto.request.CashRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.PointResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
@@ -11,6 +18,9 @@ public interface MakerAuthService {
     CreateTestResponse createTest(UUID makerId, @RequestBody CreateTestRequest request);
 
     PatchTestResponse patchTest(UUID makerId, UUID testId, @RequestBody PatchTestRequest request);
+
+    @Transactional
+    PatchTestResponse patchTestExceptTest(UUID makerId, UUID testId, PatchTestExceptImageRequest request);
 
     findTestsResponse findTests(UUID makerId);
 
@@ -29,4 +39,9 @@ public interface MakerAuthService {
     ConfirmApplyResponse confirmApply(UUID testId, @RequestBody ConfirmApplyRequest request);
 
 
+    AccountResponse updateAccount(UUID testerId, AccountRequest accountRequest);
+
+    CashResponse changePointToCash(UUID makerId, PointRequest pointRequest);
+
+    PointResponse changeCashToPoint(UUID makerId, CashRequest cashRequest);
 }

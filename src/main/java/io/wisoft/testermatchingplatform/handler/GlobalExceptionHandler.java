@@ -143,6 +143,14 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> noMappingExceptionCheck(final RuntimeException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
     private ErrorResponse generateErrorResponseWithMessage(String errorMessage) {
         final ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.add(errorMessage);

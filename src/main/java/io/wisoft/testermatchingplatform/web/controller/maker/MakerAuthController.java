@@ -2,7 +2,13 @@ package io.wisoft.testermatchingplatform.web.controller.maker;
 
 
 import io.wisoft.testermatchingplatform.service.maker.MakerAuthServiceImpl;
+import io.wisoft.testermatchingplatform.web.dto.request.CashRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.PointRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.maker.*;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.AccountResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.CashResponse;
+import io.wisoft.testermatchingplatform.web.dto.response.PointResponse;
 import io.wisoft.testermatchingplatform.web.dto.response.maker.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,6 +51,17 @@ public class MakerAuthController {
             PatchTestRequest request
     ) {
         PatchTestResponse response = makerAuthService.patchTest(makerId, testId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    // Test 수정, 이미지 변경 X
+    @PatchMapping("/{maker_id}/tests/{test_id}/noImage")
+    public ResponseEntity<PatchTestResponse> patchTestExceptImage(
+            @PathVariable("maker_id") UUID makerId,
+            @PathVariable("test_id") UUID testId,
+            PatchTestExceptImageRequest request
+    ) {
+        PatchTestResponse response = makerAuthService.patchTestExceptTest(makerId, testId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -115,4 +132,29 @@ public class MakerAuthController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 
+    // 계좌 변경
+    @PatchMapping("/{maker_id}/account")
+    public ResponseEntity<AccountResponse> updateAccount(
+            @PathVariable("maker_id") UUID makerId,
+            @RequestBody final AccountRequest accountRequest) {
+        return ResponseEntity.ok().body(makerAuthService.updateAccount(makerId, accountRequest));
+    }
+
+    // Point 전환
+    @PostMapping("/{maker_id}/exchange/point")
+    public ResponseEntity<CashResponse> changePointToCash(
+            @PathVariable("maker_id") UUID makerId,
+            @RequestBody final PointRequest pointRequest
+    ) {
+        return ResponseEntity.ok().body(makerAuthService.changePointToCash(makerId, pointRequest));
+    }
+
+    // Point 충전
+    @PostMapping("/{maker_id}/add/point")
+    public ResponseEntity<PointResponse> changeCashToPoint(
+            @PathVariable("maker_id") UUID makerId,
+            @RequestBody final CashRequest cashRequest
+    ) {
+        return ResponseEntity.ok().body(makerAuthService.changeCashToPoint(makerId, cashRequest));
+    }
 }

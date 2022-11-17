@@ -62,7 +62,7 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     @Query(value = "select a.id from ApplyInformation a WHERE a.tester.id = ?1 AND a.test.id = ?2")
     UUID getApplyInfoUUIDByIdAndTesterId(UUID testerId,UUID testId);
 
-    void deleteById(UUID applyId);
+    void deleteApplyInformationByTesterIdAndTestId(UUID testerId, UUID testId);
 }
 
 
