@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
-public class TestListResponse {
+public class TestListResponse implements Comparable<TestListResponse>{
 
     private final UUID id;
 
@@ -41,5 +41,10 @@ public class TestListResponse {
                 test.getSymbolImageRoot(),
                 test.getParticipantCapacity()
         );
+    }
+
+    @Override
+    public int compareTo(TestListResponse o) {
+        return o.apply - apply;
     }
 }
