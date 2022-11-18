@@ -19,7 +19,7 @@ public class JwtProvider {
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer("gukjunLee")
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + Duration.ofMinutes(10).toMillis()))
+                .setExpiration(new Date(now.getTime() + Duration.ofMinutes(20).toMillis()))
                 .setSubject(String.valueOf(id))
                 .claim("roles", roles)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
