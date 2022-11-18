@@ -147,18 +147,10 @@ public class TesterAuthServiceImpl implements TesterAuthService {
 
     @Transactional(readOnly = true)
     public List<TestListResponse> testListByPopular(UUID testerId) {
-        List<PopularDto> testList = testRepository.findAllByTestByPopularExceptApply(testerId);
+        List<Test> testList = testRepository.findAllByTestByPopularExceptApply(testerId);
 
-        List<TestListResponse> testListResponses = new ArrayList<>();
-        for (PopularDto popTest : testList) {
-            Test test = testRepository.findById(popTest.getId()).orElseThrow(
-            );
-            long differenceInMillis = test.getTestRelateTime().getRecruitmentTimeLimit().getTime() - new Date().getTime();
-            long days = (differenceInMillis / (24 * 60 * 60 * 1000L)) % 365;
-            int applyCount = popTest.getCount();
-            testListResponses.add(TestListResponse.fromEntity(test, applyCount, days));
-        }
-
+        List<TestListResponse> testListResponses = testListResponses(testList);
+        Collections.sort(testListResponses);
         return testListResponses;
     }
 
