@@ -49,7 +49,7 @@ public class QuitTestDTO {
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                "검토중",
+                "수행 실패",
                 test.getSymbolImageRoot()
         );
 

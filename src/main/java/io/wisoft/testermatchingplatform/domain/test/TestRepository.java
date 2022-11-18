@@ -32,7 +32,7 @@ public interface TestRepository extends JpaRepository<Test, UUID> {
 
     List<Test> findByMaker_Id(UUID id);
 
-    @Query(value = "select * from test t, " + "(select test.id from test where test.recruitment_time_start <= now() and test.recruitment_time_limit >= now() " + "EXCEPT select t.id from test t, apply_information a " + "where t.recruitment_time_start <= now() and t.recruitment_time_limit >= now() and t.id = a.test_id and a.tester_id = ?1) " + "as tt where t.id = tt.id order by now() - t.recruitment_time_limit;", nativeQuery = true)
+    @Query(value = "select * from test t, " + "(select test.id from test where test.recruitment_time_start <= now() and test.recruitment_time_limit >= now() " + "EXCEPT select t.id from test t, apply_information a " + "where t.recruitment_time_start <= now() and t.recruitment_time_limit >= now() and t.id = a.test_id and a.tester_id = ?1) " + "as tt where t.id = tt.id order by t.recruitment_time_limit - now();", nativeQuery = true)
     List<Test> findAllByTestByDeadLineExceptApply(UUID tester_id);
 
     @Query(value = "select * from test t, (select test.id from test where test.recruitment_time_start <= now() and test.recruitment_time_limit >= now() EXCEPT select t.id from test t, apply_information a where t.recruitment_time_start <= now() and t.recruitment_time_limit >= now() and t.id = a.test_id     and a.tester_id = ?1) as tt where t.id = tt.id;", nativeQuery = true)
