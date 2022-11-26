@@ -2,7 +2,6 @@ package io.wisoft.testermatchingplatform.jwt.filter;
 
 import io.jsonwebtoken.Claims;
 import io.wisoft.testermatchingplatform.jwt.JwtAuthException;
-import io.wisoft.testermatchingplatform.handler.exception.tester.TesterNotLoginException;
 import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,7 @@ public class JwtTesterTokenCheckFilter extends OncePerRequestFilter {
             // access Token 만료시
             String accessToken = resolveAccessToken(request);
             if (!jwtProvider.isValidToken(accessToken)) {
-                throw new TesterNotLoginException("세션이 만료돼 로그아웃 됨");
+                throw new RuntimeException("세션이 만료돼 로그아웃 됨");
             } else {
                 // 토큰의 정보 확인
                 if (!jwtProvider.getTokenData(accessToken).get("roles").equals("tester")) {
