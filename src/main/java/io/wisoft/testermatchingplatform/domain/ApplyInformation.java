@@ -35,6 +35,7 @@ public class ApplyInformation {
     ) {
         ApplyInformation applyInformation = new ApplyInformation();
         applyInformation.test = test;
+        test.addApply();
         applyInformation.tester = tester;
         applyInformation.registerTime = LocalDateTime.now();
         applyInformation.status = ApplyInformationStatus.APPLY;
@@ -42,22 +43,53 @@ public class ApplyInformation {
     }
 
     public void approve() {
-        this.approveTime = LocalDateTime.now();
-        this.status = ApplyInformationStatus.APPROVE;
+        TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
+        if (testStatus == TestStatus.APPROVE) {
+            this.approveTime = LocalDateTime.now();
+            this.status = ApplyInformationStatus.APPROVE_SUCCESS;
+        } else {
+            throw new RuntimeException("선정 기간이 아닙니다.");
+        }
+    }
+    public void approveFail() {
+        TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
+        if (testStatus == TestStatus.APPROVE) {
+            this.approveTime = LocalDateTime.now();
+            this.status = ApplyInformationStatus.APPROVE_FAIL;
+        } else {
+            throw new RuntimeException("선정 기간이 아닙니다.");
+        }
+    }
+
+    private void approveAutomaticFail() {
+        this.approveTime = test.getTestDate().getRecruitmentTimeEnd().atStartOfDay();
+        this.status = ApplyInformationStatus.APPROVE_FAIL;
     }
 
     public void execute() {
-        this.executionTime = LocalDateTime.now();
-        this.status = ApplyInformationStatus.SUCCESS;
+        TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
+        if (testStatus == TestStatus.PROGRESS) {
+            this.executionTime = LocalDateTime.now();
+            this.status = ApplyInformationStatus.EXECUTE_SUCCESS;
+        } else {
+            throw new RuntimeException("수행 기간이 아닙니다.");
+        }
     }
 
-    public void fail(LocalDateTime durationTimeEnd) {
-        this.executionTime = durationTimeEnd;
-        this.status = ApplyInformationStatus.FAIL;
+    public void executeFail() {
+        TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
+        if (testStatus == TestStatus.PROGRESS) {
+            this.executionTime = LocalDateTime.now();
+            this.status = ApplyInformationStatus.EXECUTE_FAIL;
+        } else if(testStatus == TestStatus.COMPLETE) {
+            executeAutomaticFail();
+        }
     }
 
-    // 시간이 있어서 생각하기가 어렵다..? Test Logic으로 넘어가야함.
-
+    private void executeAutomaticFail() {
+        this.executionTime = test.getTestDate().getDurationTimeEnd().atStartOfDay();
+        this.status = ApplyInformationStatus.EXECUTE_FAIL;
+    }
 
 
 }

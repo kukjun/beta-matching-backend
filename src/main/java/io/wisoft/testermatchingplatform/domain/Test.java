@@ -24,6 +24,9 @@ public class Test {
     private String imageURL;
     private long point;
 
+    private int currentApply;
+    private int limitApply;
+
     @Enumerated(EnumType.STRING)
     private TestStatus status;
 
@@ -41,14 +44,16 @@ public class Test {
             final String content,
             final String imageURL,
             final long point,
+            final int limitApply,
             final Maker maker,
             final LocalDate recruitmentTimeStart,
             final LocalDate recruitmentTimeEnd,
             final LocalDate durationTimeStart,
             final LocalDate durationTimeEnd
     ) {
-        LocalDate currentTime = LocalDate.now();
-
+        if (limitApply <= 0) {
+            throw new RuntimeException("제한인원은 0보다 커야 합니다.");
+        }
         Test test = new Test();
         test.title = title;
         test.content = content;
@@ -60,24 +65,19 @@ public class Test {
                 durationTimeStart,
                 durationTimeEnd
         );
+        test.limitApply = limitApply;
+        test.currentApply = 0;
         test.maker = maker;
+        maker.chargePoint(point * limitApply);
         return test;
     }
 
-    public void refreshStatus(LocalDate currentTime) {
-        if (currentTime.isBefore(testDate.getRecruitmentTimeStart())) {
-            this.status = TestStatus.BEFORE_APPLY;
-        } else if (currentTime.isEqual(testDate.getRecruitmentTimeStart()) ||
-                currentTime.isBefore(testDate.getRecruitmentTimeEnd()) ||
-                currentTime.isEqual(testDate.getRecruitmentTimeEnd())) {
-            this.status = TestStatus.APPLY;
-        } else if (currentTime.isBefore(testDate.getDurationTimeStart())) {
-            this.status = TestStatus.APPROVE;
-        } else if (currentTime.isBefore(testDate.getDurationTimeEnd()) ||
-                currentTime.isEqual(testDate.getRecruitmentTimeEnd())) {
-            this.status = TestStatus.PROGRESS;
-        } else if (currentTime.isAfter(testDate.getDurationTimeEnd())) {
-            this.status = TestStatus.COMPLETE;
+    public void addApply() {
+        TestStatus testStatus = TestStatus.refreshStatus(testDate);
+        if (testStatus == TestStatus.APPLY) {
+            currentApply++;
+        } else {
+            throw new RuntimeException("신청 기간을 초과했습니다.");
         }
     }
 
