@@ -22,6 +22,10 @@ public class MakerReview extends Review {
             int starPoint,
             String comment
     ) {
+        TestStatus testStatus = applyInformation.getTest().getStatus();
+        if (testStatus != TestStatus.COMPLETE) {
+            throw new RuntimeException("Test가 완료 상태가 아닙니다.");
+        }
         MakerReview makerReview = new MakerReview();
         makerReview.applyInformation = applyInformation;
         makerReview.registerTime = LocalDateTime.now();

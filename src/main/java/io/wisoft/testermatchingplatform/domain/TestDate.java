@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.TestDateSequenceException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,13 +41,13 @@ public class TestDate {
                 return;
             }
         }
-        throw new RuntimeException("시간 순서대로 입력을 받지 못했습니다.");
+        throw new TestDateSequenceException();
     }
 
     public void checkApplyTimeBeforeCurrentTime() {
         LocalDate localDate = LocalDate.now();
         if (!localDate.isBefore(this.recruitmentTimeStart)) {
-            throw new RuntimeException("신청 시작 시간보다 현재 시간이 더 깁니다.");
+            throw new TestDateSequenceException("신청 시작 시간보다 현재 시간이 더 깁니다.");
         }
     }
 

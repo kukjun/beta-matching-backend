@@ -23,14 +23,14 @@ public class ApplyInformation {
 
     @JoinColumn(name = "test_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Test test;
+    private Tests test;
 
     @JoinColumn(name = "tester_id")
     @OneToOne(fetch = FetchType.LAZY)
     private Tester tester;
 
     public static ApplyInformation newInstance(
-            Test test,
+            Tests test,
             Tester tester
     ) {
         ApplyInformation applyInformation = new ApplyInformation();
@@ -41,6 +41,11 @@ public class ApplyInformation {
         applyInformation.status = ApplyInformationStatus.APPLY;
         return applyInformation;
     }
+
+    public void cancel() {
+        test.removeApply();
+    }
+
 
     public void approve() {
         TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
@@ -56,8 +61,12 @@ public class ApplyInformation {
         if (testStatus == TestStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_FAIL;
+            test.getMaker().refundPoint(test.getPoint());
+        } else if(testStatus == TestStatus.PROGRESS){
+            approveAutomaticFail();
+            test.getMaker().refundPoint(test.getPoint());
         } else {
-            throw new RuntimeException("선정 기간이 아닙니다.");
+            throw new RuntimeException("선정기간, 수행기간이 아닙니다.");
         }
     }
 
@@ -81,8 +90,12 @@ public class ApplyInformation {
         if (testStatus == TestStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_FAIL;
+            test.getMaker().refundPoint(test.getPoint());
         } else if(testStatus == TestStatus.COMPLETE) {
             executeAutomaticFail();
+            test.getMaker().refundPoint(test.getPoint());
+        } else {
+            throw new RuntimeException("수행 기간, 완료 기간이 아닙니다.");
         }
     }
 

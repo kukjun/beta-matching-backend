@@ -22,6 +22,10 @@ public class TesterReview extends Review {
             int starPoint,
             String comment
     ) {
+        TestStatus testStatus = applyInformation.getTest().getStatus();
+        if (testStatus != TestStatus.COMPLETE) {
+            throw new RuntimeException("Test가 완료 상태가 아닙니다.");
+        }
         TesterReview testerReview = new TesterReview();
         testerReview.applyInformation = applyInformation;
         testerReview.registerTime = LocalDateTime.now();
@@ -29,5 +33,8 @@ public class TesterReview extends Review {
         testerReview.comment = comment;
         return testerReview;
     }
+
+
+
 
 }

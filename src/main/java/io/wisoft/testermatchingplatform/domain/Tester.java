@@ -1,5 +1,7 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.LoginException;
+import io.wisoft.testermatchingplatform.handler.exception.PointException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -20,15 +24,25 @@ public class Tester {
     private UUID id;
 
     @Column(unique = true)
+    @Email
+    @NotNull
     private String email;
+
+    @NotNull
     private String password;
 
     @Column(unique = true)
+    @NotNull
     private String nickname;
 
+    @NotNull
     private String phone;
+
+    @NotNull
     private String introduce;
+    @NotNull
     private long point;
+    @NotNull
     private String account;
 
     /**
@@ -58,7 +72,7 @@ public class Tester {
 
     public void login(String email, String password) {
         if (!this.email.equals(email) || !this.password.equals(password)) {
-            throw new RuntimeException("해당 id, password를 가지는 사용자가 없습니다.");
+            throw new LoginException();
         }
     }
 
@@ -66,10 +80,14 @@ public class Tester {
         this.account = account;
     }
 
-    public void mockDepositPoint(long point) {
+    public void depositPoint(long point) {
         checkPoint(point);
+        mockDepositPoint(point);
+    }
+
+    private void mockDepositPoint(long point) {
         if (this.point < point) {
-            throw new RuntimeException("잔여 포인트가 부족합니다.");
+            throw new PointException();
         }
         System.out.println("계좌로 포인트 " + point*19/20 + "만큼 충전합니다.!!");
         this.point -= point;
@@ -82,7 +100,7 @@ public class Tester {
 
     private void checkPoint(long point) {
         if (point <= 0) {
-            throw new RuntimeException("음수와 0은 들어갈 수 없습니다.");
+            throw new PointException("음수와 0은 들어갈 수 없습니다.");
         }
     }
 

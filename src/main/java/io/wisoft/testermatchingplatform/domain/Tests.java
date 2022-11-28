@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.ApplyException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,11 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Table(name = "test")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Test {
+// Test 가 TestFrameWork와 겹쳐서, Tests로 변경
+public class Tests {
 
     @Id
     @GeneratedValue
@@ -44,7 +47,7 @@ public class Test {
 
 
     // 생성 시 예외. recruitmentTimeStart가 현재보다 적으면 Error
-    public static Test newInstance(
+    public static Tests newInstance(
             final String title,
             final String content,
             final String imageURL,
@@ -57,9 +60,9 @@ public class Test {
             final LocalDate durationTimeEnd
     ) {
         if (limitApply <= 0) {
-            throw new RuntimeException("제한인원은 0보다 커야 합니다.");
+            throw new ApplyException("제한인원은 0보다 커야 합니다.");
         }
-        Test test = new Test();
+        Tests test = new Tests();
         test.title = title;
         test.content = content;
         test.imageURL = imageURL;
@@ -73,7 +76,7 @@ public class Test {
         test.limitApply = limitApply;
         test.currentApply = 0;
         test.maker = maker;
-        maker.withdrawCash(point * limitApply);
+        maker.usePoint(point * limitApply);
         return test;
     }
 
