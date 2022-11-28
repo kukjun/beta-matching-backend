@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -19,12 +19,17 @@ public class Test {
     @Column(name = "test_id")
     private UUID id;
 
+    @NotNull
     private String title;
+    @NotNull
     private String content;
+    @NotNull
     private String imageURL;
+    @NotNull
     private long point;
-
+    @NotNull
     private int currentApply;
+    @NotNull
     private int limitApply;
 
     @Enumerated(EnumType.STRING)
@@ -68,7 +73,7 @@ public class Test {
         test.limitApply = limitApply;
         test.currentApply = 0;
         test.maker = maker;
-        maker.chargePoint(point * limitApply);
+        maker.withdrawCash(point * limitApply);
         return test;
     }
 
@@ -82,4 +87,12 @@ public class Test {
     }
 
 
+    public void removeApply() {
+        TestStatus testStatus = TestStatus.refreshStatus(testDate);
+        if (testStatus == TestStatus.APPLY) {
+            currentApply--;
+        } else {
+            throw new RuntimeException("신청 기간을 초과했습니다.");
+        }
+    }
 }
