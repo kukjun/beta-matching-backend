@@ -51,7 +51,7 @@ class TestDateTest {
     }
 
     @Test
-    @DisplayName("TestDate 생성 실패 테스트 - 신청 시작 시간이 현재보다 더 빠름")
+    @DisplayName("TestDate 생성 실패 테스트 - 신청 시작 시간이 현재보다 이전")
     public void createTestDateFailTestFromRecruitmentTimeStartMismatch() {
         LocalDate recruitmentTimeStart = LocalDate.now().minusDays(5L);
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(10L);

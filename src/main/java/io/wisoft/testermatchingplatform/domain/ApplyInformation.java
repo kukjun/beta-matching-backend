@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.ApproveException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -47,13 +48,14 @@ public class ApplyInformation {
     }
 
 
+
     public void approve() {
         TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
         if (testStatus == TestStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_SUCCESS;
         } else {
-            throw new RuntimeException("선정 기간이 아닙니다.");
+            throw new ApproveException("선정 기간이 아닙니다.");
         }
     }
     public void approveFail() {

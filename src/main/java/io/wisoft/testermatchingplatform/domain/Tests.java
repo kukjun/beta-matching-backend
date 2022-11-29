@@ -85,7 +85,7 @@ public class Tests {
         if (testStatus == TestStatus.APPLY) {
             currentApply++;
         } else {
-            throw new RuntimeException("신청 기간을 초과했습니다.");
+            throw new ApplyException("신청 기간을 초과했습니다.");
         }
     }
 
@@ -93,9 +93,13 @@ public class Tests {
     public void removeApply() {
         TestStatus testStatus = TestStatus.refreshStatus(testDate);
         if (testStatus == TestStatus.APPLY) {
-            currentApply--;
+            if (currentApply > 0) {
+                currentApply--;
+            } else {
+                throw new ApplyException("신청인원이 이미 모두 없습니다.");
+            }
         } else {
-            throw new RuntimeException("신청 기간을 초과했습니다.");
+            throw new ApplyException("신청 기간을 초과했습니다.");
         }
     }
 }

@@ -46,7 +46,7 @@ public class TestDate {
 
     public void checkApplyTimeBeforeCurrentTime() {
         LocalDate localDate = LocalDate.now();
-        if (!localDate.isBefore(this.recruitmentTimeStart)) {
+        if (localDate.isAfter(this.recruitmentTimeStart)) {
             throw new TestDateSequenceException("신청 시작 시간보다 현재 시간이 더 깁니다.");
         }
     }
