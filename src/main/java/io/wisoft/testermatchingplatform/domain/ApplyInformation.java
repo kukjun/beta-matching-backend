@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.domain;
 
 import io.wisoft.testermatchingplatform.handler.exception.ApproveException;
+import io.wisoft.testermatchingplatform.handler.exception.ExecutionException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -48,7 +49,6 @@ public class ApplyInformation {
     }
 
 
-
     public void approve() {
         TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
         if (testStatus == TestStatus.APPROVE) {
@@ -58,7 +58,7 @@ public class ApplyInformation {
             throw new ApproveException("선정 기간이 아닙니다.");
         }
     }
-    public void approveFail() {
+    public void reject() {
         TestStatus testStatus = TestStatus.refreshStatus(this.test.getTestDate());
         if (testStatus == TestStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
@@ -68,7 +68,7 @@ public class ApplyInformation {
             approveAutomaticFail();
             test.getMaker().refundPoint(test.getPoint());
         } else {
-            throw new RuntimeException("선정기간, 수행기간이 아닙니다.");
+            throw new ApproveException("선정기간, 수행기간이 아닙니다.");
         }
     }
 
@@ -83,7 +83,7 @@ public class ApplyInformation {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_SUCCESS;
         } else {
-            throw new RuntimeException("수행 기간이 아닙니다.");
+            throw new ExecutionException("수행 기간이 아닙니다.");
         }
     }
 
@@ -97,7 +97,7 @@ public class ApplyInformation {
             executeAutomaticFail();
             test.getMaker().refundPoint(test.getPoint());
         } else {
-            throw new RuntimeException("수행 기간, 완료 기간이 아닙니다.");
+            throw new ExecutionException("수행 기간, 완료 기간이 아닙니다.");
         }
     }
 

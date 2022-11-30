@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.domain;
 
 import io.wisoft.testermatchingplatform.handler.exception.ApproveException;
+import io.wisoft.testermatchingplatform.handler.exception.ExecutionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ class ApplyInformationTest {
     // 신청취소 테스트 - Unit Test 불가
 
     @Test
-    @DisplayName("신청자 수락 성공 테스트")
+    @DisplayName("신청자 선정 성공 테스트")
     public void approveApplySuccessTest() throws Exception {
         //given
         //when
@@ -54,7 +55,7 @@ class ApplyInformationTest {
     }
 
     @Test
-    @DisplayName("신청자 수락 실패 테스트")
+    @DisplayName("신청자 선정 실패 테스트")
     public void approveApplyFailTest() throws Exception {
         //given
         //when
@@ -65,5 +66,87 @@ class ApplyInformationTest {
             assertThrows(ApproveException.class, () -> normalApplyInformation.approve());
         }
     }
+
+    @Test
+    @DisplayName("신청자 거절 성공 테스트")
+    public void rejectApplySuccessTest() throws Exception {
+        //given
+        //when
+        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
+            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
+                    .thenReturn(TestStatus.APPROVE);
+
+            when(normalApplyInformation.getTest().getMaker())
+                    .thenReturn(mock(Maker.class));
+
+            normalApplyInformation.reject();
+        }
+        //then
+        assertEquals(ApplyInformationStatus.APPROVE_FAIL, normalApplyInformation.getStatus());
+    }
+
+    // Mock 객체 생성이 안되는 문제 - Trouble Shooting
+//    @Test
+//    @DisplayName("신청자 거절 성공 테스트 - 지연 테스트")
+//    public void rejectApplySuccessTest_wait() throws Exception {
+//        //given
+//        //when
+//
+//        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
+//            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
+//                    .thenReturn(TestStatus.PROGRESS);
+//
+//            when(normalApplyInformation.getTest().getMaker()).thenReturn(mock(Maker.class));
+//
+//        }
+//        //then
+//        assertEquals(ApplyInformationStatus.APPROVE_FAIL, normalApplyInformation.getStatus());
+//    }
+
+    @Test
+    @DisplayName("신청자 거절 실패 테스트")
+    public void rejectApplyFailTest() throws Exception {
+        //given
+        //when
+        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
+            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
+                    .thenReturn(TestStatus.APPLY);
+
+            when(normalApplyInformation.getTest().getMaker())
+                    .thenReturn(mock(Maker.class));
+
+            assertThrows(ApproveException.class, () -> normalApplyInformation.reject());
+        }
+    }
+
+
+    @Test
+    @DisplayName("수행자 완료 성공 테스트")
+    public void executePerformerSuccessTest() throws Exception {
+        //given
+        //when
+        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
+            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
+                    .thenReturn(TestStatus.PROGRESS);
+            normalApplyInformation.execute();
+        }
+        //then
+        assertEquals(ApplyInformationStatus.EXECUTE_SUCCESS, normalApplyInformation.getStatus());
+    }
+
+
+    @Test
+    @DisplayName("수행자 완료 실패 테스트")
+    public void executePerformerFailTest() throws Exception {
+        //given
+        //when
+        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
+            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
+                    .thenReturn(TestStatus.APPLY);
+            //then
+            assertThrows(ExecutionException.class, () -> normalApplyInformation.execute());
+        }
+    }
+
 
 }
