@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Review {
+public abstract class Review extends BaseEntity {
 
     protected LocalDateTime registerTime;
     protected int starPoint;

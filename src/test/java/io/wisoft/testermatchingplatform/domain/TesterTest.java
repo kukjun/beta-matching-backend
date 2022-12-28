@@ -7,12 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import java.util.ArrayList;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -76,18 +73,6 @@ class TesterTest {
     }
 
     @Test
-    @DisplayName("테스터 Validation 적용 테스트 - email")
-    public void testerCreateValidationTest() {
-        // given
-
-        // when, then
-        Set<ConstraintViolation<Tester>> violations = validator.validate(wriedTester);
-        ArrayList<ConstraintViolation<Tester>> constraintViolations = new ArrayList<>(violations);
-        ConstraintViolation<Tester> testerConstraintViolation = constraintViolations.get(0);
-        assertEquals("email", testerConstraintViolation.getPropertyPath().toString());
-    }
-
-    @Test
     @DisplayName("로그인 성공 테스트")
     public void loginSuccessTest() {
         // given
@@ -139,7 +124,7 @@ class TesterTest {
         long remainPoint = rewardPoint - depositPoint;
 
         // when, then
-        assertDoesNotThrow(() -> normalTester.depositPoint(depositPoint));
+        assertDoesNotThrow(() -> normalTester.pointToCash(depositPoint));
         assertEquals(remainPoint, normalTester.getPoint());
     }
 
@@ -152,7 +137,7 @@ class TesterTest {
         normalTester.rewardPoint(rewardPoint);
 
         // when, then
-        assertThrows(PointException.class, () -> normalTester.depositPoint(depositPoint));
+        assertThrows(PointException.class, () -> normalTester.pointToCash(depositPoint));
     }
 
 

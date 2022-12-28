@@ -3,17 +3,11 @@ package io.wisoft.testermatchingplatform.domain;
 import io.wisoft.testermatchingplatform.handler.exception.CashException;
 import io.wisoft.testermatchingplatform.handler.exception.LoginException;
 import io.wisoft.testermatchingplatform.handler.exception.PointException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
-
-import java.util.ArrayList;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,11 +18,6 @@ class MakerTest {
     private Maker weirdMaker;
 
     private static Validator validator;
-
-    @BeforeAll
-    static void setUp() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
 
     @BeforeEach
     void normalCreateMaker() {
@@ -78,22 +67,6 @@ class MakerTest {
     }
 
     @Test
-    @DisplayName("생성 시, Email Validation 오류 테스트")
-    public void makerEmailValidationFailTest() {
-        // given
-
-        // when
-
-        // then
-        Set<ConstraintViolation<Maker>> violations = validator.validate(weirdMaker);
-
-        ArrayList<ConstraintViolation<Maker>> constraintViolations = new ArrayList<>(violations);
-        ConstraintViolation<Maker> makerConstraintViolation = constraintViolations.get(0);
-        assertEquals("email", makerConstraintViolation.getPropertyPath().toString());
-
-    }
-
-    @Test
     @DisplayName("로그인 성공 테스트")
     public void loginSuccessTest() {
         // given
@@ -124,7 +97,7 @@ class MakerTest {
         long cash = -10;
 
         // when, then
-        assertThrows(CashException.class, () -> normalMaker.withdrawCash(cash));
+        assertThrows(CashException.class, () -> normalMaker.cashToPoint(cash));
     }
 
     @Test
@@ -134,7 +107,7 @@ class MakerTest {
         long cash = 1000L;
 
         // when, then
-        assertDoesNotThrow(() -> normalMaker.withdrawCash(cash));
+        assertDoesNotThrow(() -> normalMaker.cashToPoint(cash));
         assertEquals(cash, normalMaker.getPoint());
     }
 
@@ -144,10 +117,10 @@ class MakerTest {
         // given
         long cash = 1000L;
         long minusPoint = 10000L;
-        normalMaker.withdrawCash(cash);
+        normalMaker.cashToPoint(cash);
 
         // when, then
-        assertThrows(PointException.class, () -> normalMaker.depositPoint(minusPoint));
+        assertThrows(PointException.class, () -> normalMaker.pointToCash(minusPoint));
     }
 
     @Test
@@ -156,12 +129,12 @@ class MakerTest {
         // given
         long cash = 10000L;
         long minusPoint = 1000L;
-        normalMaker.withdrawCash(cash);
+        normalMaker.cashToPoint(cash);
 
         long remainCash = normalMaker.getPoint() - minusPoint;
 
         // when, then
-        assertDoesNotThrow(() -> normalMaker.depositPoint(minusPoint));
+        assertDoesNotThrow(() -> normalMaker.pointToCash(minusPoint));
         assertEquals(remainCash, normalMaker.getPoint());
 
     }
@@ -171,7 +144,7 @@ class MakerTest {
     public void usePointSuccessTest() {
         // given
         long cash = 10000L;
-        normalMaker.withdrawCash(cash);
+        normalMaker.cashToPoint(cash);
         long minusPoint = 1000L;
 
         long remainPoint = normalMaker.getPoint() - minusPoint;
@@ -187,7 +160,7 @@ class MakerTest {
     public void usePointFailTest() {
         // given
         long cash = 1000L;
-        normalMaker.withdrawCash(cash);
+        normalMaker.cashToPoint(cash);
         long minusPoint = 10000L;
 
         long remainPoint = normalMaker.getPoint() - minusPoint;

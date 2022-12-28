@@ -7,18 +7,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Maker {
+public class Maker extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -26,26 +23,23 @@ public class Maker {
     private UUID id;
 
     @Column(unique = true)
-    @Email
-    @NotNull
     private String email;
 
-    @NotNull
     private String password;
 
+    @OneToMany(mappedBy = "maker")
+    private List<Tests> createdTests = new ArrayList<>();
+
     @Column(unique = true)
-    @NotNull
     private String nickname;
 
     @Column(unique = true)
-    @NotNull
     private String phone;
-    @NotNull
     private String company;
-    @NotNull
     private long point;
-    @NotNull
     private String account;
+
+
 
     /**
      * 정적 생성자 메서드
@@ -65,28 +59,33 @@ public class Maker {
         maker.company = company;
         maker.point = 0L;
         maker.account = "";
+        maker.createEntity();
         return maker;
     }
+
+
+
 
     /**
      * 비지니스 로직
      */
-
+    // 넘겨받은 Email, Password 가 일치하는가?
     public void login(String email, String password) {
         if (!this.email.equals(email) || !this.password.equals(password)) {
             throw new LoginException();
         }
     }
+
     public void changeAccount(String account) {
         this.account = account;
     }
 
-    public void withdrawCash(long cash) {
+    public void cashToPoint(long cash) {
         checkCash(cash);
-        mockWithdrawCash(cash);
+        mockCashToPoint(cash);
     }
 
-    private void mockWithdrawCash(long cash) {
+    private void mockCashToPoint(long cash) {
         if(true) {
             System.out.println("현금 " + cash +"원을 Account 에서 빼갑니다!!");
             this.point += cash;
@@ -95,12 +94,12 @@ public class Maker {
         }
     }
 
-    public void depositPoint(long point) {
+    public void pointToCash(long point) {
         checkPoint(point);
-        mockDepositPoint(point);
+        mockPointToCash(point);
     }
 
-    private void mockDepositPoint(long point) {
+    private void mockPointToCash(long point) {
         if (this.point < point) {
             throw new PointException();
         }
@@ -110,9 +109,7 @@ public class Maker {
 
     public void usePoint(long point) {
         checkPoint(point);
-        if (this.point < point) {
-            throw new PointException();
-        }
+        checkInsufficientPoint(point);
         this.point -= point;
     }
 
@@ -126,6 +123,11 @@ public class Maker {
             throw new PointException("음수와 0은 들어갈 수 없습니다.");
         }
     }
+    private void checkInsufficientPoint(long point) {
+        if (this.point - point < 0) {
+            throw new PointException();
+        }
+    }
 
     private void checkCash(long cash) {
         if (cash <= 0) {
@@ -134,6 +136,8 @@ public class Maker {
     }
 
 
-
-
+    public void updatePoint(long point) {
+        checkInsufficientPoint(point);
+        this.point -= point;
+    }
 }

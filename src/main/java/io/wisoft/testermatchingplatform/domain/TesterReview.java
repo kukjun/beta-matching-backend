@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.ReviewException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,9 @@ public class TesterReview extends Review {
             int starPoint,
             String comment
     ) {
-        TestStatus testStatus = applyInformation.getTest().getStatus();
+        TestStatus testStatus = applyInformation.currentTestStatus();
         if (testStatus != TestStatus.COMPLETE) {
-            throw new RuntimeException("Test가 완료 상태가 아닙니다.");
+            throw new ReviewException("Test가 완료 상태가 아닙니다.");
         }
         TesterReview testerReview = new TesterReview();
         testerReview.applyInformation = applyInformation;

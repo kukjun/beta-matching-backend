@@ -6,44 +6,36 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-public class Tester {
+public class Tester extends BaseEntity{
     @Id
     @GeneratedValue
     @Column(name = "tester_id")
     private UUID id;
 
     @Column(unique = true)
-    @Email
-    @NotNull
     private String email;
 
-    @NotNull
     private String password;
 
     @Column(unique = true)
-    @NotNull
     private String nickname;
 
-    @NotNull
     private String phone;
 
-    @NotNull
     private String introduce;
-    @NotNull
     private long point;
-    @NotNull
     private String account;
+
+    @OneToMany(mappedBy = "tester")
+    private List<ApplyInformation> applyInformationList = new ArrayList<>();
 
     /**
      * 정적 생성자 메서드
@@ -63,6 +55,7 @@ public class Tester {
         tester.introduce = introduce;
         tester.point = 0L;
         tester.account = "";
+        tester.createEntity();
         return tester;
     }
 
@@ -80,12 +73,12 @@ public class Tester {
         this.account = account;
     }
 
-    public void depositPoint(long point) {
+    public void pointToCash(long point) {
         checkPoint(point);
-        mockDepositPoint(point);
+        mockPointToCash(point);
     }
 
-    private void mockDepositPoint(long point) {
+    private void mockPointToCash(long point) {
         if (this.point < point) {
             throw new PointException();
         }

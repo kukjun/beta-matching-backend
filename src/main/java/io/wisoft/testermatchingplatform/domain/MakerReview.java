@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.ReviewException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,15 +23,17 @@ public class MakerReview extends Review {
             int starPoint,
             String comment
     ) {
-        TestStatus testStatus = applyInformation.getTest().getStatus();
-        if (testStatus != TestStatus.COMPLETE) {
-            throw new RuntimeException("Test가 완료 상태가 아닙니다.");
+        TestStatus testStatus = applyInformation.currentTestStatus();
+        if (testStatus == TestStatus.COMPLETE) {
+            MakerReview makerReview = new MakerReview();
+            makerReview.applyInformation = applyInformation;
+            makerReview.registerTime = LocalDateTime.now();
+            makerReview.starPoint = starPoint;
+            makerReview.comment = comment;
+            return makerReview;
         }
-        MakerReview makerReview = new MakerReview();
-        makerReview.applyInformation = applyInformation;
-        makerReview.registerTime = LocalDateTime.now();
-        makerReview.starPoint = starPoint;
-        makerReview.comment = comment;
-        return makerReview;
+        else {
+            throw new ReviewException("Test가 완료 상태가 아닙니다.");
+        }
     }
 }

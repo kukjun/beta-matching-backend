@@ -45,7 +45,7 @@ class TestsTest {
                 company
         );
         long cash = 100000L;
-        maker.withdrawCash(cash);
+        maker.cashToPoint(cash);
         LocalDate recruitmentTimeStart = LocalDate.now();
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(20L);
         LocalDate durationTimeStart = LocalDate.now().plusDays(30L);
@@ -86,7 +86,7 @@ class TestsTest {
                 company
         );
         long cash = 100000L;
-        maker.withdrawCash(cash);
+        maker.cashToPoint(cash);
         LocalDate recruitmentTimeStart = LocalDate.now().plusDays(10L);
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(20L);
         LocalDate durationTimeStart = LocalDate.now().plusDays(30L);
@@ -147,7 +147,7 @@ class TestsTest {
                 company
         );
         long cash = 100000L;
-        maker.withdrawCash(cash);
+        maker.cashToPoint(cash);
         LocalDate recruitmentTimeStart = LocalDate.now().plusDays(5L);
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(20L);
         LocalDate durationTimeStart = LocalDate.now().plusDays(30L);
@@ -165,60 +165,5 @@ class TestsTest {
                 durationTimeEnd
         ));
     }
-
-    @Test
-    @DisplayName("신청인원 추가 성공 테스트")
-    public void addApplySuccessTest() throws Exception {
-        //given
-
-
-        //when
-        normalTest.addApply();
-
-        //then
-        assertEquals(1, normalTest.getCurrentApply());
-    }
-
-    @Test
-    @DisplayName("신청인원 추가 실패 테스트 - 신청기간이 아닌경우")
-    public void addApplyFailTest() throws Exception {
-        //given
-
-        //when
-        //then
-        assertThrows(ApplyException.class, () -> wriedTest.addApply());
-
-    }
-
-
-    @Test
-    @DisplayName("신청인원 삭제 성공 테스트")
-    public void removeApplySuccessTest() throws Exception {
-        //given
-        normalTest.addApply();
-        normalTest.addApply();
-
-        //when
-        normalTest.removeApply();
-
-        //then
-        assertEquals(1, normalTest.getCurrentApply());
-    }
-
-    @Test
-    @DisplayName("신청인원 삭제 실패 테스트 - 신청인원 0이하 일때 삭제")
-    public void remoteApplyFailTest() throws Exception {
-        //given
-        normalTest.addApply();
-        normalTest.removeApply();
-
-        //when
-        //then
-        assertThrows(ApplyException.class, () -> normalTest.removeApply());
-
-    }
-
-
-
 
 }

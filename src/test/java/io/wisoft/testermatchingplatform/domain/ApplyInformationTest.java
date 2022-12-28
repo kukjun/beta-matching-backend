@@ -7,10 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.same;
 import static org.mockito.Mockito.*;
 
 class ApplyInformationTest {
@@ -38,8 +35,6 @@ class ApplyInformationTest {
         assertEquals(ApplyInformationStatus.APPLY, normalApplyInformation.getStatus());
     }
 
-    // 신청취소 테스트 - Unit Test 불가
-
     @Test
     @DisplayName("신청자 선정 성공 테스트")
     public void approveApplySuccessTest() throws Exception {
@@ -48,7 +43,7 @@ class ApplyInformationTest {
         try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
             testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
                     .thenReturn(TestStatus.APPROVE);
-            normalApplyInformation.approve();
+            normalApplyInformation.applyApprove();
         }
         //then
         assertEquals(ApplyInformationStatus.APPROVE_SUCCESS, normalApplyInformation.getStatus());
@@ -63,7 +58,7 @@ class ApplyInformationTest {
             testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
                     .thenReturn(TestStatus.APPLY);
             //then
-            assertThrows(ApproveException.class, () -> normalApplyInformation.approve());
+            assertThrows(ApproveException.class, () -> normalApplyInformation.applyApprove());
         }
     }
 
@@ -79,7 +74,7 @@ class ApplyInformationTest {
             when(normalApplyInformation.getTest().getMaker())
                     .thenReturn(mock(Maker.class));
 
-            normalApplyInformation.reject();
+            normalApplyInformation.applyReject();
         }
         //then
         assertEquals(ApplyInformationStatus.APPROVE_FAIL, normalApplyInformation.getStatus());
@@ -115,7 +110,7 @@ class ApplyInformationTest {
             when(normalApplyInformation.getTest().getMaker())
                     .thenReturn(mock(Maker.class));
 
-            assertThrows(ApproveException.class, () -> normalApplyInformation.reject());
+            assertThrows(ApproveException.class, () -> normalApplyInformation.applyReject());
         }
     }
 
@@ -128,7 +123,7 @@ class ApplyInformationTest {
         try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
             testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
                     .thenReturn(TestStatus.PROGRESS);
-            normalApplyInformation.execute();
+            normalApplyInformation.executionApprove();
         }
         //then
         assertEquals(ApplyInformationStatus.EXECUTE_SUCCESS, normalApplyInformation.getStatus());
@@ -144,7 +139,7 @@ class ApplyInformationTest {
             testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
                     .thenReturn(TestStatus.APPLY);
             //then
-            assertThrows(ExecutionException.class, () -> normalApplyInformation.execute());
+            assertThrows(ExecutionException.class, () -> normalApplyInformation.executionApprove());
         }
     }
 

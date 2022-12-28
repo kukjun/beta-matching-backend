@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,24 +16,17 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // Test 가 TestFrameWork와 겹쳐서, Tests로 변경
-public class Tests {
+public class Tests extends BaseEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "test_id")
     private UUID id;
 
-    @NotNull
     private String title;
-    @NotNull
     private String content;
-    @NotNull
     private String imageURL;
-    @NotNull
     private long point;
-    @NotNull
-    private int currentApply;
-    @NotNull
     private int limitApply;
 
     @Enumerated(EnumType.STRING)
@@ -45,6 +39,25 @@ public class Tests {
     @JoinColumn(name = "maker_id")
     private Maker maker;
 
+    @OneToMany(mappedBy = "test")
+    private List<ApplyInformation> applyInformationList = new ArrayList<>();
+
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void connectCreatedMaker(Maker maker) {
+        this.maker = maker;
+        maker.getCreatedTests().add(this);
+    }
+
+    public void disconnectCreateMaker(Maker maker) {
+        maker.getCreatedTests().remove(this);
+    }
+
+    /**
+     * 정적 생성자 메서드
+     */
 
     // 생성 시 예외. recruitmentTimeStart가 현재보다 적으면 Error
     public static Tests newInstance(
@@ -74,32 +87,42 @@ public class Tests {
                 durationTimeEnd
         );
         test.limitApply = limitApply;
-        test.currentApply = 0;
         test.maker = maker;
         maker.usePoint(point * limitApply);
+        test.createEntity();
         return test;
     }
 
-    public void addApply() {
-        TestStatus testStatus = TestStatus.refreshStatus(testDate);
-        if (testStatus == TestStatus.APPLY) {
-            currentApply++;
-        } else {
-            throw new ApplyException("신청 기간을 초과했습니다.");
-        }
-    }
+    /**
+     * 비지니스 메서드
+     */
 
-
-    public void removeApply() {
-        TestStatus testStatus = TestStatus.refreshStatus(testDate);
-        if (testStatus == TestStatus.APPLY) {
-            if (currentApply > 0) {
-                currentApply--;
-            } else {
-                throw new ApplyException("신청인원이 이미 모두 없습니다.");
-            }
-        } else {
-            throw new ApplyException("신청 기간을 초과했습니다.");
+    public void updateTest(
+            final String title,
+            final String content,
+            final String imageURL,
+            final long point,
+            final int limitApply,
+            final LocalDate recruitmentTimeStart,
+            final LocalDate recruitmentTimeEnd,
+            final LocalDate durationTimeStart,
+            final LocalDate durationTimeEnd
+    ) {
+        if (limitApply <= 0) {
+            throw new ApplyException("제한인원은 0보다 커야 합니다.");
         }
+        this.maker.updatePoint(point * limitApply - this.point * this.limitApply);
+        this.title = title;
+        this.content = content;
+        this.imageURL = imageURL;
+        this.point = point;
+        this.testDate = TestDate.newInstance(
+                recruitmentTimeStart,
+                recruitmentTimeEnd,
+                durationTimeStart,
+                durationTimeEnd
+        );
+        this.limitApply = limitApply;
+        updateEntity();
     }
 }
