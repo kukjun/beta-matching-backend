@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,17 +16,20 @@ public class MakerRepository {
 
     private final EntityManager em;
 
-    public void save(Maker maker) {
-        if (maker.getId() == null) {
-            em.persist(maker);
-        } else {
-            // merge를 쓰는게 맞나?
-            em.merge(maker);
-        }
+    public UUID save(Maker maker) {
+        em.persist(maker);
+        return maker.getId();
     }
 
-    public Maker findOne(UUID id) {
+    public Maker findById(UUID id) {
         return em.find(Maker.class, id);
+    }
+
+    public Maker findByEmail(String email) throws NoResultException, NonUniqueResultException {
+        return em.createQuery(
+                "select m from Maker m where m.email = :id",
+                Maker.class
+        ).getSingleResult();
     }
 
     public List<Maker> findAll() {

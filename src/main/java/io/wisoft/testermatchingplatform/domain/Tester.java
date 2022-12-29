@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.EmptyAccountException;
 import io.wisoft.testermatchingplatform.handler.exception.LoginException;
 import io.wisoft.testermatchingplatform.handler.exception.PointException;
 import lombok.AccessLevel;
@@ -63,8 +64,8 @@ public class Tester extends BaseEntity{
      * 비지니스 로직
      */
 
-    public void login(String email, String password) {
-        if (!this.email.equals(email) || !this.password.equals(password)) {
+    public void checkPassword(String password) {
+        if (!this.password.equals(password)) {
             throw new LoginException();
         }
     }
@@ -73,17 +74,26 @@ public class Tester extends BaseEntity{
         this.account = account;
     }
 
-    public void pointToCash(long point) {
+    public long pointToCash(long point) {
+        checkAccount();
         checkPoint(point);
-        mockPointToCash(point);
+        long cash = mockPointToCash(point);
+        return cash;
     }
 
-    private void mockPointToCash(long point) {
+    private void checkAccount() {
+        if (account == null) {
+            throw new EmptyAccountException();
+        }
+    }
+    private long mockPointToCash(long point) {
+        long cash = point * 19 / 20;
         if (this.point < point) {
             throw new PointException();
         }
-        System.out.println("계좌로 포인트 " + point*19/20 + "만큼 충전합니다.!!");
+        System.out.println("계좌로 현금을 " + cash + "만큼 충전합니다.!!");
         this.point -= point;
+        return cash;
     }
 
     public void rewardPoint(long point) {

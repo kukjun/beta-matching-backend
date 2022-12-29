@@ -28,7 +28,7 @@ public class ApplyInformation extends BaseEntity {
     private Tests test;
 
     @JoinColumn(name = "tester_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Tester tester;
 
     /**
@@ -98,6 +98,7 @@ public class ApplyInformation extends BaseEntity {
         if (testStatus == TestStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_SUCCESS;
+            tester.rewardPoint(test.getPoint());
         } else {
             throw new ExecutionException("수행 기간이 아닙니다.");
         }

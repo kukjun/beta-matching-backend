@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.domain;
 
 import io.wisoft.testermatchingplatform.handler.exception.CashException;
+import io.wisoft.testermatchingplatform.handler.exception.EmptyAccountException;
 import io.wisoft.testermatchingplatform.handler.exception.LoginException;
 import io.wisoft.testermatchingplatform.handler.exception.PointException;
 import lombok.AccessLevel;
@@ -40,7 +41,6 @@ public class Maker extends BaseEntity {
     private String account;
 
 
-
     /**
      * 정적 생성자 메서드
      */
@@ -64,14 +64,12 @@ public class Maker extends BaseEntity {
     }
 
 
-
-
     /**
      * 비지니스 로직
      */
     // 넘겨받은 Email, Password 가 일치하는가?
-    public void login(String email, String password) {
-        if (!this.email.equals(email) || !this.password.equals(password)) {
+    public void checkPassword(String password) {
+        if (!this.password.equals(password)) {
             throw new LoginException();
         }
     }
@@ -80,31 +78,39 @@ public class Maker extends BaseEntity {
         this.account = account;
     }
 
-    public void cashToPoint(long cash) {
+    public long cashToPoint(long cash) {
         checkCash(cash);
-        mockCashToPoint(cash);
+        long point = mockCashToPoint(cash);
+        return point;
     }
 
-    private void mockCashToPoint(long cash) {
-        if(true) {
-            System.out.println("현금 " + cash +"원을 Account 에서 빼갑니다!!");
-            this.point += cash;
-        } else {
-            System.out.println("계좌 잔액이 부족합니다!!");
+    private long mockCashToPoint(long cash) {
+        System.out.println("현금 " + cash + "원을 Account 에서 빼갑니다!!");
+        this.point += cash;
+        return cash;
+    }
+
+    public long pointToCash(long point) {
+        checkAccount();
+        checkPoint(point);
+        long cash = mockPointToCash(point);
+        return cash;
+    }
+
+    private void checkAccount() {
+        if (account == null) {
+            throw new EmptyAccountException();
         }
     }
 
-    public void pointToCash(long point) {
-        checkPoint(point);
-        mockPointToCash(point);
-    }
-
-    private void mockPointToCash(long point) {
+    private long mockPointToCash(long point) {
+        long cash = point * 19 / 20;
         if (this.point < point) {
             throw new PointException();
         }
-        System.out.println("계좌로 포인트 " + point*19/20 + "만큼 충전합니다.!!");
+        System.out.println("계좌로 포인트 " + cash + "만큼 충전합니다.!!");
         this.point -= point;
+        return cash;
     }
 
     public void usePoint(long point) {
@@ -118,11 +124,12 @@ public class Maker extends BaseEntity {
         this.point += point;
     }
 
-    private void checkPoint(long point){
+    private void checkPoint(long point) {
         if (point <= 0) {
             throw new PointException("음수와 0은 들어갈 수 없습니다.");
         }
     }
+
     private void checkInsufficientPoint(long point) {
         if (this.point - point < 0) {
             throw new PointException();
