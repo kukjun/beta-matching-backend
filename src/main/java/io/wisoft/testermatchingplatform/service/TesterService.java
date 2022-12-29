@@ -32,20 +32,6 @@ public class TesterService {
         return response;
     }
 
-    public TesterLoginResponse findTesterInformation(final TesterLoginRequest request) {
-        try {
-            Tester tester = testerRepository.findByEmail(request.getEmail());
-            tester.checkPassword(request.getPassword());
-            TesterLoginResponse response = TesterLoginResponse.fromTester(tester);
-            return response;
-        } catch (NoResultException no) {
-            throw new LoginException();
-        } catch (NonUniqueResultException noUnique) {
-            throw new RuntimeException();
-        }
-
-    }
-
     @Transactional
     public AccountResponse updateAccount(final UUID testerId, final AccountRequest request) {
         Tester tester = testerRepository.findById(testerId);
@@ -67,12 +53,24 @@ public class TesterService {
     public ExchangeInformationResponse exchangeView(final UUID testerId) {
         Tester tester = testerRepository.findById(testerId);
         ExchangeInformationResponse response = ExchangeInformationResponse.fromTester(
-                tester.getId(),
+                tester.getPoint(),
                 tester.getAccount()
         );
         return response;
     }
 
+    public TesterLoginResponse login(final TesterLoginRequest request) {
+        try {
+            Tester tester = testerRepository.findByEmail(request.getEmail());
+            tester.checkPassword(request.getPassword());
+            TesterLoginResponse response = TesterLoginResponse.fromTester(tester);
+            return response;
+        } catch (NoResultException no) {
+            throw new LoginException();
+        } catch (NonUniqueResultException noUnique) {
+            throw new RuntimeException();
+        }
 
+    }
 
 }

@@ -19,7 +19,7 @@ public class TestsRepository {
         return test.getId();
     }
 
-    public Tests findOne(UUID id) {
+    public Tests findById(UUID id) {
         return em.find(Tests.class, id);
     }
 

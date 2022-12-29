@@ -22,7 +22,7 @@ public class FileHandler {
 
     }
 
-    public static String saveProfileFileData(final MultipartFile fileData) {
+    public static String saveTestImageFileData(final MultipartFile fileData) {
         if (fileData.isEmpty()) {
             throw new IllegalArgumentException("이미지를 전송해야 합니다.");
         }

@@ -86,7 +86,7 @@ public class ApplyInformation extends BaseEntity {
         if (testStatus == TestStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_FAIL;
-            test.getMaker().refundPoint(test.getPoint());
+            test.getMaker().refundPoint(test.getReward());
         } else {
             throw new ApproveException("선정기간이 아닙니다.");
         }
@@ -98,7 +98,7 @@ public class ApplyInformation extends BaseEntity {
         if (testStatus == TestStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_SUCCESS;
-            tester.rewardPoint(test.getPoint());
+            tester.rewardPoint(test.getReward());
         } else {
             throw new ExecutionException("수행 기간이 아닙니다.");
         }
@@ -109,7 +109,7 @@ public class ApplyInformation extends BaseEntity {
         if (testStatus == TestStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_FAIL;
-            test.getMaker().refundPoint(test.getPoint());
+            test.getMaker().refundPoint(test.getReward());
         } else {
             throw new ExecutionException("수행 기간, 완료 기간이 아닙니다.");
         }

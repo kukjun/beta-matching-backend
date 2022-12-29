@@ -56,7 +56,7 @@ public class MakerService {
         return response;
     }
 
-    public MakerLoginResponse findMakerInformation(final MakerLoginRequest request) {
+    public MakerLoginResponse login(final MakerLoginRequest request) {
         try {
             Maker maker = makerRepository.findByEmail(request.getEmail());
             maker.checkPassword(request.getPassword());
@@ -72,7 +72,7 @@ public class MakerService {
     public ExchangeInformationResponse exchangeView(final UUID makerId) {
         Maker maker = makerRepository.findById(makerId);
         ExchangeInformationResponse response = ExchangeInformationResponse.fromMaker(
-                maker.getId(),
+                maker.getPoint(),
                 maker.getAccount()
         );
         return response;

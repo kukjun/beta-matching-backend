@@ -27,9 +27,10 @@ public class MakerRepository {
 
     public Maker findByEmail(String email) throws NoResultException, NonUniqueResultException {
         return em.createQuery(
-                "select m from Maker m where m.email = :id",
-                Maker.class
-        ).getSingleResult();
+                        "select m from Maker m where m.email = :email",
+                        Maker.class
+                ).setParameter("email", email)
+                .getSingleResult();
     }
 
     public List<Maker> findAll() {

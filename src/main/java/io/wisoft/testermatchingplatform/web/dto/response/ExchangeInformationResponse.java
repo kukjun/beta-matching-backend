@@ -4,24 +4,23 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExchangeInformationResponse {
-    private final UUID id;
+    private final long point;
     private final String account;
 
 
-    public static ExchangeInformationResponse fromTester(UUID id, String account) {
+    public static ExchangeInformationResponse fromTester(long point, String account) {
         return new ExchangeInformationResponse(
-                id, account
+                point, account
         );
     }
 
-    public static ExchangeInformationResponse fromMaker(UUID id, String account) {
+    public static ExchangeInformationResponse fromMaker(long point, String account) {
         return new ExchangeInformationResponse(
-                id, account
+                point, account
         );
     }
 }

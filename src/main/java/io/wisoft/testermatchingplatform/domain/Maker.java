@@ -142,7 +142,6 @@ public class Maker extends BaseEntity {
         }
     }
 
-
     public void updatePoint(long point) {
         checkInsufficientPoint(point);
         this.point -= point;

@@ -84,7 +84,7 @@ class TesterServiceTest {
         );
 
         //when
-        TesterLoginResponse response = testerService.findTesterInformation(request);
+        TesterLoginResponse response = testerService.login(request);
 
         //then
         assertEquals(saveId, response.getId());
@@ -117,7 +117,7 @@ class TesterServiceTest {
         //then
         assertThrows(
                 LoginException.class,
-                () -> testerService.findTesterInformation(request)
+                () -> testerService.login(request)
         );
     }
 
@@ -147,7 +147,7 @@ class TesterServiceTest {
         //then
         assertThrows(
                 LoginException.class,
-                () -> testerService.findTesterInformation(request)
+                () -> testerService.login(request)
         );
     }
 
