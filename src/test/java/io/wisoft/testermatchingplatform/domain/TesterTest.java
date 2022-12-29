@@ -76,22 +76,20 @@ class TesterTest {
     @DisplayName("로그인 성공 테스트")
     public void loginSuccessTest() {
         // given
-        String email = "abcd@naver.com";
         String password = "abcdef12345";
 
         // when, then
-        assertDoesNotThrow(() -> normalTester.login(email, password));
+        assertDoesNotThrow(() -> normalTester.checkPassword(password));
     }
 
     @Test
     @DisplayName("로그인 실패 테스트 - 아이디 비밀번호 불일치")
     public void loginFailTest() {
         // given
-        String email = "abcd@naver.com";
         String password = "abcd12345";
 
         // when, then
-        assertThrows(LoginException.class, () -> normalTester.login(email, password));
+        assertThrows(LoginException.class, () -> normalTester.checkPassword(password));
     }
 
     @Test

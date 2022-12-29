@@ -74,7 +74,7 @@ class MakerTest {
         String password = "abcd1234";
 
         // when, then
-        assertDoesNotThrow(() -> normalMaker.login(email, password));
+        assertDoesNotThrow(() -> normalMaker.checkPassword(password));
 
     }
 
@@ -86,7 +86,7 @@ class MakerTest {
         String password = "abcd123";
 
         // when, then
-        assertThrows(LoginException.class, () -> normalMaker.login(email, password));
+        assertThrows(LoginException.class, () -> normalMaker.checkPassword(password));
 
     }
 
