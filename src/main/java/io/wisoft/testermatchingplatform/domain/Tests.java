@@ -97,7 +97,7 @@ public class Tests extends BaseEntity {
      * 비지니스 메서드
      */
 
-    public void updateTest(
+    public void updateIncludeImageTest(
             final String title,
             final String content,
             final String imageURL,
@@ -125,4 +125,37 @@ public class Tests extends BaseEntity {
         this.limitPerformer = limitPerformer;
         updateEntity();
     }
+
+    public void updateExceptImageTest(
+            final String title,
+            final String content,
+            final long reward,
+            final int limitPerformer,
+            final LocalDate recruitmentTimeStart,
+            final LocalDate recruitmentTimeEnd,
+            final LocalDate durationTimeStart,
+            final LocalDate durationTimeEnd
+    ) {
+        if (limitPerformer <= 0) {
+            throw new ApplyException("제한인원은 0보다 커야 합니다.");
+        }
+        this.maker.updatePoint(reward * limitPerformer - this.reward * this.limitPerformer);
+        this.title = title;
+        this.content = content;
+        this.reward = reward;
+        this.testDate = TestDate.newInstance(
+                recruitmentTimeStart,
+                recruitmentTimeEnd,
+                durationTimeStart,
+                durationTimeEnd
+        );
+        this.limitPerformer = limitPerformer;
+        updateEntity();
+    }
+
+    public long remainApplyTime() {
+        long remainTime = testDate.remainApplyTime();
+        return remainTime;
+    }
+
 }

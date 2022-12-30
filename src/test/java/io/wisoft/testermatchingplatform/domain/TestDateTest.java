@@ -1,7 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
 import io.wisoft.testermatchingplatform.handler.exception.TestDateSequenceException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -68,5 +67,34 @@ class TestDateTest {
                 )
         );
     }
+
+    @Test
+    @DisplayName("테스트의 남은 기간 표기 테스트")
+    public void remainTimeTest() throws Exception {
+        //given
+        LocalDate recruitmentTimeStart = LocalDate.now().plusDays(5L);
+        LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(10L);
+        LocalDate durationTimeStart = LocalDate.now().plusDays(20L);
+        LocalDate durationTimeEnd = LocalDate.now().plusDays(30L);
+        TestDate testDate = TestDate.newInstance(
+                recruitmentTimeStart,
+                recruitmentTimeEnd,
+                durationTimeStart,
+                durationTimeEnd
+        );
+
+        assertEquals(recruitmentTimeStart, testDate.getRecruitmentTimeStart());
+        assertEquals(recruitmentTimeEnd, testDate.getRecruitmentTimeEnd());
+        assertEquals(durationTimeStart, testDate.getDurationTimeStart());
+        assertEquals(durationTimeEnd, testDate.getDurationTimeEnd());
+
+        //when
+        long remainDay = testDate.remainApplyTime();
+        long expectedDay = recruitmentTimeEnd.toEpochDay() - LocalDate.now().toEpochDay();
+        System.out.println("expectedDay = " + expectedDay);
+        //then
+        assertEquals(expectedDay, remainDay);
+    }
+
 
 }

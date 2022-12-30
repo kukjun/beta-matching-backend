@@ -1,19 +1,12 @@
 package io.wisoft.testermatchingplatform.service;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
-import io.wisoft.testermatchingplatform.handler.validator.image.Custom;
-import io.wisoft.testermatchingplatform.handler.validator.image.Image;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateTestIncludeImageRequest {
+public class UpdateTestExceptImageRequest {
     private final String title;
     private final String recruitmentTimeStart;
     private final String recruitmentTimeLimit;
@@ -22,7 +15,6 @@ public class UpdateTestIncludeImageRequest {
     private final String content;
     private final int reward;
     private final int limitPerformer;
-    @Image(groups = Custom.class)
-    private final MultipartFile image;
+
 
 }
