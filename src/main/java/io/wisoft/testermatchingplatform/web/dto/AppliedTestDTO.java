@@ -23,15 +23,15 @@ public class AppliedTestDTO {
 
     public static AppliedTestDTO fromApplyInformation(ApplyInformation applyInformation) {
         return new AppliedTestDTO(
-                applyInformation.getTest().getId(),
-                applyInformation.getTest().getTitle(),
-                applyInformation.getTest().getMaker().getNickname(),
-                applyInformation.getTest().getMaker().getCompany(),
-                applyInformation.getTest().remainApplyTime(),
-                applyInformation.getTest().getReward(),
-                applyInformation.getTest().getApplyInformationList().size(),
-                applyInformation.getTest().getLimitPerformer(),
-                applyInformation.getTest().getImageURL()
+                applyInformation.getMission().getId(),
+                applyInformation.getMission().getTitle(),
+                applyInformation.getMission().getMaker().getNickname(),
+                applyInformation.getMission().getMaker().getCompany(),
+                applyInformation.getMission().remainApplyTime(),
+                applyInformation.getMission().getReward(),
+                applyInformation.getMission().getApplyInformationList().size(),
+                applyInformation.getMission().getLimitPerformer(),
+                applyInformation.getMission().getImageURL()
         );
     }
 }

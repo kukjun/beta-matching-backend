@@ -23,8 +23,8 @@ public class TesterReview extends Review {
             int starPoint,
             String comment
     ) {
-        TestStatus testStatus = applyInformation.currentTestStatus();
-        if (testStatus != TestStatus.COMPLETE) {
+        MissionStatus missionStatus = applyInformation.currentTestStatus();
+        if (missionStatus != MissionStatus.COMPLETE) {
             throw new ReviewException("Test가 완료 상태가 아닙니다.");
         }
         TesterReview testerReview = new TesterReview();
@@ -34,8 +34,6 @@ public class TesterReview extends Review {
         testerReview.comment = comment;
         return testerReview;
     }
-
-
 
 
 }

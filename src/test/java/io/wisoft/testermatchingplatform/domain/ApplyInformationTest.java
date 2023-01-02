@@ -17,11 +17,11 @@ class ApplyInformationTest {
 
     @BeforeEach
     public void createNormalApplyInformation() {
-        Tests tests = mock(Tests.class);
+        Mission mission = mock(Mission.class);
         Tester tester = mock(Tester.class);
 
         normalApplyInformation = ApplyInformation.newInstance(
-                tests,
+                mission,
                 tester
         );
     }
@@ -40,9 +40,9 @@ class ApplyInformationTest {
     public void approveApplySuccessTest() throws Exception {
         //given
         //when
-        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-                    .thenReturn(TestStatus.APPROVE);
+        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
+            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
+                    .thenReturn(MissionStatus.APPROVE);
             normalApplyInformation.applyApprove();
         }
         //then
@@ -54,9 +54,9 @@ class ApplyInformationTest {
     public void approveApplyFailTest() throws Exception {
         //given
         //when
-        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-                    .thenReturn(TestStatus.APPLY);
+        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
+            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
+                    .thenReturn(MissionStatus.APPLY);
             //then
             assertThrows(ApproveException.class, () -> normalApplyInformation.applyApprove());
         }
@@ -67,11 +67,11 @@ class ApplyInformationTest {
     public void rejectApplySuccessTest() throws Exception {
         //given
         //when
-        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-                    .thenReturn(TestStatus.APPROVE);
+        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
+            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
+                    .thenReturn(MissionStatus.APPROVE);
 
-            when(normalApplyInformation.getTest().getMaker())
+            when(normalApplyInformation.getMission().getMaker())
                     .thenReturn(mock(Maker.class));
 
             normalApplyInformation.applyReject();
@@ -103,11 +103,11 @@ class ApplyInformationTest {
     public void rejectApplyFailTest() throws Exception {
         //given
         //when
-        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-                    .thenReturn(TestStatus.APPLY);
+        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
+            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
+                    .thenReturn(MissionStatus.APPLY);
 
-            when(normalApplyInformation.getTest().getMaker())
+            when(normalApplyInformation.getMission().getMaker())
                     .thenReturn(mock(Maker.class));
 
             assertThrows(ApproveException.class, () -> normalApplyInformation.applyReject());
@@ -120,9 +120,9 @@ class ApplyInformationTest {
     public void executePerformerSuccessTest() throws Exception {
         //given
         //when
-        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-                    .thenReturn(TestStatus.PROGRESS);
+        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
+            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
+                    .thenReturn(MissionStatus.PROGRESS);
             normalApplyInformation.executionApprove();
         }
         //then
@@ -135,9 +135,9 @@ class ApplyInformationTest {
     public void executePerformerFailTest() throws Exception {
         //given
         //when
-        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-                    .thenReturn(TestStatus.APPLY);
+        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
+            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
+                    .thenReturn(MissionStatus.APPLY);
             //then
             assertThrows(ExecutionException.class, () -> normalApplyInformation.executionApprove());
         }

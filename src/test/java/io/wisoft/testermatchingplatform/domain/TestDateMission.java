@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.TestDateSequenceException;
+import io.wisoft.testermatchingplatform.handler.exception.MissionDateSequenceException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestDateTest {
+class TestDateMission {
 
 
     @Test
@@ -18,17 +18,17 @@ class TestDateTest {
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(10L);
         LocalDate durationTimeStart = LocalDate.now().plusDays(20L);
         LocalDate durationTimeEnd = LocalDate.now().plusDays(30L);
-        TestDate testDate = TestDate.newInstance(
+        MissionDate missionDate = MissionDate.newInstance(
                 recruitmentTimeStart,
                 recruitmentTimeEnd,
                 durationTimeStart,
                 durationTimeEnd
         );
 
-        assertEquals(recruitmentTimeStart, testDate.getRecruitmentTimeStart());
-        assertEquals(recruitmentTimeEnd, testDate.getRecruitmentTimeEnd());
-        assertEquals(durationTimeStart, testDate.getDurationTimeStart());
-        assertEquals(durationTimeEnd, testDate.getDurationTimeEnd());
+        assertEquals(recruitmentTimeStart, missionDate.getRecruitmentTimeStart());
+        assertEquals(recruitmentTimeEnd, missionDate.getRecruitmentTimeEnd());
+        assertEquals(durationTimeStart, missionDate.getDurationTimeStart());
+        assertEquals(durationTimeEnd, missionDate.getDurationTimeEnd());
     }
 
     @Test
@@ -39,8 +39,8 @@ class TestDateTest {
         LocalDate durationTimeStart = LocalDate.now().plusDays(5L);
         LocalDate durationTimeEnd = LocalDate.now().plusDays(3L);
         assertThrows(
-                TestDateSequenceException.class,
-                () -> TestDate.newInstance(
+                MissionDateSequenceException.class,
+                () -> MissionDate.newInstance(
                         recruitmentTimeStart,
                         recruitmentTimeEnd,
                         durationTimeStart,
@@ -58,8 +58,8 @@ class TestDateTest {
         LocalDate durationTimeEnd = LocalDate.now().plusDays(30L);
 
         assertThrows(
-                TestDateSequenceException.class,
-                () -> TestDate.newInstance(
+                MissionDateSequenceException.class,
+                () -> MissionDate.newInstance(
                         recruitmentTimeStart,
                         recruitmentTimeEnd,
                         durationTimeStart,
@@ -76,20 +76,20 @@ class TestDateTest {
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(10L);
         LocalDate durationTimeStart = LocalDate.now().plusDays(20L);
         LocalDate durationTimeEnd = LocalDate.now().plusDays(30L);
-        TestDate testDate = TestDate.newInstance(
+        MissionDate missionDate = MissionDate.newInstance(
                 recruitmentTimeStart,
                 recruitmentTimeEnd,
                 durationTimeStart,
                 durationTimeEnd
         );
 
-        assertEquals(recruitmentTimeStart, testDate.getRecruitmentTimeStart());
-        assertEquals(recruitmentTimeEnd, testDate.getRecruitmentTimeEnd());
-        assertEquals(durationTimeStart, testDate.getDurationTimeStart());
-        assertEquals(durationTimeEnd, testDate.getDurationTimeEnd());
+        assertEquals(recruitmentTimeStart, missionDate.getRecruitmentTimeStart());
+        assertEquals(recruitmentTimeEnd, missionDate.getRecruitmentTimeEnd());
+        assertEquals(durationTimeStart, missionDate.getDurationTimeStart());
+        assertEquals(durationTimeEnd, missionDate.getDurationTimeEnd());
 
         //when
-        long remainDay = testDate.remainApplyTime();
+        long remainDay = missionDate.remainApplyTime();
         long expectedDay = recruitmentTimeEnd.toEpochDay() - LocalDate.now().toEpochDay();
         System.out.println("expectedDay = " + expectedDay);
         //then

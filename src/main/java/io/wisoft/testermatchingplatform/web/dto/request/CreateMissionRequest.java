@@ -1,7 +1,7 @@
 package io.wisoft.testermatchingplatform.web.dto.request;
 
 import io.wisoft.testermatchingplatform.domain.Maker;
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.handler.validator.image.Custom;
 import io.wisoft.testermatchingplatform.handler.validator.image.Image;
 import lombok.AccessLevel;
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateTestRequest {
+public class CreateMissionRequest {
     private final String title;
     private final String recruitmentTimeStart;
     private final String recruitmentTimeLimit;
@@ -26,9 +26,9 @@ public class CreateTestRequest {
     @Image(groups = Custom.class)
     private final MultipartFile image;
 
-    public Tests toTest(Maker maker, String imageURL) {
+    public Mission toTest(Maker maker, String imageURL) {
 
-        Tests test = Tests.newInstance(
+        Mission test = Mission.newInstance(
                 title,
                 content,
                 imageURL,
@@ -43,7 +43,7 @@ public class CreateTestRequest {
         return test;
     }
 
-    public static CreateTestRequest newInstance(
+    public static CreateMissionRequest newInstance(
             final String title,
             final String recruitmentTimeStart,
             final String recruitmentTimeLimit,
@@ -54,7 +54,7 @@ public class CreateTestRequest {
             final int limitPerformer,
             final MultipartFile symbolImage
     ) {
-        CreateTestRequest request = new CreateTestRequest(
+        CreateMissionRequest request = new CreateMissionRequest(
                 title,
                 recruitmentTimeStart,
                 recruitmentTimeLimit,

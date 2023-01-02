@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "test")
+@Table(name = "mission")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // Test 가 TestFrameWork와 겹쳐서, Tests로 변경
-public class Tests extends BaseEntity {
+public class Mission extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "test_id")
+    @Column(name = "mission_id")
     private UUID id;
 
     private String title;
@@ -30,16 +30,16 @@ public class Tests extends BaseEntity {
     private int limitPerformer;
 
     @Enumerated(EnumType.STRING)
-    private TestStatus status;
+    private MissionStatus status;
 
     @Embedded
-    private TestDate testDate;
+    private MissionDate missionDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "maker_id")
     private Maker maker;
 
-    @OneToMany(mappedBy = "test")
+    @OneToMany(mappedBy = "mission")
     private List<ApplyInformation> applyInformationList = new ArrayList<>();
 
 
@@ -48,11 +48,11 @@ public class Tests extends BaseEntity {
      */
     public void connectCreatedMaker(Maker maker) {
         this.maker = maker;
-        maker.getCreatedTests().add(this);
+        maker.getCreatedMissions().add(this);
     }
 
     public void disconnectCreateMaker(Maker maker) {
-        maker.getCreatedTests().remove(this);
+        maker.getCreatedMissions().remove(this);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Tests extends BaseEntity {
      */
 
     // 생성 시 예외. recruitmentTimeStart가 현재보다 적으면 Error
-    public static Tests newInstance(
+    public static Mission newInstance(
             final String title,
             final String content,
             final String imageURL,
@@ -76,12 +76,12 @@ public class Tests extends BaseEntity {
             throw new ApplyException("제한인원은 0보다 커야 합니다.");
         }
 
-        Tests test = new Tests();
+        Mission test = new Mission();
         test.title = title;
         test.content = content;
         test.imageURL = imageURL;
         test.reward = point;
-        test.testDate = TestDate.newInstance(
+        test.missionDate = MissionDate.newInstance(
                 recruitmentTimeStart,
                 recruitmentTimeEnd,
                 durationTimeStart,
@@ -98,7 +98,7 @@ public class Tests extends BaseEntity {
      * 비지니스 메서드
      */
 
-    public void updateIncludeImageTest(
+    public void updateIncludeImageMission(
             final String title,
             final String content,
             final String imageURL,
@@ -117,7 +117,7 @@ public class Tests extends BaseEntity {
         this.content = content;
         this.imageURL = imageURL;
         this.reward = reward;
-        this.testDate = TestDate.newInstance(
+        this.missionDate = MissionDate.newInstance(
                 recruitmentTimeStart,
                 recruitmentTimeEnd,
                 durationTimeStart,
@@ -127,7 +127,7 @@ public class Tests extends BaseEntity {
         updateEntity();
     }
 
-    public void updateExceptImageTest(
+    public void updateExceptImageMission(
             final String title,
             final String content,
             final long reward,
@@ -144,7 +144,7 @@ public class Tests extends BaseEntity {
         this.title = title;
         this.content = content;
         this.reward = reward;
-        this.testDate = TestDate.newInstance(
+        this.missionDate = MissionDate.newInstance(
                 recruitmentTimeStart,
                 recruitmentTimeEnd,
                 durationTimeStart,
@@ -155,7 +155,7 @@ public class Tests extends BaseEntity {
     }
 
     public long remainApplyTime() {
-        long remainTime = testDate.remainApplyTime();
+        long remainTime = missionDate.remainApplyTime();
         return remainTime;
     }
 

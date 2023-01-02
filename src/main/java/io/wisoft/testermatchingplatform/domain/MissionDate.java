@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.TestDateSequenceException;
+import io.wisoft.testermatchingplatform.handler.exception.MissionDateSequenceException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,27 +11,27 @@ import java.time.LocalDate;
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TestDate {
+public class MissionDate {
 
     private LocalDate recruitmentTimeStart;
     private LocalDate recruitmentTimeEnd;
     private LocalDate durationTimeStart;
     private LocalDate durationTimeEnd;
 
-    public static TestDate newInstance(
+    public static MissionDate newInstance(
             LocalDate recruitmentTimeStart,
             LocalDate recruitmentTimeEnd,
             LocalDate durationTimeStart,
             LocalDate durationTimeEnd
     ) {
-        TestDate testDate = new TestDate();
-        testDate.recruitmentTimeStart = recruitmentTimeStart;
-        testDate.recruitmentTimeEnd = recruitmentTimeEnd;
-        testDate.durationTimeStart = durationTimeStart;
-        testDate.durationTimeEnd = durationTimeEnd;
-        testDate.checkTimeSequence();
-        testDate.checkApplyTimeBeforeCurrentTime();
-        return testDate;
+        MissionDate missionDate = new MissionDate();
+        missionDate.recruitmentTimeStart = recruitmentTimeStart;
+        missionDate.recruitmentTimeEnd = recruitmentTimeEnd;
+        missionDate.durationTimeStart = durationTimeStart;
+        missionDate.durationTimeEnd = durationTimeEnd;
+        missionDate.checkTimeSequence();
+        missionDate.checkApplyTimeBeforeCurrentTime();
+        return missionDate;
     }
 
     private void checkTimeSequence() {
@@ -41,13 +41,13 @@ public class TestDate {
                 return;
             }
         }
-        throw new TestDateSequenceException();
+        throw new MissionDateSequenceException();
     }
 
     private void checkApplyTimeBeforeCurrentTime() {
         LocalDate localDate = LocalDate.now();
         if (localDate.isAfter(this.recruitmentTimeStart)) {
-            throw new TestDateSequenceException("신청 시작 시간보다 현재 시간이 더 깁니다.");
+            throw new MissionDateSequenceException("신청 시작 시간보다 현재 시간이 더 깁니다.");
         }
     }
 

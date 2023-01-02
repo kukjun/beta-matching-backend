@@ -29,7 +29,7 @@ public class Maker extends BaseEntity {
     private String password;
 
     @OneToMany(mappedBy = "maker")
-    private List<Tests> createdTests = new ArrayList<>();
+    private List<Mission> createdMissions = new ArrayList<>();
 
     @Column(unique = true)
     private String nickname;

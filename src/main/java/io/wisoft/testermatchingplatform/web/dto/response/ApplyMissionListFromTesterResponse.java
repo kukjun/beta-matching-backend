@@ -14,15 +14,15 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class ApplyTestListFromTesterResponse {
+public class ApplyMissionListFromTesterResponse {
     private final List<AppliedTestDTO> appliedTestDTOList = new ArrayList<>();
     private final List<ApprovedTestDTO> approvedTestDTOList = new ArrayList<>();
     private final List<ExecutedTestDTO> executedTestDTOList = new ArrayList<>();
 
-    public static ApplyTestListFromTesterResponse fromApplyInformationList(
+    public static ApplyMissionListFromTesterResponse fromApplyInformationList(
             List<ApplyInformation> applyInformationList
     ) {
-        ApplyTestListFromTesterResponse response = new ApplyTestListFromTesterResponse();
+        ApplyMissionListFromTesterResponse response = new ApplyMissionListFromTesterResponse();
 
         for (ApplyInformation applyInformation : applyInformationList) {
             ApplyInformationStatus status = applyInformation.getStatus();

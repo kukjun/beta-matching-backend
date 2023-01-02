@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ApplyPeriodTestDTO {
     private final int participantCapacity;
     private final String symbolImageRoot;
 
-    public static ApplyPeriodTestDTO fromTest(Tests test) {
+    public static ApplyPeriodTestDTO fromTest(Mission test) {
         ApplyPeriodTestDTO dto = new ApplyPeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

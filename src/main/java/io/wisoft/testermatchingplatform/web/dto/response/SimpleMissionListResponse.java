@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.web.dto.SimpleTestDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,14 +11,14 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class SimpleTestListResponse {
+public class SimpleMissionListResponse {
     private final List<SimpleTestDTO> dtoList = new ArrayList<>();
 
 
-    public static SimpleTestListResponse fromTestList(List<Tests> list) {
+    public static SimpleMissionListResponse fromMissionList(List<Mission> list) {
 
-        SimpleTestListResponse response = new SimpleTestListResponse();
-        for (Tests test : list) {
+        SimpleMissionListResponse response = new SimpleMissionListResponse();
+        for (Mission test : list) {
             SimpleTestDTO dto = SimpleTestDTO.fromTest(test);
             response.dtoList.add(dto);
         }

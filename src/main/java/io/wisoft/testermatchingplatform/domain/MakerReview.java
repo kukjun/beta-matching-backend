@@ -23,8 +23,8 @@ public class MakerReview extends Review {
             int starPoint,
             String comment
     ) {
-        TestStatus testStatus = applyInformation.currentTestStatus();
-        if (testStatus == TestStatus.COMPLETE) {
+        MissionStatus missionStatus = applyInformation.currentTestStatus();
+        if (missionStatus == MissionStatus.COMPLETE) {
             MakerReview makerReview = new MakerReview();
             makerReview.applyInformation = applyInformation;
             makerReview.registerTime = LocalDateTime.now();

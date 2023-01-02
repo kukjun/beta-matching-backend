@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateTestExceptImageRequest {
+public class UpdateMissionExceptImageRequest {
     private final String title;
     private final String recruitmentTimeStart;
     private final String recruitmentTimeLimit;

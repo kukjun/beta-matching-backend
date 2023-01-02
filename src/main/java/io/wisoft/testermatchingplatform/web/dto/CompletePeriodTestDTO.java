@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class CompletePeriodTestDTO {
     private final String symbolImageRoot;
     private final String state;
 
-    public static CompletePeriodTestDTO fromTest(Tests test) {
+    public static CompletePeriodTestDTO fromTest(Mission test) {
         CompletePeriodTestDTO dto = new CompletePeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

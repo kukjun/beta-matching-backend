@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,12 +9,12 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class UpdateTestIncludeImageResponse {
+public class UpdateMissionIncludeImageResponse {
     private final UUID id;
 
 
-    public static UpdateTestIncludeImageResponse fromTest(Tests test) {
-        UpdateTestIncludeImageResponse response = new UpdateTestIncludeImageResponse(test.getId());
+    public static UpdateMissionIncludeImageResponse fromMission(Mission test) {
+        UpdateMissionIncludeImageResponse response = new UpdateMissionIncludeImageResponse(test.getId());
         return response;
     }
 }

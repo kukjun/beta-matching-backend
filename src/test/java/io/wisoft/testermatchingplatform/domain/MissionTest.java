@@ -10,12 +10,12 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestsTest {
+class MissionTest {
 
     private static Validator validator;
 
-    private Tests normalTest;
-    private Tests wriedTest;
+    private Mission normalTest;
+    private Mission wriedTest;
 
 
     @BeforeAll
@@ -51,7 +51,7 @@ class TestsTest {
         LocalDate durationTimeStart = LocalDate.now().plusDays(30L);
         LocalDate durationTimeEnd = LocalDate.now().plusDays(50L);
 
-        normalTest = Tests.newInstance(
+        normalTest = Mission.newInstance(
                 title,
                 content,
                 imageURL,
@@ -92,7 +92,7 @@ class TestsTest {
         LocalDate durationTimeStart = LocalDate.now().plusDays(30L);
         LocalDate durationTimeEnd = LocalDate.now().plusDays(50L);
 
-        wriedTest = Tests.newInstance(
+        wriedTest = Mission.newInstance(
                 title,
                 content,
                 imageURL,
@@ -152,7 +152,7 @@ class TestsTest {
         LocalDate recruitmentTimeEnd = LocalDate.now().plusDays(20L);
         LocalDate durationTimeStart = LocalDate.now().plusDays(30L);
         LocalDate durationTimeEnd = LocalDate.now().plusDays(50L);
-        assertThrows(ApplyException.class, () -> Tests.newInstance(
+        assertThrows(ApplyException.class, () -> Mission.newInstance(
                 title,
                 content,
                 imageURL,

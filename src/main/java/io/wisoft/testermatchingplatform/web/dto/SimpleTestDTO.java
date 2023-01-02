@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class SimpleTestDTO{
     private final String symbolImageRoot;
     private final int participantCapacity;
 
-    public static SimpleTestDTO fromTest(Tests test) {
+    public static SimpleTestDTO fromTest(Mission test) {
         SimpleTestDTO dto = new SimpleTestDTO(
                 test.getId(),
                 test.getTitle(),

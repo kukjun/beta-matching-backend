@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class DetailTestResponse {
+public class DetailMissionResponse {
     private final UUID id;
     private final String title;
     private final String makerNickname;
@@ -26,16 +26,16 @@ public class DetailTestResponse {
     private final long deadLine;
     private final String symbolImageRoot;
 
-    public static DetailTestResponse fromTest(Tests test) {
-        DetailTestResponse response = new DetailTestResponse(
+    public static DetailMissionResponse fromMission(Mission test) {
+        DetailMissionResponse response = new DetailMissionResponse(
                 test.getId(),
                 test.getTitle(),
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
-                test.getTestDate().getRecruitmentTimeStart(),
-                test.getTestDate().getRecruitmentTimeEnd(),
-                test.getTestDate().getDurationTimeStart(),
-                test.getTestDate().getDurationTimeEnd(),
+                test.getMissionDate().getRecruitmentTimeStart(),
+                test.getMissionDate().getRecruitmentTimeEnd(),
+                test.getMissionDate().getDurationTimeStart(),
+                test.getMissionDate().getDurationTimeEnd(),
                 test.getContent(),
                 test.getReward(),
                 test.getApplyInformationList().size(),

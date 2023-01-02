@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateTestResponse {
+public class CreateMissionResponse {
     private final UUID id;
 
-    public static CreateTestResponse fromTest(Tests test) {
-        CreateTestResponse response = new CreateTestResponse(test.getId());
+    public static CreateMissionResponse fromMission(Mission test) {
+        CreateMissionResponse response = new CreateMissionResponse(test.getId());
         return response;
     }
 }

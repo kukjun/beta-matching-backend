@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto;
 
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ApprovePeriodTestDTO {
     private final String symbolImageRoot;
     private final String state;
 
-    public static ApprovePeriodTestDTO fromTest(Tests test) {
+    public static ApprovePeriodTestDTO fromTest(Mission test) {
         ApprovePeriodTestDTO dto = new ApprovePeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

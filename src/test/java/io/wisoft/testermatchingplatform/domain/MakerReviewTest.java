@@ -16,7 +16,7 @@ class MakerReviewTest {
         int starPoint = 5;
         String comment = "좋았습니다.";
         ApplyInformation mock = mock(ApplyInformation.class);
-        when(mock.currentTestStatus()).thenReturn(TestStatus.COMPLETE);
+        when(mock.currentTestStatus()).thenReturn(MissionStatus.COMPLETE);
         MakerReview normalMakerReview = MakerReview.newInstance(
                 mock,
                 starPoint,
@@ -36,7 +36,7 @@ class MakerReviewTest {
         int starPoint = 5;
         String comment = "좋았습니다.";
         ApplyInformation mock = mock(ApplyInformation.class);
-        when(mock.currentTestStatus()).thenReturn(TestStatus.APPROVE);
+        when(mock.currentTestStatus()).thenReturn(MissionStatus.APPROVE);
 
         assertThrows(
                 ReviewException.class,

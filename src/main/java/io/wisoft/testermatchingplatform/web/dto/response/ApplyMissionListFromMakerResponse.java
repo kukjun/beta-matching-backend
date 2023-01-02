@@ -1,7 +1,7 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
-import io.wisoft.testermatchingplatform.domain.TestStatus;
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.MissionStatus;
+import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.web.dto.ApplyPeriodTestDTO;
 import io.wisoft.testermatchingplatform.web.dto.ApprovePeriodTestDTO;
 import io.wisoft.testermatchingplatform.web.dto.CompletePeriodTestDTO;
@@ -15,19 +15,19 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class ApplyTestListFromMakerResponse {
+public class ApplyMissionListFromMakerResponse {
     private final List<ApplyPeriodTestDTO> applyPeriodTestDTOList = new ArrayList<>();
     private final List<ApprovePeriodTestDTO> approvePeriodTestDTOList = new ArrayList<>();
     private final List<ProgressPeriodTestDTO> progressPeriodTestDTOList = new ArrayList<>();
     private final List<CompletePeriodTestDTO> completePeriodTestDTOList = new ArrayList<>();
 
 
-    public static ApplyTestListFromMakerResponse fromTestList(List<Tests> list) {
+    public static ApplyMissionListFromMakerResponse fromMissionList(List<Mission> list) {
 
-        ApplyTestListFromMakerResponse response = new ApplyTestListFromMakerResponse();
+        ApplyMissionListFromMakerResponse response = new ApplyMissionListFromMakerResponse();
 
-        for (Tests test : list) {
-            TestStatus status = test.getStatus();
+        for (Mission test : list) {
+            MissionStatus status = test.getStatus();
             switch (status) {
                 case BEFORE_APPLY:
                 case APPLY:

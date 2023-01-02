@@ -22,13 +22,13 @@ public class ExecutedTestDTO {
 
     public static ExecutedTestDTO fromApplyInformation(ApplyInformation applyInformation) {
         return new ExecutedTestDTO(
-                applyInformation.getTest().getId(),
-                applyInformation.getTest().getTitle(),
-                applyInformation.getTest().getMaker().getNickname(),
-                applyInformation.getTest().getMaker().getCompany(),
-                applyInformation.getTest().getReward(),
+                applyInformation.getMission().getId(),
+                applyInformation.getMission().getTitle(),
+                applyInformation.getMission().getMaker().getNickname(),
+                applyInformation.getMission().getMaker().getCompany(),
+                applyInformation.getMission().getReward(),
                 applyInformation.getStatus().toString(),
-                applyInformation.getTest().getImageURL()
+                applyInformation.getMission().getImageURL()
         );
     }
 }
