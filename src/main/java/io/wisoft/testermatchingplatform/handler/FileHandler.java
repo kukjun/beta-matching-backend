@@ -37,6 +37,10 @@ public class FileHandler {
         return saveFile(file, fileData);
     }
 
+    public static void removeTestImage(final String fileName) {
+        removeFile(fileName)
+    }
+
     public static byte[] getTestRepresentationFileData(final String fileName) {
         try {
             final File file = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH + fileName);
@@ -50,7 +54,6 @@ public class FileHandler {
             throw new IllegalStateException("파일을 읽어오는 데 실패하였습니다.");
         }
     }
-
 
 
     public static String getImageContentType(final String imageFileName) {
@@ -71,6 +74,19 @@ public class FileHandler {
         } catch (IOException e) {
             System.err.println(e.getMessage());
             throw new IllegalStateException("파일을 저장하는 데 실패하였습니다.");
+        }
+    }
+
+    private static void removeFile(final String fileName) {
+        final File file = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH + fileName);
+
+        if (file.exists()) {
+            if (file.delete()) {
+            } else {
+                throw new IllegalArgumentException("해당 파일을 삭제할 수 없습니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("해당 파일이 존재하지 않습니다.");
         }
     }
 

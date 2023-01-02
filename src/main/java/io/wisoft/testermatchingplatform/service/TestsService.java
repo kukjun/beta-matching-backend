@@ -41,10 +41,10 @@ public class TestsService {
     }
 
     @Transactional
-    public UpdateTestIncludeImageResponse updateTest(UUID testId, UpdateTestIncludeImageRequest request) {
+    public UpdateTestIncludeImageResponse updateIncludeImageTest(UUID testId, UpdateTestIncludeImageRequest request) {
         Tests test = testsRepository.findById(testId);
+        FileHandler.removeTestImage(test.getImageURL());
         String imageFileURL = FileHandler.saveTestImageFileData(request.getImage());
-        // 이미지 삭제 로직 추가하기
 
         test.updateIncludeImageTest(
                 request.getTitle(),
