@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public enum MissionStatus {
     BEFORE_APPLY, APPLY, APPROVE, PROGRESS, COMPLETE;
 
+    // Scheduled 사용하기
     public static MissionStatus refreshStatus(MissionDate missionDate) {
         LocalDate currentTime = LocalDate.now();
         if (currentTime.isBefore(missionDate.getRecruitmentTimeStart())) {

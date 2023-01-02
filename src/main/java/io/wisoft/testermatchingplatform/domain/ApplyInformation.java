@@ -72,7 +72,7 @@ public class ApplyInformation extends BaseEntity {
      * 비지니스 메서드
      */
     public void applyApprove() {
-        MissionStatus missionStatus = MissionStatus.refreshStatus(currentTestDate());
+        MissionStatus missionStatus = this.mission.getStatus();
         if (missionStatus == MissionStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_SUCCESS;
@@ -82,7 +82,7 @@ public class ApplyInformation extends BaseEntity {
     }
 
     public void applyReject() {
-        MissionStatus missionStatus = MissionStatus.refreshStatus(currentTestDate());
+        MissionStatus missionStatus = this.mission.getStatus();
         if (missionStatus == MissionStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_FAIL;
@@ -94,7 +94,7 @@ public class ApplyInformation extends BaseEntity {
 
 
     public void executionApprove() {
-        MissionStatus missionStatus = MissionStatus.refreshStatus(this.mission.getMissionDate());
+        MissionStatus missionStatus = this.mission.getStatus();
         if (missionStatus == MissionStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_SUCCESS;
@@ -105,7 +105,7 @@ public class ApplyInformation extends BaseEntity {
     }
 
     public void executeReject() {
-        MissionStatus missionStatus = MissionStatus.refreshStatus(currentTestDate());
+        MissionStatus missionStatus = this.mission.getStatus();
         if (missionStatus == MissionStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_FAIL;

@@ -51,6 +51,10 @@ public class Mission extends BaseEntity {
         maker.getCreatedMissions().add(this);
     }
 
+    public void refreshMissionStatus() {
+        this.status = MissionStatus.refreshStatus(this.missionDate);
+    }
+
     public void disconnectCreateMaker(Maker maker) {
         maker.getCreatedMissions().remove(this);
     }
