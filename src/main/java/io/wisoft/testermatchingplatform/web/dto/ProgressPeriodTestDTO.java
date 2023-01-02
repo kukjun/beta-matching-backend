@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.service;
+package io.wisoft.testermatchingplatform.web.dto;
 
 import io.wisoft.testermatchingplatform.domain.Tests;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CompletePeriodTestDTO {
+public class ProgressPeriodTestDTO {
     private final UUID id;
     private final String title;
     private final String makerNickname;
@@ -18,8 +18,8 @@ public class CompletePeriodTestDTO {
     private final String symbolImageRoot;
     private final String state;
 
-    public static CompletePeriodTestDTO fromTest(Tests test) {
-        CompletePeriodTestDTO dto = new CompletePeriodTestDTO(
+    public static ProgressPeriodTestDTO fromTest(Tests test) {
+        ProgressPeriodTestDTO dto = new ProgressPeriodTestDTO(
                 test.getId(),
                 test.getTitle(),
                 test.getMaker().getNickname(),

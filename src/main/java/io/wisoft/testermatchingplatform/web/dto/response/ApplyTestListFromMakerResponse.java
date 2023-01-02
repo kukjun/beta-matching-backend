@@ -1,7 +1,11 @@
-package io.wisoft.testermatchingplatform.service;
+package io.wisoft.testermatchingplatform.web.dto.response;
 
 import io.wisoft.testermatchingplatform.domain.TestStatus;
 import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.web.dto.ApplyPeriodTestDTO;
+import io.wisoft.testermatchingplatform.web.dto.ApprovePeriodTestDTO;
+import io.wisoft.testermatchingplatform.web.dto.CompletePeriodTestDTO;
+import io.wisoft.testermatchingplatform.web.dto.ProgressPeriodTestDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
