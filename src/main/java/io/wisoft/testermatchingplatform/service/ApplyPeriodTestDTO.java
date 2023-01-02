@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class SimpleTestDTO{
+public class ApplyPeriodTestDTO {
     private final UUID id;
     private final String title;
     private final String makerNickname;
@@ -17,11 +17,11 @@ public class SimpleTestDTO{
     private final long deadlineRemain;
     private final long reward;
     private final int apply;
-    private final String symbolImageRoot;
     private final int participantCapacity;
+    private final String symbolImageRoot;
 
-    public static SimpleTestDTO fromTest(Tests test) {
-        SimpleTestDTO dto = new SimpleTestDTO(
+    public static ApplyPeriodTestDTO fromTest(Tests test) {
+        ApplyPeriodTestDTO dto = new ApplyPeriodTestDTO(
                 test.getId(),
                 test.getTitle(),
                 test.getMaker().getNickname(),
@@ -29,8 +29,8 @@ public class SimpleTestDTO{
                 test.remainApplyTime(),
                 test.getReward(),
                 test.getApplyInformationList().size(),
-                test.getImageURL(),
-                test.getLimitPerformer()
+                test.getLimitPerformer(),
+                test.getImageURL()
         );
         return dto;
     }

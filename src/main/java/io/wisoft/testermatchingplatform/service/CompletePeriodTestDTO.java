@@ -9,26 +9,26 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class ApprovedTestDTO {
-
+public class CompletePeriodTestDTO {
     private final UUID id;
     private final String title;
     private final String makerNickname;
     private final String company;
     private final long reward;
-    private final String status;
     private final String symbolImageRoot;
+    private final String state;
 
-
-    public static ApprovedTestDTO fromTest(Tests test) {
-        return new ApprovedTestDTO(
+    public static CompletePeriodTestDTO fromTest(Tests test) {
+        CompletePeriodTestDTO dto = new CompletePeriodTestDTO(
                 test.getId(),
                 test.getTitle(),
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
                 test.getReward(),
-                test.getStatus().toString(),
-                test.getImageURL()
+                test.getImageURL(),
+                test.getStatus().toString()
         );
+
+        return dto;
     }
 }

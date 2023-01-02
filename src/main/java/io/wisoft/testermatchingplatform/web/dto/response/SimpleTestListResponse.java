@@ -1,6 +1,7 @@
-package io.wisoft.testermatchingplatform.service;
+package io.wisoft.testermatchingplatform.web.dto.response;
 
 import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.web.dto.SimpleTestDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

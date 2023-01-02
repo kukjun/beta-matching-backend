@@ -75,6 +75,7 @@ public class Tests extends BaseEntity {
         if (limitApply <= 0) {
             throw new ApplyException("제한인원은 0보다 커야 합니다.");
         }
+
         Tests test = new Tests();
         test.title = title;
         test.content = content;

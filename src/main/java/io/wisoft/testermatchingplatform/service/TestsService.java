@@ -1,18 +1,20 @@
 package io.wisoft.testermatchingplatform.service;
 
-import io.wisoft.testermatchingplatform.domain.Maker;
-import io.wisoft.testermatchingplatform.domain.TestStatus;
-import io.wisoft.testermatchingplatform.domain.Tests;
+import io.wisoft.testermatchingplatform.domain.*;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
+import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.MakerRepository;
 import io.wisoft.testermatchingplatform.repository.TestsRepository;
+import io.wisoft.testermatchingplatform.web.dto.request.CreateTestRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.UpdateTestExceptImageRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.UpdateTestIncludeImageRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,6 +25,7 @@ public class TestsService {
 
     private final TestsRepository testsRepository;
     private final MakerRepository makerRepository;
+    private final ApplyInformationRepository applyInformationRepository;
 
     @Transactional
     public CreateTestResponse createTest(UUID makerId, CreateTestRequest request) {
@@ -89,41 +92,53 @@ public class TestsService {
 //        List<Tests> popularTop4Tests = testsRepository.findPopularTop4();
 //    }
 
-    public SimpleTestListResponse applyTestList() {
-        List<Tests> list = testsRepository.findApplyTests();
+    public SimpleTestListResponse applyTestList(UUID testerId) {
+        List<Tests> list = testsRepository.findApplyTestsExceptTesterId(testerId);
         SimpleTestListResponse response = SimpleTestListResponse.fromTestList(list);
         return response;
     }
 
     public ApplyTestListFromTesterResponse applyTestListFromTester(UUID testerId) {
-        List<Tests> list = testsRepository.findAppliedTestsByTesterId(testerId);
-        List<AppliedTestDTO> appliedTestDTOList = new ArrayList<>();
-        List<ApprovedTestDTO> approvedTestDTOList = new ArrayList<>();
-        List<CompletedTestDTO> completedTestDTOList = new ArrayList<>();
+        List<ApplyInformation> applyInformationList = applyInformationRepository.findByTesterId(testerId);
 
-        for (Tests test : list) {
-            TestStatus status = test.getStatus();
-            switch (status) {
-                case APPLY:
-                    appliedTestDTOList.add(AppliedTestDTO.fromTest(test));
-                    break;
-                case APPROVE:
-                case PROGRESS:
-                    approvedTestDTOList.add(ApprovedTestDTO.fromTest(test));
-                    break;
-                case COMPLETE:
-                    completedTestDTOList.add(CompletedTestDTO.fromTest(test));
-            }
-        }
-
-        ApplyTestListFromTesterResponse response = ApplyTestListFromTesterResponse.fromDTO(
-                appliedTestDTOList,
-                approvedTestDTOList,
-                completedTestDTOList
+        ApplyTestListFromTesterResponse response = ApplyTestListFromTesterResponse.fromApplyInformationList(
+                applyInformationList
         );
 
         return response;
     }
+
+    public SimpleTestListResponse applyTestListByCreated(UUID testerId) {
+        List<Tests> testList = testsRepository.findApplyTestsExceptTesterIdByCreated(testerId);
+        SimpleTestListResponse response = SimpleTestListResponse.fromTestList(testList);
+
+        return response;
+    }
+
+    public SimpleTestListResponse applyTestListByDeadLine(UUID testerId) {
+        List<Tests> testList = testsRepository.findApplyTestsExceptTesterIdByDeadLine(testerId);
+        SimpleTestListResponse response = SimpleTestListResponse.fromTestList(testList);
+
+        return response;
+    }
+
+    public SimpleTestListResponse applyTestListByPopular(UUID testerId) {
+        List<Tests> testList = testsRepository.findApplyTestsExceptTesterIdByPopular(testerId);
+        SimpleTestListResponse response = SimpleTestListResponse.fromTestList(testList);
+
+        return response;
+    }
+
+    public ApplyTestListFromMakerResponse madeTestListFromMaker(UUID makerId) {
+        List<Tests> list = testsRepository.findAppliedTestsByMakerId(makerId);
+        ApplyTestListFromMakerResponse response = ApplyTestListFromMakerResponse.fromTestList(list);
+
+        return response;
+
+    }
+
+
+
 
 
 

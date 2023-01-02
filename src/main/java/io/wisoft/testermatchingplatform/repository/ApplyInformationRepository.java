@@ -19,7 +19,7 @@ public class ApplyInformationRepository {
         return applyInformation.getId();
     }
 
-    public ApplyInformation findOne(UUID id) {
+    public ApplyInformation findById(UUID id) {
         return em.find(ApplyInformation.class, id);
     }
 
@@ -28,5 +28,12 @@ public class ApplyInformationRepository {
                 "select a from ApplyInformation a",
                 ApplyInformation.class
         ).getResultList();
+    }
+
+    public List<ApplyInformation> findByTesterId(UUID testerId) {
+        String jpql = "select a from ApplyInformation a where a.tester.id=:testerId";
+        return em.createQuery(jpql, ApplyInformation.class)
+                .setParameter("testerId", testerId)
+                .getResultList();
     }
 }
