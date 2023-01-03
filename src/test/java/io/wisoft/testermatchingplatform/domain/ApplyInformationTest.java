@@ -123,7 +123,7 @@ class ApplyInformationTest {
         try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
             testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
                     .thenReturn(MissionStatus.PROGRESS);
-            normalApplyInformation.executionApprove();
+            normalApplyInformation.executeApprove();
         }
         //then
         assertEquals(ApplyInformationStatus.EXECUTE_SUCCESS, normalApplyInformation.getStatus());
@@ -139,7 +139,7 @@ class ApplyInformationTest {
             testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
                     .thenReturn(MissionStatus.APPLY);
             //then
-            assertThrows(ExecutionException.class, () -> normalApplyInformation.executionApprove());
+            assertThrows(ExecutionException.class, () -> normalApplyInformation.executeApprove());
         }
     }
 

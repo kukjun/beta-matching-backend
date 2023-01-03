@@ -44,11 +44,11 @@ public class ApplyInformation extends BaseEntity {
         tester.getApplyInformationList().add(this);
     }
 
-    public void disconnectLMission() {
+    private void disconnectMission() {
         mission.getApplyInformationList().remove(this);
     }
 
-    public void disconnectTester() {
+    private void disconnectTester() {
         tester.getApplyInformationList().remove(this);
     }
 
@@ -76,9 +76,15 @@ public class ApplyInformation extends BaseEntity {
         if (missionStatus == MissionStatus.APPROVE) {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_SUCCESS;
+            updateEntity();
         } else {
             throw new ApproveException("선정 기간이 아닙니다.");
         }
+    }
+
+    public void disconnect() {
+        disconnectTester();
+        disconnectMission();
     }
 
     public void applyReject() {
@@ -87,18 +93,20 @@ public class ApplyInformation extends BaseEntity {
             this.approveTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.APPROVE_FAIL;
             mission.getMaker().refundPoint(mission.getReward());
+            updateEntity();
         } else {
             throw new ApproveException("선정기간이 아닙니다.");
         }
     }
 
 
-    public void executionApprove() {
+    public void executeApprove() {
         MissionStatus missionStatus = this.mission.getStatus();
         if (missionStatus == MissionStatus.PROGRESS) {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_SUCCESS;
             tester.rewardPoint(mission.getReward());
+            updateEntity();
         } else {
             throw new ExecutionException("수행 기간이 아닙니다.");
         }
@@ -110,6 +118,7 @@ public class ApplyInformation extends BaseEntity {
             this.executionTime = LocalDateTime.now();
             this.status = ApplyInformationStatus.EXECUTE_FAIL;
             mission.getMaker().refundPoint(mission.getReward());
+            updateEntity();
         } else {
             throw new ExecutionException("수행 기간, 완료 기간이 아닙니다.");
         }

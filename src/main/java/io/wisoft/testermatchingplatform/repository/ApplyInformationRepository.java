@@ -36,4 +36,10 @@ public class ApplyInformationRepository {
                 .setParameter("testerId", testerId)
                 .getResultList();
     }
+
+    public void deleteById(UUID applyInformationId) {
+        em.createQuery("delete from ApplyInformation a where a.id=:applyInformationId")
+                .setParameter("applyInformationId", applyInformationId)
+                .getResultList();
+    }
 }
