@@ -31,6 +31,13 @@ public class ApplyInformation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Tester tester;
 
+
+    @OneToOne(mappedBy = "applyInformation", fetch = FetchType.LAZY)
+    private TesterReview testerReview;
+
+    @OneToOne(mappedBy = "applyInformation", fetch = FetchType.LAZY)
+    private MakerReview makerReview;
+
     /**
      * 연관관계 설정 메서드
      */
@@ -42,6 +49,14 @@ public class ApplyInformation extends BaseEntity {
     public void connectTester(Tester tester) {
         this.tester = tester;
         tester.getApplyInformationList().add(this);
+    }
+
+    public void setTesterReview(TesterReview testerReview) {
+        this.testerReview = testerReview;
+    }
+
+    public void setMakerReview(MakerReview makerReview) {
+        this.makerReview = makerReview;
     }
 
     private void disconnectMission() {
@@ -131,6 +146,7 @@ public class ApplyInformation extends BaseEntity {
     public MissionStatus currentTestStatus() {
         return this.mission.getStatus();
     }
+
 
 
 }

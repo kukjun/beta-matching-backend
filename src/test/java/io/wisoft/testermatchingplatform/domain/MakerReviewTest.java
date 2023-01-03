@@ -25,7 +25,7 @@ class MakerReviewTest {
 
         //then
         assertEquals(starPoint, normalMakerReview.getStarPoint());
-        assertEquals(comment, normalMakerReview.comment);
+        assertEquals(comment, normalMakerReview.getComment());
 
     }
 

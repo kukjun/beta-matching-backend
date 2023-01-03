@@ -1,4 +1,4 @@
-package io.wisoft.testermatchingplatform.service;
+package io.wisoft.testermatchingplatform.web.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;

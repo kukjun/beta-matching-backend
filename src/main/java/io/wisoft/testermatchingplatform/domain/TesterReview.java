@@ -12,11 +12,19 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TesterReview extends Review {
+public class TesterReview extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "tester_review_id")
     private UUID id;
+
+    private LocalDateTime registerTime;
+    private int starPoint;
+    private String comment;
+
+    @JoinColumn(name = "apply_information_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    protected ApplyInformation applyInformation;
 
     public static TesterReview newInstance(
             ApplyInformation applyInformation,
@@ -35,5 +43,9 @@ public class TesterReview extends Review {
         return testerReview;
     }
 
+    public void connectApplyInformation(ApplyInformation applyInformation) {
+        this.applyInformation = applyInformation;
+        applyInformation.setTesterReview(this);
+    }
 
 }

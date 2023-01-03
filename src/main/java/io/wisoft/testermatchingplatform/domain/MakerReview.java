@@ -12,11 +12,18 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MakerReview extends Review {
+public class MakerReview extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name="maker_review_id")
     private UUID id;
+    private LocalDateTime registerTime;
+    private int starPoint;
+    private String comment;
+
+    @JoinColumn(name = "apply_information_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    protected ApplyInformation applyInformation;
 
     public static MakerReview newInstance(
             ApplyInformation applyInformation,
@@ -35,5 +42,10 @@ public class MakerReview extends Review {
         else {
             throw new ReviewException("Test가 완료 상태가 아닙니다.");
         }
+    }
+
+    public void connectApplyInformation(ApplyInformation applyInformation) {
+        this.applyInformation = applyInformation;
+        applyInformation.setMakerReview(this);
     }
 }

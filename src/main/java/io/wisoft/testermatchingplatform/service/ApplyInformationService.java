@@ -6,6 +6,9 @@ import io.wisoft.testermatchingplatform.domain.Tester;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.MissionRepository;
 import io.wisoft.testermatchingplatform.repository.TesterRepository;
+import io.wisoft.testermatchingplatform.web.dto.request.ChangeApplyToApproveRequest;
+import io.wisoft.testermatchingplatform.web.dto.request.ChangePerformToCompleteRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ public class ApplyInformationService {
     ApplyInformationRepository applyInformationRepository;
     MissionRepository missionRepository;
     TesterRepository testerRepository;
+
 
     @Transactional
     public ApplyMissionResponse applyMission(UUID testerId, UUID missionId) {
@@ -81,6 +85,22 @@ public class ApplyInformationService {
         }
 
         ChangePerformToCompleteResponse response = ChangePerformToCompleteResponse.fromApplyInformationList(responseList);
+        return response;
+    }
+
+    public ApplyTesterListResponse findApplyTesterList(UUID missionId) {
+        Mission mission = missionRepository.findById(missionId);
+        List<ApplyInformation> applyInformationList = mission.getApplyInformationList();
+
+        ApplyTesterListResponse response = ApplyTesterListResponse.fromApplyInformationList(applyInformationList);
+        return response;
+    }
+
+    public PerformTesterListResponse findPerformTesterList(UUID missionId) {
+        Mission mission = missionRepository.findById(missionId);
+        List<ApplyInformation> applyInformationList = mission.getApplyInformationList();
+
+        PerformTesterListResponse response = PerformTesterListResponse.fromApplyInformationList(applyInformationList);
         return response;
     }
 
