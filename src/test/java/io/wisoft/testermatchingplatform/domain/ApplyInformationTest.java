@@ -19,6 +19,7 @@ class ApplyInformationTest {
     public void createNormalApplyInformation() {
         Mission mission = mock(Mission.class);
         Tester tester = mock(Tester.class);
+        when(mission.getMaker()).thenReturn(mock(Maker.class));
 
         normalApplyInformation = ApplyInformation.newInstance(
                 mission,
@@ -40,11 +41,9 @@ class ApplyInformationTest {
     public void approveApplySuccessTest() throws Exception {
         //given
         //when
-        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
-            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
-                    .thenReturn(MissionStatus.APPROVE);
-            normalApplyInformation.applyApprove();
-        }
+        when(normalApplyInformation.getMission().getStatus()).thenReturn(MissionStatus.APPROVE);
+        normalApplyInformation.applyApprove();
+
         //then
         assertEquals(ApplyInformationStatus.APPROVE_SUCCESS, normalApplyInformation.getStatus());
     }
@@ -67,15 +66,8 @@ class ApplyInformationTest {
     public void rejectApplySuccessTest() throws Exception {
         //given
         //when
-        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
-            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
-                    .thenReturn(MissionStatus.APPROVE);
-
-            when(normalApplyInformation.getMission().getMaker())
-                    .thenReturn(mock(Maker.class));
-
-            normalApplyInformation.applyReject();
-        }
+        when(normalApplyInformation.getMission().getStatus()).thenReturn(MissionStatus.APPROVE);
+        normalApplyInformation.applyReject();
         //then
         assertEquals(ApplyInformationStatus.APPROVE_FAIL, normalApplyInformation.getStatus());
     }
@@ -120,11 +112,8 @@ class ApplyInformationTest {
     public void executePerformerSuccessTest() throws Exception {
         //given
         //when
-        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
-            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
-                    .thenReturn(MissionStatus.PROGRESS);
-            normalApplyInformation.executeApprove();
-        }
+        when(normalApplyInformation.getMission().getStatus()).thenReturn(MissionStatus.PROGRESS);
+        normalApplyInformation.executeApprove();
         //then
         assertEquals(ApplyInformationStatus.EXECUTE_SUCCESS, normalApplyInformation.getStatus());
     }
