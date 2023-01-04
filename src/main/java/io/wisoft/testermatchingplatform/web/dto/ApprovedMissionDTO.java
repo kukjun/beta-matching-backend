@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExecutedTestDTO {
+public class ApprovedMissionDTO {
 
     private final UUID id;
     private final String title;
@@ -20,8 +20,8 @@ public class ExecutedTestDTO {
     private final String symbolImageRoot;
 
 
-    public static ExecutedTestDTO fromApplyInformation(ApplyInformation applyInformation) {
-        return new ExecutedTestDTO(
+    public static ApprovedMissionDTO fromApplyInformation(ApplyInformation applyInformation) {
+        return new ApprovedMissionDTO(
                 applyInformation.getMission().getId(),
                 applyInformation.getMission().getTitle(),
                 applyInformation.getMission().getMaker().getNickname(),

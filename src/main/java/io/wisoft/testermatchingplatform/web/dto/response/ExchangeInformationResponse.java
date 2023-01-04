@@ -1,5 +1,7 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
+import io.wisoft.testermatchingplatform.domain.Maker;
+import io.wisoft.testermatchingplatform.domain.Tester;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +14,15 @@ public class ExchangeInformationResponse {
     private final String account;
 
 
-    public static ExchangeInformationResponse fromTester(long point, String account) {
+    public static ExchangeInformationResponse fromTester(Tester tester) {
         return new ExchangeInformationResponse(
-                point, account
+                tester.getPoint(), tester.getAccount()
         );
     }
 
-    public static ExchangeInformationResponse fromMaker(long point, String account) {
+    public static ExchangeInformationResponse fromMaker(Maker maker) {
         return new ExchangeInformationResponse(
-                point, account
+                maker.getPoint(), maker.getAccount()
         );
     }
 }

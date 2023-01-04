@@ -2,9 +2,9 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.ApplyInformationStatus;
-import io.wisoft.testermatchingplatform.web.dto.AppliedTestDTO;
-import io.wisoft.testermatchingplatform.web.dto.ApprovedTestDTO;
-import io.wisoft.testermatchingplatform.web.dto.ExecutedTestDTO;
+import io.wisoft.testermatchingplatform.web.dto.AppliedMissionDTO;
+import io.wisoft.testermatchingplatform.web.dto.ApprovedMissionDTO;
+import io.wisoft.testermatchingplatform.web.dto.ExecutedMissionDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +15,9 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplyMissionListFromTesterResponse {
-    private final List<AppliedTestDTO> appliedTestDTOList = new ArrayList<>();
-    private final List<ApprovedTestDTO> approvedTestDTOList = new ArrayList<>();
-    private final List<ExecutedTestDTO> executedTestDTOList = new ArrayList<>();
+    private final List<AppliedMissionDTO> appliedMissionDTOList = new ArrayList<>();
+    private final List<ApprovedMissionDTO> approvedMissionDTOList = new ArrayList<>();
+    private final List<ExecutedMissionDTO> executedMissionDTOList = new ArrayList<>();
 
     public static ApplyMissionListFromTesterResponse fromApplyInformationList(
             List<ApplyInformation> applyInformationList
@@ -28,14 +28,14 @@ public class ApplyMissionListFromTesterResponse {
             ApplyInformationStatus status = applyInformation.getStatus();
             switch (status) {
                 case APPLY:
-                    response.appliedTestDTOList.add(AppliedTestDTO.fromApplyInformation(applyInformation));
+                    response.appliedMissionDTOList.add(AppliedMissionDTO.fromApplyInformation(applyInformation));
                     break;
                 case APPROVE_SUCCESS:
-                    response.approvedTestDTOList.add(ApprovedTestDTO.fromApplyInformation(applyInformation));
+                    response.approvedMissionDTOList.add(ApprovedMissionDTO.fromApplyInformation(applyInformation));
                     break;
                 case EXECUTE_SUCCESS:
                 case EXECUTE_FAIL:
-                    response.executedTestDTOList.add(ExecutedTestDTO.fromApplyInformation(applyInformation));
+                    response.executedMissionDTOList.add(ExecutedMissionDTO.fromApplyInformation(applyInformation));
             }
         }
 

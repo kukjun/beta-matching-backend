@@ -26,22 +26,22 @@ public class DetailMissionResponse {
     private final long deadLine;
     private final String symbolImageRoot;
 
-    public static DetailMissionResponse fromMission(Mission test) {
+    public static DetailMissionResponse fromMission(Mission mission) {
         DetailMissionResponse response = new DetailMissionResponse(
-                test.getId(),
-                test.getTitle(),
-                test.getMaker().getNickname(),
-                test.getMaker().getCompany(),
-                test.getMissionDate().getRecruitmentTimeStart(),
-                test.getMissionDate().getRecruitmentTimeEnd(),
-                test.getMissionDate().getDurationTimeStart(),
-                test.getMissionDate().getDurationTimeEnd(),
-                test.getContent(),
-                test.getReward(),
-                test.getApplyInformationList().size(),
-                test.getLimitPerformer(),
-                test.remainApplyTime(),
-                test.getImageURL()
+                mission.getId(),
+                mission.getTitle(),
+                mission.getMaker().getNickname(),
+                mission.getMaker().getCompany(),
+                mission.getMissionDate().getRecruitmentTimeStart(),
+                mission.getMissionDate().getRecruitmentTimeEnd(),
+                mission.getMissionDate().getDurationTimeStart(),
+                mission.getMissionDate().getDurationTimeEnd(),
+                mission.getContent(),
+                mission.getReward(),
+                mission.getApplyInformationList().size(),
+                mission.getLimitPerformer(),
+                mission.remainApplyTime(),
+                mission.getImageURL()
         );
         return response;
     }

@@ -21,7 +21,7 @@ public class CreateMissionRequest {
     private final String durationTimeStart;
     private final String durationTimeLimit;
     private final String content;
-    private final int reward;
+    private final long reward;
     private final int limitPerformer;
     @Image(groups = Custom.class)
     private final MultipartFile image;
@@ -50,7 +50,7 @@ public class CreateMissionRequest {
             final String durationTimeStart,
             final String durationTimeLimit,
             final String content,
-            final int reward,
+            final long reward,
             final int limitPerformer,
             final MultipartFile symbolImage
     ) {

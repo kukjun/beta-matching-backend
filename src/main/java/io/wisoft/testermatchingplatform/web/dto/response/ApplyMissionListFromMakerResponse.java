@@ -26,21 +26,21 @@ public class ApplyMissionListFromMakerResponse {
 
         ApplyMissionListFromMakerResponse response = new ApplyMissionListFromMakerResponse();
 
-        for (Mission test : list) {
-            MissionStatus status = test.getStatus();
+        for (Mission mission : list) {
+            MissionStatus status = mission.getStatus();
             switch (status) {
                 case BEFORE_APPLY:
                 case APPLY:
-                    response.applyPeriodTestDTOList.add(ApplyPeriodTestDTO.fromTest(test));
+                    response.applyPeriodTestDTOList.add(ApplyPeriodTestDTO.fromMission(mission));
                     break;
                 case APPROVE:
-                    response.approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromTest(test));
+                    response.approvePeriodTestDTOList.add(ApprovePeriodTestDTO.fromMission(mission));
                     break;
                 case PROGRESS:
-                    response.progressPeriodTestDTOList.add(ProgressPeriodTestDTO.fromTest(test));
+                    response.progressPeriodTestDTOList.add(ProgressPeriodTestDTO.fromMission(mission));
                     break;
                 case COMPLETE:
-                    response.completePeriodTestDTOList.add(CompletePeriodTestDTO.fromTest(test));
+                    response.completePeriodTestDTOList.add(CompletePeriodTestDTO.fromMission(mission));
                     break;
             }
         }

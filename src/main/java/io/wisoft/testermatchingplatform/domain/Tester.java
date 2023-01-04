@@ -70,8 +70,9 @@ public class Tester extends BaseEntity{
         }
     }
 
-    public void changeAccount(String account) {
+    public String changeAccount(String account) {
         this.account = account;
+        return account;
     }
 
     public long pointToCash(long point) {

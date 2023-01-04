@@ -13,8 +13,8 @@ public class UpdateMissionIncludeImageResponse {
     private final UUID id;
 
 
-    public static UpdateMissionIncludeImageResponse fromMission(Mission test) {
-        UpdateMissionIncludeImageResponse response = new UpdateMissionIncludeImageResponse(test.getId());
+    public static UpdateMissionIncludeImageResponse fromMission(Mission mission) {
+        UpdateMissionIncludeImageResponse response = new UpdateMissionIncludeImageResponse(mission.getId());
         return response;
     }
 }

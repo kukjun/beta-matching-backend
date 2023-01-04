@@ -114,6 +114,12 @@ public class ApplyInformation extends BaseEntity {
         }
     }
 
+    private void refundPoint() {
+
+    }
+
+
+
 
     public void executeApprove() {
         MissionStatus missionStatus = this.mission.getStatus();

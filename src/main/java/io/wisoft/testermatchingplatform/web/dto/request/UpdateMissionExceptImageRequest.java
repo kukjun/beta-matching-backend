@@ -13,8 +13,30 @@ public class UpdateMissionExceptImageRequest {
     private final String durationTimeStart;
     private final String durationTimeLimit;
     private final String content;
-    private final int reward;
+    private final long reward;
     private final int limitPerformer;
 
 
+    public static UpdateMissionExceptImageRequest newInstance(
+            final String title,
+            final String recruitmentTimeStart,
+            final String recruitmentTimeLimit,
+            final String durationTimeStart,
+            final String durationTimeLimit,
+            final String content,
+            final long reward,
+            final int limitPerformer
+    ) {
+        UpdateMissionExceptImageRequest request = new UpdateMissionExceptImageRequest(
+                title,
+                recruitmentTimeStart,
+                recruitmentTimeLimit,
+                durationTimeStart,
+                durationTimeLimit,
+                content,
+                reward,
+                limitPerformer
+        );
+        return request;
+    }
 }

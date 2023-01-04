@@ -16,9 +16,35 @@ public class UpdateMissionIncludeImageRequest {
     private final String durationTimeStart;
     private final String durationTimeLimit;
     private final String content;
-    private final int reward;
+    private final long reward;
     private final int limitPerformer;
     @Image(groups = Custom.class)
     private final MultipartFile image;
+
+    public static UpdateMissionIncludeImageRequest newInstance(
+            final String title,
+            final String recruitmentTimeStart,
+            final String recruitmentTimeLimit,
+            final String durationTimeStart,
+            final String durationTimeLimit,
+            final String content,
+            final long reward,
+            final int limitPerformer,
+            final MultipartFile image
+    ) {
+        UpdateMissionIncludeImageRequest request = new UpdateMissionIncludeImageRequest(
+                title,
+                recruitmentTimeStart,
+                recruitmentTimeLimit,
+                durationTimeStart,
+                durationTimeLimit,
+                content,
+                reward,
+                limitPerformer,
+                image
+        );
+
+        return request;
+    }
 
 }

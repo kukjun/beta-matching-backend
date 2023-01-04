@@ -26,18 +26,18 @@ public class TesterService {
     @Transactional
     public CreateTesterResponse createTester(final CreateTesterRequest request) {
         Tester tester = request.toTester();
-        testerRepository.save(tester);
+        UUID testerId = testerRepository.save(tester);
 
-        CreateTesterResponse response = CreateTesterResponse.fromTester(tester);
+        CreateTesterResponse response = CreateTesterResponse.fromTesterId(testerId);
         return response;
     }
 
     @Transactional
     public AccountResponse updateAccount(final UUID testerId, final AccountRequest request) {
         Tester tester = testerRepository.findById(testerId);
-        tester.changeAccount(request.getAccount());
+        String account = tester.changeAccount(request.getAccount());
 
-        AccountResponse response = AccountResponse.fromTester(tester);
+        AccountResponse response = AccountResponse.fromAccount(account);
         return response;
     }
 
@@ -53,8 +53,7 @@ public class TesterService {
     public ExchangeInformationResponse exchangeView(final UUID testerId) {
         Tester tester = testerRepository.findById(testerId);
         ExchangeInformationResponse response = ExchangeInformationResponse.fromTester(
-                tester.getPoint(),
-                tester.getAccount()
+                tester
         );
         return response;
     }

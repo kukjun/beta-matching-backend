@@ -20,7 +20,7 @@ public class ApplyPeriodTestDTO {
     private final int participantCapacity;
     private final String symbolImageRoot;
 
-    public static ApplyPeriodTestDTO fromTest(Mission test) {
+    public static ApplyPeriodTestDTO fromMission(Mission test) {
         ApplyPeriodTestDTO dto = new ApplyPeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

@@ -18,7 +18,7 @@ public class ProgressPeriodTestDTO {
     private final String symbolImageRoot;
     private final String state;
 
-    public static ProgressPeriodTestDTO fromTest(Mission test) {
+    public static ProgressPeriodTestDTO fromMission(Mission test) {
         ProgressPeriodTestDTO dto = new ProgressPeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

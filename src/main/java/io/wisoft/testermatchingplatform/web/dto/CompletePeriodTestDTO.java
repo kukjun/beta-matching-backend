@@ -18,7 +18,7 @@ public class CompletePeriodTestDTO {
     private final String symbolImageRoot;
     private final String state;
 
-    public static CompletePeriodTestDTO fromTest(Mission test) {
+    public static CompletePeriodTestDTO fromMission(Mission test) {
         CompletePeriodTestDTO dto = new CompletePeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

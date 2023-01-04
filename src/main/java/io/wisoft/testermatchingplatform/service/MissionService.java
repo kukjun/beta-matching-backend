@@ -28,21 +28,21 @@ public class MissionService {
     private final ApplyInformationRepository applyInformationRepository;
 
     @Transactional
-    public CreateMissionResponse createTest(UUID makerId, CreateMissionRequest request) {
+    public CreateMissionResponse createMission(UUID makerId, CreateMissionRequest request) {
         Maker maker = makerRepository.findById(makerId);
         String imageFileURL = FileHandler.saveTestImageFileData(request.getImage());
-        Mission test = request.toTest(maker, imageFileURL);
+        Mission mission = request.toTest(maker, imageFileURL);
 
-        UUID saveId = missionRepository.save(test);
+        missionRepository.save(mission);
 
-        CreateMissionResponse response = CreateMissionResponse.fromMission(test);
+        CreateMissionResponse response = CreateMissionResponse.fromMission(mission);
 
         return response;
     }
 
     @Transactional
-    public UpdateMissionIncludeImageResponse updateIncludeImageMission(UUID testId, UpdateMissionIncludeImageRequest request) {
-        Mission mission = missionRepository.findById(testId);
+    public UpdateMissionIncludeImageResponse updateIncludeImageMission(UUID missionId, UpdateMissionIncludeImageRequest request) {
+        Mission mission = missionRepository.findById(missionId);
         FileHandler.removeTestImage(mission.getImageURL());
         String imageFileURL = FileHandler.saveTestImageFileData(request.getImage());
 
@@ -63,8 +63,8 @@ public class MissionService {
     }
 
     @Transactional
-    public UpdateMissionExceptImageResponse updateExceptImageMission(UUID testId, UpdateMissionExceptImageRequest request) {
-        Mission mission = missionRepository.findById(testId);
+    public UpdateMissionExceptImageResponse updateExceptImageMission(UUID missionId, UpdateMissionExceptImageRequest request) {
+        Mission mission = missionRepository.findById(missionId);
 
         mission.updateExceptImageMission(
                 request.getTitle(),

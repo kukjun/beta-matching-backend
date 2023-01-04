@@ -12,8 +12,8 @@ import java.util.UUID;
 public class CreateMissionResponse {
     private final UUID id;
 
-    public static CreateMissionResponse fromMission(Mission test) {
-        CreateMissionResponse response = new CreateMissionResponse(test.getId());
+    public static CreateMissionResponse fromMission(Mission mission) {
+        CreateMissionResponse response = new CreateMissionResponse(mission.getId());
         return response;
     }
 }

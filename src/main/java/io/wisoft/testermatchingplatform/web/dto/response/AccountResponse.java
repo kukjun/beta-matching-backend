@@ -17,8 +17,8 @@ public class AccountResponse {
         return response;
     }
 
-    public static AccountResponse fromMaker(Maker maker) {
-        AccountResponse response = new AccountResponse(maker.getAccount());
+    public static AccountResponse fromAccount(String account) {
+        AccountResponse response = new AccountResponse(account);
         return response;
     }
 }

@@ -12,8 +12,8 @@ import java.util.UUID;
 public class CreateTesterResponse {
     private final UUID id;
 
-    public static CreateTesterResponse fromTester(Tester tester) {
-        CreateTesterResponse response = new CreateTesterResponse(tester.getId());
+    public static CreateTesterResponse fromTesterId(UUID testerId) {
+        CreateTesterResponse response = new CreateTesterResponse(testerId);
         return response;
     }
 }

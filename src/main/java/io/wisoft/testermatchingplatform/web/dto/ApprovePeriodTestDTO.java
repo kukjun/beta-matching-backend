@@ -20,7 +20,7 @@ public class ApprovePeriodTestDTO {
     private final String symbolImageRoot;
     private final String state;
 
-    public static ApprovePeriodTestDTO fromTest(Mission test) {
+    public static ApprovePeriodTestDTO fromMission(Mission test) {
         ApprovePeriodTestDTO dto = new ApprovePeriodTestDTO(
                 test.getId(),
                 test.getTitle(),

@@ -74,8 +74,9 @@ public class Maker extends BaseEntity {
         }
     }
 
-    public void changeAccount(String account) {
+    public String changeAccount(String account) {
         this.account = account;
+        return account;
     }
 
     public long cashToPoint(long cash) {

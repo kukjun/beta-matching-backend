@@ -23,18 +23,17 @@ public class MakerService {
     @Transactional
     public CreateMakerResponse createMaker(final CreateMakerRequest request) {
         Maker maker = request.toMaker();
-
-        makerRepository.save(maker);
-        CreateMakerResponse response = CreateMakerResponse.fromMaker(maker);
+        UUID responseId = makerRepository.save(maker);
+        CreateMakerResponse response = CreateMakerResponse.fromMakerId(responseId);
         return response;
     }
 
     @Transactional
     public AccountResponse updateAccount(final UUID makerId, final AccountRequest request) {
         Maker maker = makerRepository.findById(makerId);
-        maker.changeAccount(request.getAccount());
+        String account = maker.changeAccount(request.getAccount());
 
-        AccountResponse response = AccountResponse.fromMaker(maker);
+        AccountResponse response = AccountResponse.fromAccount(account);
         return response;
     }
 
@@ -42,6 +41,7 @@ public class MakerService {
     public ChangePointToCashResponse changePointToCash(final UUID makerId, final ChangePointToCashRequest request) {
         Maker maker = makerRepository.findById(makerId);
         long cash = maker.pointToCash(request.getPoint());
+
 
         ChangePointToCashResponse response = ChangePointToCashResponse.newInstance(cash);
         return response;
@@ -58,7 +58,9 @@ public class MakerService {
 
     public MakerLoginResponse login(final MakerLoginRequest request) {
         try {
+            System.out.println("check");
             Maker maker = makerRepository.findByEmail(request.getEmail());
+            System.out.println("check2");
             maker.checkPassword(request.getPassword());
             MakerLoginResponse response = MakerLoginResponse.fromMaker(maker);
             return response;
@@ -72,8 +74,7 @@ public class MakerService {
     public ExchangeInformationResponse exchangeView(final UUID makerId) {
         Maker maker = makerRepository.findById(makerId);
         ExchangeInformationResponse response = ExchangeInformationResponse.fromMaker(
-                maker.getPoint(),
-                maker.getAccount()
+                maker
         );
         return response;
     }

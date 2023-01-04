@@ -2,21 +2,21 @@ package io.wisoft.testermatchingplatform.handler;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.UUID;
 
 public class FileHandler {
 
-    private static final String DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH = System.getProperty("user.dir") + "/image/test/";
+    private static final String DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH = System.getProperty("user.dir") + "/image/mission/";
 
     static {
         final File defaultTestRepresentationFileSaveDirectory = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH);
 
         if (!defaultTestRepresentationFileSaveDirectory.exists()) {
-            defaultTestRepresentationFileSaveDirectory.mkdir();
+            defaultTestRepresentationFileSaveDirectory.mkdirs();
+            System.out.println("DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH = " + DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH);
         }
 
 
@@ -38,7 +38,7 @@ public class FileHandler {
     }
 
     public static void removeTestImage(final String fileName) {
-        removeFile(fileName)
+        removeFile(fileName);
     }
 
     public static byte[] getTestRepresentationFileData(final String fileName) {
