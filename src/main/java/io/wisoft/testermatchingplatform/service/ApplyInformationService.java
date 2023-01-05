@@ -23,9 +23,9 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class ApplyInformationService {
 
-    ApplyInformationRepository applyInformationRepository;
-    MissionRepository missionRepository;
-    TesterRepository testerRepository;
+    private final ApplyInformationRepository applyInformationRepository;
+    private final MissionRepository missionRepository;
+    private final TesterRepository testerRepository;
 
 
     @Transactional
@@ -103,5 +103,14 @@ public class ApplyInformationService {
         PerformTesterListResponse response = PerformTesterListResponse.fromApplyInformationList(applyInformationList);
         return response;
     }
+
+    public TesterListOfClosedMissionResponse TesterListOfClosedMission(UUID missionId) {
+        Mission mission = missionRepository.findById(missionId);
+        List<ApplyInformation> applyInformationList = mission.getApplyInformationList();
+
+        TesterListOfClosedMissionResponse response = TesterListOfClosedMissionResponse.fromApplyInformationList(applyInformationList);
+        return response;
+    }
+
 
 }

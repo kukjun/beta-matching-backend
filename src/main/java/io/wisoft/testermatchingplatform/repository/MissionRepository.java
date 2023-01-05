@@ -102,6 +102,22 @@ public class MissionRepository {
         return resultList;
     }
 
+    // fail
+//    public void findDeadLineTop4Mission() {
+//        LocalDate currentDate = LocalDate.now();
+//        String jpql = "select m " +
+//                "from Mission m " +
+//                "where m.missionDate.recruitmentTimeStart >= :currentDate " +
+//                "and m.missionDate.recruitmentTimeEnd<= :currentDate " +
+//                "order by (m.missionDate.recruitmentTimeEnd - :currentDate)";
+//        em.createQuery(jpql, Mission.class)
+//                .setParameter("currentDate", currentDate)
+//                .setFirstResult(0)
+//                .setMaxResults(4)
+//                .getResultList();
+//
+//    }
+
 
 //    public List<Tests> findPopularTop4() {
 //        String jpql = "select t from Tests t join ApplyInformation a where t.testDate.recruitmentTimeEndgroup by t.id order by count(a)";

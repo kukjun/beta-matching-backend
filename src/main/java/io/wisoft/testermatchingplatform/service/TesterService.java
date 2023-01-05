@@ -1,7 +1,9 @@
 package io.wisoft.testermatchingplatform.service;
 
+import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.domain.Tester;
 import io.wisoft.testermatchingplatform.handler.exception.LoginException;
+import io.wisoft.testermatchingplatform.repository.MissionRepository;
 import io.wisoft.testermatchingplatform.repository.TesterRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.AccountRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.ChangePointToCashRequest;
@@ -22,7 +24,6 @@ import java.util.UUID;
 public class TesterService {
 
     private final TesterRepository testerRepository;
-
     @Transactional
     public CreateTesterResponse createTester(final CreateTesterRequest request) {
         Tester tester = request.toTester();
@@ -71,5 +72,7 @@ public class TesterService {
         }
 
     }
+
+
 
 }
