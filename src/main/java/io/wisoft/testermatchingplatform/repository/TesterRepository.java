@@ -24,7 +24,7 @@ public class TesterRepository {
         return em.find(Tester.class, id);
     }
 
-    public Tester findByEmail(String email) throws NoResultException, NonUniqueResultException {
+    public Tester findByEmail(String email){
         Tester tester = em.createQuery("select t from Tester t where t.email=:email", Tester.class)
                 .setParameter("email", email)
                 .getSingleResult();
@@ -36,6 +36,13 @@ public class TesterRepository {
                 "select t from Tester t",
                 Tester.class
         ).getResultList();
+    }
+
+    public int findAllCount() {
+        return em.createQuery(
+                "select t from Tester t",
+                Tester.class
+        ).getResultList().size();
     }
 
 }

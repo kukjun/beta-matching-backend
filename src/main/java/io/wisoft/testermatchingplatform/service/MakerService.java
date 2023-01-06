@@ -1,7 +1,6 @@
 package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.Maker;
-import io.wisoft.testermatchingplatform.handler.exception.LoginException;
 import io.wisoft.testermatchingplatform.repository.MakerRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.*;
 import io.wisoft.testermatchingplatform.web.dto.response.*;
@@ -9,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import java.util.UUID;
 
 @Service
@@ -57,18 +54,12 @@ public class MakerService {
     }
 
     public MakerLoginResponse login(final MakerLoginRequest request) {
-        try {
             System.out.println("check");
             Maker maker = makerRepository.findByEmail(request.getEmail());
             System.out.println("check2");
-            maker.checkPassword(request.getPassword());
+            maker.verifyPassword(request.getPassword());
             MakerLoginResponse response = MakerLoginResponse.fromMaker(maker);
             return response;
-        } catch (NoResultException no) {
-            throw new LoginException();
-        } catch (NonUniqueResultException non) {
-            throw new RuntimeException();
-        }
     }
 
     public ExchangeInformationResponse exchangeView(final UUID makerId) {

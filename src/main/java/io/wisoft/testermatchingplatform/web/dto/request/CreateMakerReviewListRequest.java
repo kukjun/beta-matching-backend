@@ -15,9 +15,20 @@ public class CreateMakerReviewListRequest {
     private final int starPoint;
     private final String comment;
 
+    public static CreateMakerReviewListRequest newInstance(UUID applyInformationId, int starPoint, String testComment) {
+        CreateMakerReviewListRequest request = new CreateMakerReviewListRequest(
+                applyInformationId,
+                starPoint,
+                testComment
+        );
+
+        return request;
+    }
+
     public MakerReview toMakerReview(ApplyInformation applyInformation) {
         MakerReview makerReview = MakerReview.newInstance(applyInformation, getStarPoint(), getComment());
         return makerReview;
     }
+
 
 }

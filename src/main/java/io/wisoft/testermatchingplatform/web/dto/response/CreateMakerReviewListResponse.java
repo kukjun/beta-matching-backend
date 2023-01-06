@@ -12,8 +12,8 @@ import java.util.UUID;
 public class CreateMakerReviewListResponse {
     private final UUID makerReviewId;
 
-    public static CreateMakerReviewListResponse fromMakerReview(MakerReview makerReview) {
-        CreateMakerReviewListResponse response = new CreateMakerReviewListResponse(makerReview.getId());
+    public static CreateMakerReviewListResponse fromMakerReviewId(UUID makerReviewId) {
+        CreateMakerReviewListResponse response = new CreateMakerReviewListResponse(makerReviewId);
         return response;
     }
 }

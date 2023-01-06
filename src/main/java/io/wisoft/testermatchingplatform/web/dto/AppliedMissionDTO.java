@@ -27,7 +27,7 @@ public class AppliedMissionDTO {
                 applyInformation.getMission().getTitle(),
                 applyInformation.getMission().getMaker().getNickname(),
                 applyInformation.getMission().getMaker().getCompany(),
-                applyInformation.getMission().remainApplyTime(),
+                applyInformation.getMission().remainApplyDays(),
                 applyInformation.getMission().getReward(),
                 applyInformation.getMission().getApplyInformationList().size(),
                 applyInformation.getMission().getLimitPerformer(),

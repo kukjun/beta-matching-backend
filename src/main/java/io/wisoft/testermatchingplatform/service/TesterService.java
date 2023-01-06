@@ -1,9 +1,6 @@
 package io.wisoft.testermatchingplatform.service;
 
-import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.domain.Tester;
-import io.wisoft.testermatchingplatform.handler.exception.LoginException;
-import io.wisoft.testermatchingplatform.repository.MissionRepository;
 import io.wisoft.testermatchingplatform.repository.TesterRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.AccountRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.ChangePointToCashRequest;
@@ -14,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import java.util.UUID;
 
 @Service
@@ -60,17 +55,10 @@ public class TesterService {
     }
 
     public TesterLoginResponse login(final TesterLoginRequest request) {
-        try {
             Tester tester = testerRepository.findByEmail(request.getEmail());
-            tester.checkPassword(request.getPassword());
+            tester.verifyPassword(request.getPassword());
             TesterLoginResponse response = TesterLoginResponse.fromTester(tester);
             return response;
-        } catch (NoResultException no) {
-            throw new LoginException();
-        } catch (NonUniqueResultException noUnique) {
-            throw new RuntimeException();
-        }
-
     }
 
 

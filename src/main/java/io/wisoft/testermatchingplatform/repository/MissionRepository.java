@@ -54,7 +54,7 @@ public class MissionRepository {
 
     public List<Mission> findApplyMissionsExceptTesterId(UUID testerId) {
         LocalDate currentDate = LocalDate.now();
-        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.applyInformationList >= :currentDate and te.id <> :testerId";
+        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id <> :testerId";
         return em.createQuery(jpql, Mission.class)
                 .setParameter("testerId", testerId)
                 .setParameter("currentDate", currentDate)
@@ -63,7 +63,7 @@ public class MissionRepository {
 
     public List<Mission> findApplyMissionsExceptTesterIdByCreated(UUID testerId) {
         LocalDate currentDate = LocalDate.now();
-        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.applyInformationList >= :currentDate and te.id <> :testerId order by m.createDateTime";
+        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id <> :testerId order by m.createDateTime";
         return em.createQuery(jpql, Mission.class)
                 .setParameter("testerId", testerId)
                 .setParameter("currentDate", currentDate)
@@ -73,7 +73,7 @@ public class MissionRepository {
     public List<Mission> findApplyMissionsExceptTesterIdByPopular(UUID testerId) {
         LocalDate currentDate = LocalDate.now();
         // 가능한지 Test 필요
-        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.applyInformationList >= :currentDate and te.id <> :testerId order by count(m)";
+        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id <> :testerId order by count(m)";
         return em.createQuery(jpql, Mission.class)
                 .setParameter("testerId", testerId)
                 .setParameter("currentDate", currentDate)
@@ -84,7 +84,7 @@ public class MissionRepository {
     public List<Mission> findApplyMissionsExceptTesterIdByDeadLine(UUID testerId) {
         LocalDate currentDate = LocalDate.now();
         // 가능한지 Test 필요
-        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.applyInformationList >= :currentDate and te.id <> :testerId";
+        String jpql = "select distinct m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id <> :testerId";
         List<Mission> resultList = em.createQuery(jpql, Mission.class)
                 .setParameter("testerId", testerId)
                 .setParameter("currentDate", currentDate)
@@ -102,30 +102,49 @@ public class MissionRepository {
         return resultList;
     }
 
-    // fail
+    public int findProgressMission() {
+        LocalDate currentDate = LocalDate.now();
+        int size = em.createQuery("select m from Mission m where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.durationTimeEnd >= :currentDate")
+                .setParameter("currentDate", currentDate)
+                .getResultList().size();
+        return size;
+    }
+
+    public int findCompleteMission() {
+        LocalDate currentDate = LocalDate.now();
+        int size = em.createQuery("select m from Mission m where m.missionDate.durationTimeEnd < :currentDate")
+                .setParameter("currentDate", currentDate)
+                .getResultList().size();
+        return size;
+    }
+
+    // fail ...
 //    public void findDeadLineTop4Mission() {
 //        LocalDate currentDate = LocalDate.now();
 //        String jpql = "select m " +
 //                "from Mission m " +
 //                "where m.missionDate.recruitmentTimeStart >= :currentDate " +
 //                "and m.missionDate.recruitmentTimeEnd<= :currentDate " +
-//                "order by (m.missionDate.recruitmentTimeEnd - :currentDate)";
+//                "order by m.missionDate.";
 //        em.createQuery(jpql, Mission.class)
 //                .setParameter("currentDate", currentDate)
 //                .setFirstResult(0)
 //                .setMaxResults(4)
 //                .getResultList();
-//
 //    }
 
-
-//    public List<Tests> findPopularTop4() {
-//        String jpql = "select t from Tests t join ApplyInformation a where t.testDate.recruitmentTimeEndgroup by t.id order by count(a)";
-//        return em.createQuery(jpql, Tests.class)
-//                .setFirstResult(0)
-//                .setMaxResults(4)
-//                .getResultList();
-//
-//    }
+    public void findPopularTop4Mission() {
+        LocalDate currentDate = LocalDate.now();
+        String jpql = "select m " +
+                "from Mission m " +
+                "where m.missionDate.recruitmentTimeStart >= :currentDate " +
+                "and m.missionDate.recruitmentTimeEnd<= :currentDate " +
+                "order by m.applyInformationList.size";
+        em.createQuery(jpql, Mission.class)
+                .setParameter("currentDate", currentDate)
+                .setFirstResult(0)
+                .setMaxResults(4)
+                .getResultList();
+    }
 
 }

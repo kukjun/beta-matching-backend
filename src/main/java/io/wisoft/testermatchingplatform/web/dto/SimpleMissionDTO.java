@@ -26,7 +26,7 @@ public class SimpleMissionDTO {
                 mission.getTitle(),
                 mission.getMaker().getNickname(),
                 mission.getMaker().getCompany(),
-                mission.remainApplyTime(),
+                mission.remainApplyDays(),
                 mission.getReward(),
                 mission.getApplyInformationList().size(),
                 mission.getImageURL(),

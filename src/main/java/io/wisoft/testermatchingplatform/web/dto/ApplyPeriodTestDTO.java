@@ -26,7 +26,7 @@ public class ApplyPeriodTestDTO {
                 test.getTitle(),
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
-                test.remainApplyTime(),
+                test.remainApplyDays(),
                 test.getReward(),
                 test.getApplyInformationList().size(),
                 test.getLimitPerformer(),

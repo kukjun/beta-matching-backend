@@ -13,11 +13,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ScheduleService {
-    MissionRepository missionRepository;
+    private final MissionRepository missionRepository;
 
     @Transactional
     @Scheduled(cron = "0 0 0 * * *", zone = "Asia/Seoul")
-    public void updateTest() {
+    public void updateMissionState() {
         List<Mission> missionList = missionRepository.findAll();
 
         for (Mission mission : missionList) {

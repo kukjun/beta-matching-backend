@@ -18,7 +18,7 @@ public class MakerReviewRepository {
         return makerReview.getId();
     }
 
-    public MakerReview findOne(UUID id) {
+    public MakerReview findById(UUID id) {
         return em.find(MakerReview.class, id);
     }
 

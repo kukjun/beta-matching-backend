@@ -37,4 +37,10 @@ public class MakerRepository {
         return em.createQuery("select m from Maker m", Maker.class)
                 .getResultList();
     }
+
+    public int findAllCount() {
+        return em.createQuery("select m from Maker m", Maker.class)
+                .getResultList().size();
+    }
+
 }

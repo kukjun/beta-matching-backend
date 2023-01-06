@@ -19,7 +19,7 @@ public class TesterReviewRepository{
         return testerReview.getId();
     }
 
-    public TesterReview findOne(UUID id) {
+    public TesterReview findById(UUID id) {
         return em.find(TesterReview.class, id);
     }
 

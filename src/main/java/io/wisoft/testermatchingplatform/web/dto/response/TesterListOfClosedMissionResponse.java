@@ -1,6 +1,7 @@
-package io.wisoft.testermatchingplatform.service;
+package io.wisoft.testermatchingplatform.web.dto.response;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
+import io.wisoft.testermatchingplatform.web.dto.TesterOfClosedMissionDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

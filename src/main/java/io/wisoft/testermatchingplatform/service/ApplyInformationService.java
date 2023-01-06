@@ -4,6 +4,7 @@ import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.domain.Tester;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
+import io.wisoft.testermatchingplatform.repository.MakerRepository;
 import io.wisoft.testermatchingplatform.repository.MissionRepository;
 import io.wisoft.testermatchingplatform.repository.TesterRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.ChangeApplyToApproveRequest;
@@ -26,6 +27,8 @@ public class ApplyInformationService {
     private final ApplyInformationRepository applyInformationRepository;
     private final MissionRepository missionRepository;
     private final TesterRepository testerRepository;
+
+    private final MakerRepository makerRepository;
 
 
     @Transactional
@@ -104,11 +107,27 @@ public class ApplyInformationService {
         return response;
     }
 
-    public TesterListOfClosedMissionResponse TesterListOfClosedMission(UUID missionId) {
+    public TesterListOfClosedMissionResponse findTesterListOfClosedMission(UUID missionId) {
         Mission mission = missionRepository.findById(missionId);
         List<ApplyInformation> applyInformationList = mission.getApplyInformationList();
 
         TesterListOfClosedMissionResponse response = TesterListOfClosedMissionResponse.fromApplyInformationList(applyInformationList);
+        return response;
+    }
+
+    public CountResponse findCount() {
+        int testerCount = testerRepository.findAllCount();
+        int makerCount = makerRepository.findAllCount();
+        int continueMissionCount = missionRepository.findProgressMission();
+        int completeMissionCount = missionRepository.findCompleteMission();
+
+        CountResponse response = CountResponse.newInstance(
+                testerCount,
+                makerCount,
+                continueMissionCount,
+                completeMissionCount
+        );
+
         return response;
     }
 

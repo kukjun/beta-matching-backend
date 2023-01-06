@@ -24,9 +24,9 @@ public class MakerReviewService {
         ApplyInformation applyInformation = applyInformationRepository.findById(request.getApplyInformationId());
 
         MakerReview makerReview = request.toMakerReview(applyInformation);
-        makerReviewRepository.save(makerReview);
+        UUID savedId = makerReviewRepository.save(makerReview);
 
-        CreateMakerReviewListResponse response = CreateMakerReviewListResponse.fromMakerReview(makerReview);
+        CreateMakerReviewListResponse response = CreateMakerReviewListResponse.fromMakerReviewId(savedId);
 
         return response;
     }

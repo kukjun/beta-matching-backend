@@ -33,9 +33,9 @@ public class MissionService {
         String imageFileURL = FileHandler.saveTestImageFileData(request.getImage());
         Mission mission = request.toTest(maker, imageFileURL);
 
-        missionRepository.save(mission);
+        UUID saveId = missionRepository.save(mission);
 
-        CreateMissionResponse response = CreateMissionResponse.fromMission(mission);
+        CreateMissionResponse response = CreateMissionResponse.fromMissionId(saveId);
 
         return response;
     }
