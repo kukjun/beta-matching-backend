@@ -1,11 +1,10 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.ReviewException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissionStatusMismatchException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class MakerReviewTest {
 
@@ -16,7 +15,7 @@ class MakerReviewTest {
         int starPoint = 5;
         String comment = "좋았습니다.";
         ApplyInformation mock = mock(ApplyInformation.class);
-        when(mock.currentTestStatus()).thenReturn(MissionStatus.COMPLETE);
+        when(mock.currentMissionStatus()).thenReturn(MissionStatus.COMPLETE);
         MakerReview normalMakerReview = MakerReview.newInstance(
                 mock,
                 starPoint,
@@ -35,16 +34,15 @@ class MakerReviewTest {
         //when
         int starPoint = 5;
         String comment = "좋았습니다.";
-        ApplyInformation mock = mock(ApplyInformation.class);
-        when(mock.currentTestStatus()).thenReturn(MissionStatus.APPROVE);
+        ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
+
+        doThrow(MissionStatusMismatchException.class)
+                .when(mockApplyInformation)
+                .isMissionStatsMatch(MissionStatus.COMPLETE);
 
         assertThrows(
-                ReviewException.class,
-                () -> MakerReview.newInstance(
-                        mock,
-                        starPoint,
-                        comment
-                )
+                MissionStatusMismatchException.class,
+                () -> MakerReview.newInstance(mockApplyInformation, starPoint, comment)
         );
 
     }

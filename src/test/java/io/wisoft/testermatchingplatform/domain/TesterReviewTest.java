@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.ReviewException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissionStatusMismatchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class TesterReviewTest {
         int starPoint = 5;
         String comment = "좋았습니다.";
         ApplyInformation mock = mock(ApplyInformation.class);
-        when(mock.currentTestStatus()).thenReturn(MissionStatus.COMPLETE);
+        when(mock.currentMissionStatus()).thenReturn(MissionStatus.COMPLETE);
         TesterReview normalTesterReview = TesterReview.newInstance(
                 mock,
                 starPoint,
@@ -36,12 +36,15 @@ class TesterReviewTest {
         //when
         int starPoint = 5;
         String comment = "좋았습니다.";
-        ApplyInformation mock = mock(ApplyInformation.class);
-        when(mock.currentTestStatus()).thenReturn(MissionStatus.APPROVE);
+        ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
+
+        doThrow(MissionStatusMismatchException.class)
+                .when(mockApplyInformation)
+                .isMissionStatsMatch(MissionStatus.COMPLETE);
 
         assertThrows(
-                ReviewException.class,
-                () -> TesterReview.newInstance(mock, starPoint, comment)
+                MissionStatusMismatchException.class,
+                () -> TesterReview.newInstance(mockApplyInformation, starPoint, comment)
         );
 
 

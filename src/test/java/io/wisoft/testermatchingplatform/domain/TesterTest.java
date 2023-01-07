@@ -1,7 +1,8 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.LoginException;
-import io.wisoft.testermatchingplatform.handler.exception.PointException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.InsufficientPointException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissMatchPasswordException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.NotNaturalNumberException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class TesterTest {
 
     private Tester normalTester;
-    private Tester wriedTester;
-
-    private static Validator validator;
-
-    @BeforeAll
-    public static void setUp() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
 
     @BeforeEach
     public void createNormalTester() {
@@ -34,23 +27,6 @@ class TesterTest {
         String introduce = "안녕하세요 저는 이국준이예요.";
 
         normalTester = Tester.newInstance(
-                email,
-                password,
-                nickname,
-                phone,
-                introduce
-        );
-    }
-
-    @BeforeEach
-    public void createWriedTester() {
-        String email = "abcdaver.com";
-        String password = "abcdef12345";
-        String nickname = "kkukjun";
-        String phone = "010-2243-1252";
-        String introduce = "안녕하세요 저는 이국준이예요.";
-
-        wriedTester = Tester.newInstance(
                 email,
                 password,
                 nickname,
@@ -79,7 +55,7 @@ class TesterTest {
         String password = "abcdef12345";
 
         // when, then
-        assertDoesNotThrow(() -> normalTester.checkPassword(password));
+        assertDoesNotThrow(() -> normalTester.verifyPassword(password));
     }
 
     @Test
@@ -89,7 +65,7 @@ class TesterTest {
         String password = "abcd12345";
 
         // when, then
-        assertThrows(LoginException.class, () -> normalTester.checkPassword(password));
+        assertThrows(MissMatchPasswordException.class, () -> normalTester.verifyPassword(password));
     }
 
     @Test
@@ -109,7 +85,7 @@ class TesterTest {
         long point = -120L;
 
         // when, then
-        assertThrows(PointException.class, () -> normalTester.rewardPoint(point));
+        assertThrows(NotNaturalNumberException.class, () -> normalTester.rewardPoint(point));
     }
 
     @Test
@@ -135,7 +111,7 @@ class TesterTest {
         normalTester.rewardPoint(rewardPoint);
 
         // when, then
-        assertThrows(PointException.class, () -> normalTester.pointToCash(depositPoint));
+        assertThrows(InsufficientPointException.class, () -> normalTester.pointToCash(depositPoint));
     }
 
 

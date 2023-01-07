@@ -1,7 +1,6 @@
 package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.Tester;
-import io.wisoft.testermatchingplatform.handler.exception.LoginException;
 import io.wisoft.testermatchingplatform.repository.TesterRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.AccountRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.ChangePointToCashRequest;
@@ -16,13 +15,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +29,7 @@ class TesterServiceTest {
 
     @Mock
     private TesterRepository testerRepository;
+
     private TesterService testerService;
 
     @BeforeEach

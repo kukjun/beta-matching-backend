@@ -1,8 +1,8 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.CashException;
-import io.wisoft.testermatchingplatform.handler.exception.LoginException;
-import io.wisoft.testermatchingplatform.handler.exception.PointException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.InsufficientPointException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissMatchPasswordException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.NotNaturalNumberException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,10 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class MakerTest {
 
     private Maker normalMaker;
-
-    private Maker weirdMaker;
-
-    private static Validator validator;
 
     @BeforeEach
     void normalCreateMaker() {
@@ -36,95 +32,78 @@ class MakerTest {
         );
     }
 
-    @BeforeEach
-    void weirdCreateMaker() {
-        String email = "abcdef";
-        String password = "abcd1234";
-        String nickname = "에이비씨";
-        String phone = "010-1234-5678";
-        String company = "카카오";
-
-        weirdMaker = Maker.newInstance(
-                email,
-                password,
-                nickname,
-                phone,
-                company
-        );
-    }
-
 
     @Test
     @DisplayName("생성 시 기본 값 테스트")
     public void makerCreateInitValueSuccessTest() {
         //given
-
+        long expectPoint = 0L;
+        String expectAccount = "";
         // when
 
         // then
-        assertEquals(0L, normalMaker.getPoint());
-        assertEquals("", normalMaker.getAccount());
+        assertEquals(expectPoint, normalMaker.getPoint());
+        assertEquals(expectAccount, normalMaker.getAccount());
     }
 
     @Test
-    @DisplayName("로그인 성공 테스트")
+    @DisplayName("비밀번호 유효여부 확인 테스트 - 성공")
     public void loginSuccessTest() {
         // given
-        String email = "abcd@naver.com";
         String password = "abcd1234";
 
         // when, then
-        assertDoesNotThrow(() -> normalMaker.checkPassword(password));
+        assertDoesNotThrow(() -> normalMaker.verifyPassword(password));
 
     }
 
     @Test
-    @DisplayName("로그인 실패 테스트")
+    @DisplayName("비밀번호 유효여부 확인 테스트 - 실패")
     public void loginFailTest() {
         // given
-        String email = "abcd@naver.com";
         String password = "abcd123";
 
         // when, then
-        assertThrows(LoginException.class, () -> normalMaker.checkPassword(password));
+        assertThrows(MissMatchPasswordException.class, () -> normalMaker.verifyPassword(password));
 
     }
 
     @Test
-    @DisplayName("현금 포인트 전환 실패 테스트 - 비정상적인 현금")
+    @DisplayName("현금 포인트 전환 테스트 - 실패")
     public void withdrawCashFailTest() {
         // given
         long cash = -10;
 
         // when, then
-        assertThrows(CashException.class, () -> normalMaker.cashToPoint(cash));
+        assertThrows(NotNaturalNumberException.class, () -> normalMaker.cashToPoint(cash));
     }
 
     @Test
-    @DisplayName("현금 포인트 전환 성공 테스트")
+    @DisplayName("현금 포인트 전환 테스트 - 성공")
     public void withdrawCashSuccessTest() {
         // given
         long cash = 1000L;
+        long expectedPoint = cash;
 
         // when, then
         assertDoesNotThrow(() -> normalMaker.cashToPoint(cash));
-        assertEquals(cash, normalMaker.getPoint());
+        assertEquals(expectedPoint, normalMaker.getPoint());
     }
 
     @Test
-    @DisplayName("포인트 현금 전환 실패 테스트")
+    @DisplayName("포인트 현금 전환 테스트 - 실패")
     public void depositPointFailTest() {
         // given
         long cash = 1000L;
-        long minusPoint = 10000L;
+        long withdrawPoint = 10000L;
         normalMaker.cashToPoint(cash);
 
         // when, then
-        assertThrows(PointException.class, () -> normalMaker.pointToCash(minusPoint));
+        assertThrows(InsufficientPointException.class, () -> normalMaker.pointToCash(withdrawPoint));
     }
 
     @Test
-    @DisplayName("포인트 현금 전환 성공 테스트")
+    @DisplayName("포인트 현금 전환 테스트 - 성공")
     public void depositPointSuccessTest() {
         // given
         long cash = 10000L;
@@ -136,7 +115,6 @@ class MakerTest {
         // when, then
         assertDoesNotThrow(() -> normalMaker.pointToCash(minusPoint));
         assertEquals(remainCash, normalMaker.getPoint());
-
     }
 
     @Test
@@ -167,7 +145,7 @@ class MakerTest {
 
         // when
         // then
-        assertThrows(PointException.class, () -> normalMaker.usePoint(minusPoint));
+        assertThrows(InsufficientPointException.class, () -> normalMaker.usePoint(minusPoint));
     }
 }
 

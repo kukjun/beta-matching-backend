@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissionDateCurrentTimeBeforeApplyException;
 import io.wisoft.testermatchingplatform.handler.exception.domain.MissionDateMisMatchException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class TestDateMission {
+class MissionDateTest {
 
 
     @Test
@@ -58,7 +59,7 @@ class TestDateMission {
         LocalDate durationTimeEnd = LocalDate.now().plusDays(30L);
 
         assertThrows(
-                MissionDateMisMatchException.class,
+                MissionDateCurrentTimeBeforeApplyException.class,
                 () -> MissionDate.newInstance(
                         recruitmentTimeStart,
                         recruitmentTimeEnd,

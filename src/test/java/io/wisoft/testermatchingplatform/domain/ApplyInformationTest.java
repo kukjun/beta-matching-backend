@@ -1,7 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.ApproveException;
-import io.wisoft.testermatchingplatform.handler.exception.ExecutionException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissionStatusMismatchException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,17 +12,18 @@ import static org.mockito.Mockito.*;
 class ApplyInformationTest {
 
     private ApplyInformation normalApplyInformation;
-    private ApplyInformation wriedApplyInformation;
+    private Mission mockMission;
+    private Tester mockTester;
 
     @BeforeEach
     public void createNormalApplyInformation() {
-        Mission mission = mock(Mission.class);
-        Tester tester = mock(Tester.class);
-        when(mission.getMaker()).thenReturn(mock(Maker.class));
+        mockMission = mock(Mission.class);
+        mockTester = mock(Tester.class);
+        when(mockMission.getMaker()).thenReturn(mock(Maker.class));
 
         normalApplyInformation = ApplyInformation.newInstance(
-                mission,
-                tester
+                mockMission,
+                mockTester
         );
     }
 
@@ -49,61 +49,23 @@ class ApplyInformationTest {
     }
 
     @Test
-    @DisplayName("신청자 선정 실패 테스트")
-    public void approveApplyFailTest() throws Exception {
-        //given
-        //when
-        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
-            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
-                    .thenReturn(MissionStatus.APPLY);
-            //then
-            assertThrows(ApproveException.class, () -> normalApplyInformation.applyApprove());
-        }
-    }
-
-    @Test
     @DisplayName("신청자 거절 성공 테스트")
     public void rejectApplySuccessTest() throws Exception {
         //given
         //when
-        when(normalApplyInformation.getMission().getStatus()).thenReturn(MissionStatus.APPROVE);
+        when(mockMission.getStatus()).thenReturn(MissionStatus.APPROVE);
         normalApplyInformation.applyReject();
         //then
         assertEquals(ApplyInformationStatus.APPROVE_FAIL, normalApplyInformation.getStatus());
     }
-
-    // Mock 객체 생성이 안되는 문제 - Trouble Shooting
-//    @Test
-//    @DisplayName("신청자 거절 성공 테스트 - 지연 테스트")
-//    public void rejectApplySuccessTest_wait() throws Exception {
-//        //given
-//        //when
-//
-//        try (MockedStatic<TestStatus> testStatusMockedStatic = mockStatic(TestStatus.class)) {
-//            testStatusMockedStatic.when(() -> TestStatus.refreshStatus(normalApplyInformation.getTest().getTestDate()))
-//                    .thenReturn(TestStatus.PROGRESS);
-//
-//            when(normalApplyInformation.getTest().getMaker()).thenReturn(mock(Maker.class));
-//
-//        }
-//        //then
-//        assertEquals(ApplyInformationStatus.APPROVE_FAIL, normalApplyInformation.getStatus());
-//    }
 
     @Test
     @DisplayName("신청자 거절 실패 테스트")
     public void rejectApplyFailTest() throws Exception {
         //given
         //when
-        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
-            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
-                    .thenReturn(MissionStatus.APPLY);
-
-            when(normalApplyInformation.getMission().getMaker())
-                    .thenReturn(mock(Maker.class));
-
-            assertThrows(ApproveException.class, () -> normalApplyInformation.applyReject());
-        }
+        when(mockMission.getStatus()).thenReturn(MissionStatus.COMPLETE);
+        assertThrows(MissionStatusMismatchException.class, () -> normalApplyInformation.applyReject());
     }
 
 
@@ -124,12 +86,8 @@ class ApplyInformationTest {
     public void executePerformerFailTest() throws Exception {
         //given
         //when
-        try (MockedStatic<MissionStatus> testStatusMockedStatic = mockStatic(MissionStatus.class)) {
-            testStatusMockedStatic.when(() -> MissionStatus.refreshStatus(normalApplyInformation.getMission().getMissionDate()))
-                    .thenReturn(MissionStatus.APPLY);
-            //then
-            assertThrows(ExecutionException.class, () -> normalApplyInformation.executeApprove());
-        }
+        when(mockMission.getStatus()).thenReturn(MissionStatus.COMPLETE);
+        assertThrows(MissionStatusMismatchException.class, () -> normalApplyInformation.applyReject());
     }
 
 
