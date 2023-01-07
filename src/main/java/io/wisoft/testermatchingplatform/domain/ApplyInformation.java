@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.domain.MissionStatusMisMatchException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissionStatusMismatchException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -134,7 +134,7 @@ public class ApplyInformation extends BaseEntity {
     public void isMissionStatsMatch(MissionStatus expectedMissionStatus) {
         MissionStatus actualMissionStatus = currentMissionStatus();
         if (expectedMissionStatus != actualMissionStatus) {
-            throw new MissionStatusMisMatchException(
+            throw new MissionStatusMismatchException(
                     "expected: " + expectedMissionStatus.toString() +
                             "\n actual: " + actualMissionStatus.toString()
             );

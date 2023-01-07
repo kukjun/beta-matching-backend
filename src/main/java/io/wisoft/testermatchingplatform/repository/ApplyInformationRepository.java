@@ -1,6 +1,8 @@
 package io.wisoft.testermatchingplatform.repository;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
+import io.wisoft.testermatchingplatform.handler.exception.service.ApplyInformationNotDeleteException;
+import io.wisoft.testermatchingplatform.handler.exception.service.ApplyInformationNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,14 +22,19 @@ public class ApplyInformationRepository {
     }
 
     public ApplyInformation findById(UUID id) {
-        return em.find(ApplyInformation.class, id);
+        ApplyInformation applyInformation = em.find(ApplyInformation.class, id);
+        if (applyInformation == null) {
+            throw new ApplyInformationNotFoundException("id: " + id + " not found");
+        }
+        return applyInformation;
     }
 
     public List<ApplyInformation> findAll() {
-        return em.createQuery(
+        List<ApplyInformation> resultList = em.createQuery(
                 "select a from ApplyInformation a",
                 ApplyInformation.class
         ).getResultList();
+        return resultList;
     }
 
     public List<ApplyInformation> findByTesterId(UUID testerId) {
@@ -38,8 +45,11 @@ public class ApplyInformationRepository {
     }
 
     public void deleteById(UUID applyInformationId) {
-        em.createQuery("delete from ApplyInformation a where a.id=:applyInformationId")
+        List<ApplyInformation> applyInformationList = em.createQuery("delete from ApplyInformation a where a.id=:applyInformationId", ApplyInformation.class)
                 .setParameter("applyInformationId", applyInformationId)
                 .getResultList();
+        if (applyInformationList.size() == 0) {
+            throw new ApplyInformationNotDeleteException("id: " + applyInformationId + " can't delete");
+        }
     }
 }

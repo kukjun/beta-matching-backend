@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.repository;
 
 import io.wisoft.testermatchingplatform.domain.Maker;
+import io.wisoft.testermatchingplatform.handler.exception.service.MakerNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -22,15 +23,23 @@ public class MakerRepository {
     }
 
     public Maker findById(UUID id) {
-        return em.find(Maker.class, id);
+        Maker maker = em.find(Maker.class, id);
+        if (maker == null) {
+            throw new MakerNotFoundException("id: " + id + " not found");
+        }
+        return maker;
     }
 
     public Maker findByEmail(String email) throws NoResultException, NonUniqueResultException {
-        return em.createQuery(
+        List<Maker> makerList = em.createQuery(
                         "select m from Maker m where m.email = :email",
                         Maker.class
                 ).setParameter("email", email)
-                .getSingleResult();
+                .getResultList();
+        if (makerList.size() == 0) {
+            throw new MakerNotFoundException("email: " + email + " not found");
+        }
+        return makerList.get(0);
     }
 
     public List<Maker> findAll() {

@@ -77,8 +77,7 @@ public class Tester extends BaseEntity{
         isAccountEmpty();
         IsPointNaturalNumber(point);
         long cash = point * 19 / 20;
-        isChangeCash(point);
-        System.out.println("계좌로 현금을 " + cash + "만큼 충전합니다.!!");
+        isEnoughPoint(point);
         this.point -= point;
         return cash;
     }
@@ -98,7 +97,7 @@ public class Tester extends BaseEntity{
             throw new NotNaturalNumberException(String.valueOf(point));
         }
     }
-    private void isChangeCash(long point) {
+    private void isEnoughPoint(long point) {
         if (this.point < point) {
             throw new InsufficientPointException(String.valueOf(point - this.point));
         }

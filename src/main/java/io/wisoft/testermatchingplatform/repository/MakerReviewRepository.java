@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.repository;
 
 import io.wisoft.testermatchingplatform.domain.MakerReview;
+import io.wisoft.testermatchingplatform.handler.exception.service.MakerReviewNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,7 +20,11 @@ public class MakerReviewRepository {
     }
 
     public MakerReview findById(UUID id) {
-        return em.find(MakerReview.class, id);
+        MakerReview makerReview = em.find(MakerReview.class, id);
+        if (makerReview == null) {
+            throw new MakerReviewNotFoundException("id: " + id + " not found");
+        }
+        return makerReview;
     }
 
     public List<MakerReview> findAll(UUID id) {

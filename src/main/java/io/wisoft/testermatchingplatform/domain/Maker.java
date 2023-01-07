@@ -86,6 +86,7 @@ public class Maker extends BaseEntity {
     public long pointToCash(long point) {
         isAccountEmpty();
         isPointNaturalNumber(point);
+        isEnoughPoint(point);
         long cash = point * 19 / 20;
         this.point -= point;
         return cash;
@@ -93,7 +94,7 @@ public class Maker extends BaseEntity {
 
     public void usePoint(long point) {
         isPointNaturalNumber(point);
-        isChangeCash(point);
+        isEnoughPoint(point);
         this.point -= point;
     }
 
@@ -105,7 +106,7 @@ public class Maker extends BaseEntity {
 
 
     public void updatePoint(long point) {
-        isChangeCash(point);
+        isEnoughPoint(point);
         this.point -= point;
     }
 
@@ -124,7 +125,7 @@ public class Maker extends BaseEntity {
         }
     }
 
-    private void isChangeCash(long point) {
+    private void isEnoughPoint(long point) {
         if (this.point < point) {
             throw new InsufficientPointException(String.valueOf(point - this.point));
         }
@@ -141,4 +142,6 @@ public class Maker extends BaseEntity {
             throw new MissMatchPasswordException(password);
         }
     }
+
+
 }

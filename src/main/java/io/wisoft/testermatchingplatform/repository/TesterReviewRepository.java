@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.repository;
 
 import io.wisoft.testermatchingplatform.domain.TesterReview;
+import io.wisoft.testermatchingplatform.handler.exception.service.TesterReviewNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +21,11 @@ public class TesterReviewRepository{
     }
 
     public TesterReview findById(UUID id) {
-        return em.find(TesterReview.class, id);
+        TesterReview testerReview = em.find(TesterReview.class, id);
+        if (testerReview == null) {
+            throw new TesterReviewNotFoundException("id: " + id + " not found");
+        }
+        return testerReview;
     }
 
     public List<TesterReview> findAll(UUID id) {
