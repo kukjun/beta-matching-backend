@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,14 +53,16 @@ class TesterServiceTest {
                 phoneNumber,
                 introMessage
         );
-        UUID makerId = UUID.randomUUID();
-        when(testerRepository.save(any(Tester.class))).thenReturn(makerId);
+        UUID expectMakerId = UUID.randomUUID();
+        Tester mockTester = mock(Tester.class);
+        when(mockTester.getId()).thenReturn(expectMakerId);
+        when(testerRepository.save(any(Tester.class))).thenReturn(mockTester);
 
         //when
         CreateTesterResponse response = testerService.createTester(request);
 
         //then
-        assertEquals(makerId, response.getId());
+        assertEquals(expectMakerId, response.getId());
 
     }
 
@@ -80,7 +83,7 @@ class TesterServiceTest {
         Tester mockTester = mock(Tester.class);
         when(mockTester.getId()).thenReturn(makerId);
         when(mockTester.getNickname()).thenReturn(expectNickname);
-        when(testerRepository.findByEmail(email)).thenReturn(mockTester);
+        when(testerRepository.findByEmail(email)).thenReturn(Optional.of(mockTester));
 
         //when
         TesterLoginResponse response = testerService.login(request);
@@ -161,7 +164,7 @@ class TesterServiceTest {
         UUID testerId = UUID.randomUUID();
         Tester mockTester = mock(Tester.class);
         when(mockTester.changeAccount(account)).thenReturn(account);
-        when(testerRepository.findById(testerId)).thenReturn(mockTester);
+        when(testerRepository.findById(testerId)).thenReturn(Optional.of(mockTester));
         //when
         AccountResponse response = testerService.updateAccount(testerId, request);
 
@@ -180,7 +183,7 @@ class TesterServiceTest {
         UUID testerId = UUID.randomUUID();
         Tester mockTester = mock(Tester.class);
         when(mockTester.pointToCash(request.getPoint())).thenReturn(expectedCash);
-        when(testerRepository.findById(testerId)).thenReturn(mockTester);
+        when(testerRepository.findById(testerId)).thenReturn(Optional.of(mockTester));
 
         //when
         ChangePointToCashResponse response = testerService.changePointToCash(testerId, request);

@@ -2,6 +2,7 @@ package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.TesterReview;
+import io.wisoft.testermatchingplatform.handler.exception.service.ApplyInformationNotFoundException;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.TesterReviewRepository;
 import io.wisoft.testermatchingplatform.web.dto.TesterReviewDTO;
@@ -29,12 +30,15 @@ public class TesterReviewService {
         List<UUID> responseDTOList = new ArrayList<>();
 
         for (TesterReviewDTO testerReviewDTO : requestDTOList) {
-            ApplyInformation applyInformation = applyInformationRepository.findById(testerReviewDTO.getApplyInformationId());
+            ApplyInformation applyInformation = applyInformationRepository.findById(testerReviewDTO.getApplyInformationId()).orElseThrow(
+                    () -> new ApplyInformationNotFoundException("id: " + testerReviewDTO.getApplyInformationId() + "not found")
+            );
+
             TesterReview testerReview = testerReviewDTO.toTesterReview(applyInformation);
-            UUID saveId = testerReviewRepository.save(testerReview);
-            responseDTOList.add(saveId);
+            TesterReview storedTesterReview = testerReviewRepository.save(testerReview);
+            responseDTOList.add(storedTesterReview.getId());
         }
-        CreateTesterReviewListResponse response = CreateTesterReviewListResponse.fromUUIDList(responseDTOList);
+        CreateTesterReviewListResponse response = CreateTesterReviewListResponse.fromTesterReviewIdList(responseDTOList);
         return response;
     }
 

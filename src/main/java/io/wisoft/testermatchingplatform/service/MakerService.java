@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.Maker;
+import io.wisoft.testermatchingplatform.handler.exception.service.MakerNotFoundException;
 import io.wisoft.testermatchingplatform.repository.MakerRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.*;
 import io.wisoft.testermatchingplatform.web.dto.response.*;
@@ -20,14 +21,16 @@ public class MakerService {
     @Transactional
     public CreateMakerResponse createMaker(final CreateMakerRequest request) {
         Maker maker = request.toMaker();
-        UUID responseId = makerRepository.save(maker);
-        CreateMakerResponse response = CreateMakerResponse.fromMakerId(responseId);
+        Maker storedMaker = makerRepository.save(maker);
+        CreateMakerResponse response = CreateMakerResponse.fromMaker(storedMaker);
         return response;
     }
 
     @Transactional
     public AccountResponse updateAccount(final UUID makerId, final AccountRequest request) {
-        Maker maker = makerRepository.findById(makerId);
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("id: " + makerId + " not found")
+        );
         String account = maker.changeAccount(request.getAccount());
 
         AccountResponse response = AccountResponse.fromAccount(account);
@@ -36,7 +39,9 @@ public class MakerService {
 
     @Transactional
     public ChangePointToCashResponse changePointToCash(final UUID makerId, final ChangePointToCashRequest request) {
-        Maker maker = makerRepository.findById(makerId);
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("id: " + makerId + " not found")
+        );
         long cash = maker.pointToCash(request.getPoint());
 
 
@@ -46,7 +51,9 @@ public class MakerService {
 
     @Transactional
     public ChangeCashToPointResponse changeCashToPoint(final UUID makerId, final ChangeCashToPointRequest request) {
-        Maker maker = makerRepository.findById(makerId);
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("id: " + makerId + " not found")
+        );
         long point = maker.cashToPoint(request.getCash());
 
         ChangeCashToPointResponse response = ChangeCashToPointResponse.newInstance(point);
@@ -54,16 +61,16 @@ public class MakerService {
     }
 
     public MakerLoginResponse login(final MakerLoginRequest request) {
-            System.out.println("check");
             Maker maker = makerRepository.findByEmail(request.getEmail());
-            System.out.println("check2");
             maker.verifyPassword(request.getPassword());
             MakerLoginResponse response = MakerLoginResponse.fromMaker(maker);
             return response;
     }
 
     public ExchangeInformationResponse exchangeView(final UUID makerId) {
-        Maker maker = makerRepository.findById(makerId);
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("id: " + makerId + " not found")
+        );
         ExchangeInformationResponse response = ExchangeInformationResponse.fromMaker(
                 maker
         );

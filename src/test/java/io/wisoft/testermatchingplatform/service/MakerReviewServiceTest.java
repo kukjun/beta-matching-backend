@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,11 +43,13 @@ class MakerReviewServiceTest {
         CreateMakerReviewListRequest request = CreateMakerReviewListRequest.newInstance(applyInformationId, starPoint, testComment);
 
         ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
-        when(applyInformationRepository.findById(request.getApplyInformationId())).thenReturn(mockApplyInformation);
+        when(applyInformationRepository.findById(request.getApplyInformationId())).thenReturn(Optional.ofNullable(mockApplyInformation));
 
         UUID makerReviewId = UUID.randomUUID();
-        when(makerReviewRepository.save(any(MakerReview.class))).thenReturn(makerReviewId);
-        when(mockApplyInformation.currentMissionStatus()).thenReturn(MissionStatus.COMPLETE);
+        MakerReview mockMakerReview = mock(MakerReview.class);
+        when(mockMakerReview.getId()).thenReturn(makerReviewId);
+
+        when(makerReviewRepository.save(any(MakerReview.class))).thenReturn(mockMakerReview);
 
         //when
         CreateMakerReviewListResponse response = makerReviewService.createMakerReview(makerId, request);

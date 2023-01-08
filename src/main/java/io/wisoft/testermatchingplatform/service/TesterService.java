@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.Tester;
+import io.wisoft.testermatchingplatform.handler.exception.service.TesterNotFoundException;
 import io.wisoft.testermatchingplatform.repository.TesterRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.AccountRequest;
 import io.wisoft.testermatchingplatform.web.dto.request.ChangePointToCashRequest;
@@ -22,15 +23,17 @@ public class TesterService {
     @Transactional
     public CreateTesterResponse createTester(final CreateTesterRequest request) {
         Tester tester = request.toTester();
-        UUID testerId = testerRepository.save(tester);
+        Tester storedTester = testerRepository.save(tester);
 
-        CreateTesterResponse response = CreateTesterResponse.fromTesterId(testerId);
+        CreateTesterResponse response = CreateTesterResponse.fromTester(storedTester);
         return response;
     }
 
     @Transactional
     public AccountResponse updateAccount(final UUID testerId, final AccountRequest request) {
-        Tester tester = testerRepository.findById(testerId);
+        Tester tester = testerRepository.findById(testerId).orElseThrow(
+                () -> new TesterNotFoundException("id: " + testerId + " not found")
+        );
         String account = tester.changeAccount(request.getAccount());
 
         AccountResponse response = AccountResponse.fromAccount(account);
@@ -39,7 +42,9 @@ public class TesterService {
 
     @Transactional
     public ChangePointToCashResponse changePointToCash(final UUID testerId, final ChangePointToCashRequest request) {
-        Tester tester = testerRepository.findById(testerId);
+        Tester tester = testerRepository.findById(testerId).orElseThrow(
+                () -> new TesterNotFoundException("id: " + testerId + " not found")
+        );
         long cash = tester.pointToCash(request.getPoint());
 
         ChangePointToCashResponse response = ChangePointToCashResponse.newInstance(cash);
@@ -47,7 +52,9 @@ public class TesterService {
     }
 
     public ExchangeInformationResponse exchangeView(final UUID testerId) {
-        Tester tester = testerRepository.findById(testerId);
+        Tester tester = testerRepository.findById(testerId).orElseThrow(
+                () -> new TesterNotFoundException("id: " + testerId + " not found")
+        );
         ExchangeInformationResponse response = ExchangeInformationResponse.fromTester(
                 tester
         );
@@ -55,7 +62,9 @@ public class TesterService {
     }
 
     public TesterLoginResponse login(final TesterLoginRequest request) {
-            Tester tester = testerRepository.findByEmail(request.getEmail());
+        Tester tester = testerRepository.findByEmail(request.getEmail()).orElseThrow(
+                ()-> new TesterNotFoundException("email: " + request.getEmail() + " not found")
+        );
             tester.verifyPassword(request.getPassword());
             TesterLoginResponse response = TesterLoginResponse.fromTester(tester);
             return response;

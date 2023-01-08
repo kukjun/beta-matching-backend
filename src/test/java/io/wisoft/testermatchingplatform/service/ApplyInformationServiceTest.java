@@ -15,8 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -50,16 +52,17 @@ class ApplyInformationServiceTest {
         //given
         UUID missionId = UUID.randomUUID();
         Mission mockMission = mock(Mission.class);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
         UUID testerId = UUID.randomUUID();
         Tester mockTester = mock(Tester.class);
-        when(testerRepository.findById(testerId)).thenReturn(mockTester);
+        when(testerRepository.findById(testerId)).thenReturn(Optional.ofNullable(mockTester));
 
-        ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
         UUID expectedId = UUID.randomUUID();
+        ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
+        when(mockApplyInformation.getId()).thenReturn(expectedId);
 
-        when(applyInformationRepository.save(any(ApplyInformation.class))).thenReturn(expectedId);
+        when(applyInformationRepository.save(any(ApplyInformation.class))).thenReturn(mockApplyInformation);
 
         //when
         ApplyMissionResponse response = applyInformationService.applyMission(testerId, missionId);
@@ -74,7 +77,7 @@ class ApplyInformationServiceTest {
         //given
         UUID applyInformationId = UUID.randomUUID();
         ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
-        when(applyInformationRepository.findById(applyInformationId)).thenReturn(mockApplyInformation);
+        when(applyInformationRepository.findById(applyInformationId)).thenReturn(Optional.ofNullable(mockApplyInformation));
 
         //when
         //then
@@ -87,7 +90,7 @@ class ApplyInformationServiceTest {
         //given
         UUID missionId = UUID.randomUUID();
         Mission mockMission = mock(Mission.class);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
         List<ApplyInformation> mockApplyInformations = new ArrayList<>();
         UUID[] expectedIds = new UUID[3];
@@ -120,7 +123,7 @@ class ApplyInformationServiceTest {
         //given
         UUID missionId = UUID.randomUUID();
         Mission mockMission = mock(Mission.class);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
         List<ApplyInformation> mockApplyInformations = new ArrayList<>();
         UUID[] expectedIds = new UUID[3];
@@ -155,7 +158,7 @@ class ApplyInformationServiceTest {
 
         // 조회한 값을 받아오기 위한 mocking
         Mission mockMission = mock(Mission.class);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
         // 조회한 값에서, get 요청시 필요한 값을 위해 mocking
         List<ApplyInformation> applyInformationList = new ArrayList<>();
@@ -206,7 +209,7 @@ class ApplyInformationServiceTest {
 
         // 조회한 값을 받아오기 위한 mocking
         Mission mockMission = mock(Mission.class);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
         // 조회한 값에서, get 요청시 필요한 값을 위해 mocking
         List<ApplyInformation> applyInformationList = new ArrayList<>();
@@ -240,7 +243,7 @@ class ApplyInformationServiceTest {
 
         // 조회한 값을 받아오기 위한 mocking
         Mission mockMission = mock(Mission.class);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
         // 조회한 값에서, get 요청시 필요한 값을 위해 mocking
         List<ApplyInformation> applyInformationList = new ArrayList<>();
@@ -268,14 +271,15 @@ class ApplyInformationServiceTest {
     @DisplayName("api상 필요한 count 조회 테스트 - 성공")
     public void findCountSuccessTest() throws Exception {
         //given
-        int expectedTesterCount = 10;
-        int expectedMakerCount = 20;
-        int progressMissionCount = 5;
-        int completeMissionCount = 4;
-        when(testerRepository.findAllCount()).thenReturn(expectedTesterCount);
-        when(makerRepository.findAllCount()).thenReturn(expectedMakerCount);
-        when(missionRepository.findProgressMission()).thenReturn(progressMissionCount);
-        when(missionRepository.findCompleteMission()).thenReturn(completeMissionCount);
+        long expectedTesterCount = 10;
+        long expectedMakerCount = 20;
+        long progressMissionCount = 5;
+        long completeMissionCount = 4;
+        when(testerRepository.count()).thenReturn(expectedTesterCount);
+        when(makerRepository.count()).thenReturn(expectedMakerCount);
+        LocalDate currentDate = LocalDate.now();
+        when(missionRepository.findProgressMission(currentDate)).thenReturn(progressMissionCount);
+        when(missionRepository.findCompleteMission(currentDate)).thenReturn(completeMissionCount);
 
         //when
         CountResponse response = applyInformationService.findCount();

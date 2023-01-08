@@ -13,7 +13,7 @@ public class CreateTesterReviewListResponse {
 
     private final List<UUID> testerReviewIdDTOList;
 
-    public static CreateTesterReviewListResponse fromUUIDList(List<UUID> dtoList) {
+    public static CreateTesterReviewListResponse fromTesterReviewIdList(List<UUID> dtoList) {
         CreateTesterReviewListResponse response = new CreateTesterReviewListResponse(dtoList);
         return response;
     }

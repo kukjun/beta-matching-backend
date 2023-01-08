@@ -12,10 +12,9 @@ import java.util.UUID;
 public class CreateMakerResponse {
     private final UUID id;
 
-    public static CreateMakerResponse fromMakerId(UUID id) {
+    public static CreateMakerResponse fromMaker(Maker maker) {
         return new CreateMakerResponse(
-                id
+                maker.getId()
         );
     }
-
 }

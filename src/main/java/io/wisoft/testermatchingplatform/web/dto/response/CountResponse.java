@@ -7,16 +7,16 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class CountResponse {
-    private final int testerCount;
-    private final int makerCount;
-    private final int continueTestCount;
-    private final int completeTestCount;
+    private final long testerCount;
+    private final long makerCount;
+    private final long continueTestCount;
+    private final long completeTestCount;
 
     public static CountResponse newInstance(
-        final int testerCount,
-        final int makerCount,
-        final int continueTestCount,
-        final int completeTestCount
+        final long testerCount,
+        final long makerCount,
+        final long continueTestCount,
+        final long completeTestCount
     ) {
         CountResponse response = new CountResponse(
                 testerCount,

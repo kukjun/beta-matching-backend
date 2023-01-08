@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,7 +50,9 @@ class MakerServiceTest {
                 company
         );
         UUID expectedId = UUID.randomUUID();
-        when(makerRepository.save(any(Maker.class))).thenReturn(expectedId);
+        Maker mockMaker = mock(Maker.class);
+        when(mockMaker.getId()).thenReturn(expectedId);
+        when(makerRepository.save(any(Maker.class))).thenReturn(mockMaker);
 
 
         //when
@@ -71,7 +74,7 @@ class MakerServiceTest {
 
         Maker mockMaker = mock(Maker.class);
         when(mockMaker.changeAccount(expectedAccount)).thenReturn(expectedAccount);
-        when(makerRepository.findById(id)).thenReturn(mockMaker);
+        when(makerRepository.findById(id)).thenReturn(Optional.of(mockMaker));
         //when
         AccountResponse response = makerService.updateAccount(id, request);
 
@@ -90,7 +93,7 @@ class MakerServiceTest {
         UUID makerId = UUID.randomUUID();
         Maker mockMaker = mock(Maker.class);
         when(mockMaker.pointToCash(request.getPoint())).thenReturn(expectedCash);
-        when(makerRepository.findById(makerId)).thenReturn(mockMaker);
+        when(makerRepository.findById(makerId)).thenReturn(Optional.of(mockMaker));
         //when
         ChangePointToCashResponse response = makerService.changePointToCash(makerId, request);
 
@@ -111,7 +114,7 @@ class MakerServiceTest {
         UUID makerId = UUID.randomUUID();
         Maker mockMaker = mock(Maker.class);
         when(mockMaker.cashToPoint(request.getCash())).thenReturn(expectedPoint);
-        when(makerRepository.findById(makerId)).thenReturn(mockMaker);
+        when(makerRepository.findById(makerId)).thenReturn(Optional.of(mockMaker));
 
         //when
         ChangeCashToPointResponse response = makerService.changeCashToPoint(makerId, request);
@@ -155,7 +158,7 @@ class MakerServiceTest {
         Maker mockMaker = mock(Maker.class);
         when(mockMaker.getPoint()).thenReturn(point);
         when(mockMaker.getAccount()).thenReturn(account);
-        when(makerRepository.findById(makerId)).thenReturn(mockMaker);
+        when(makerRepository.findById(makerId)).thenReturn(Optional.of(mockMaker));
         //when
         ExchangeInformationResponse response = makerService.exchangeView(makerId);
 

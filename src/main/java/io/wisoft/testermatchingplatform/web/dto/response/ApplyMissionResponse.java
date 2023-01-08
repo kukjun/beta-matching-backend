@@ -1,5 +1,6 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
+import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +12,8 @@ import java.util.UUID;
 public class ApplyMissionResponse {
     final UUID applyId;
 
-    public static ApplyMissionResponse newInstance(UUID applyId) {
-        ApplyMissionResponse response = new ApplyMissionResponse(applyId);
+    public static ApplyMissionResponse fromApplyInformation(ApplyInformation applyInformation) {
+        ApplyMissionResponse response = new ApplyMissionResponse(applyInformation.getId());
         return response;
     }
 }

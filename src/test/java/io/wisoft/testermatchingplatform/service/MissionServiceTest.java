@@ -27,6 +27,7 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -70,9 +71,11 @@ class MissionServiceTest {
 
         UUID makerId = UUID.randomUUID();
         Maker mockMaker = mock(Maker.class);
-        when(makerRepository.findById(makerId)).thenReturn(mockMaker);
+        when(makerRepository.findById(makerId)).thenReturn(Optional.ofNullable(mockMaker));
         UUID missionId = UUID.randomUUID();
-        when(missionRepository.save(any(Mission.class))).thenReturn(missionId);
+        Mission mockMission = mock(Mission.class);
+        when(mockMission.getId()).thenReturn(missionId);
+        when(missionRepository.save(any(Mission.class))).thenReturn(mockMission);
 
         //when
         try (MockedStatic<FileHandler> fileHandlerMockedStatic = mockStatic(FileHandler.class)) {
@@ -109,7 +112,7 @@ class MissionServiceTest {
         Mission mockMission = mock(Mission.class);
         when(mockMission.getId()).thenReturn(missionId);
 
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.of(mockMission));
 
         //when
         try (MockedStatic<FileHandler> fileHandlerMockedStatic = mockStatic(FileHandler.class)) {
@@ -141,7 +144,7 @@ class MissionServiceTest {
         UUID missionId = UUID.randomUUID();
         Mission mockMission = mock(Mission.class);
         when(mockMission.getId()).thenReturn(missionId);
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.of(mockMission));
         //when
         UpdateMissionExceptImageResponse response = missionService.updateExceptImageMission(missionId, request);
 
@@ -151,7 +154,7 @@ class MissionServiceTest {
 
     // Unit Test 진행을 할 수 없음
     @Test
-    @DisplayName("신청기간의 Mission List 조회 - 성ㅅ")
+    @DisplayName("신청기간의 Mission List 조회 - 성공")
     public void applyMissionListSuccessTest() throws Exception {
         //given
         Mission mockMission = mock(Mission.class);
@@ -170,7 +173,8 @@ class MissionServiceTest {
         when(mockMission.getApplyInformationList()).thenReturn(applyInformations);
 
         UUID testerId = UUID.randomUUID();
-        when(missionRepository.findApplyMissionsExceptTesterId((testerId)))
+        LocalDate currentDate = LocalDate.now();
+        when(missionRepository.findApplyMissionsExceptTesterId((testerId), currentDate))
                 .thenReturn(missions);
 
         //when
@@ -253,7 +257,8 @@ class MissionServiceTest {
         when(mockMission.getApplyInformationList()).thenReturn(applyInformations);
 
         UUID testerId = UUID.randomUUID();
-        when(missionRepository.findApplyMissionsExceptTesterIdByCreated(testerId))
+        LocalDate currentDate = LocalDate.now();
+        when(missionRepository.findApplyMissionsExceptTesterIdByCreated(testerId, currentDate))
                 .thenReturn(missions);
 
         //when
@@ -283,7 +288,8 @@ class MissionServiceTest {
         when(mockMission.getApplyInformationList()).thenReturn(applyInformations);
 
         UUID testerId = UUID.randomUUID();
-        when(missionRepository.findApplyMissionsExceptTesterIdByDeadLine(testerId))
+        LocalDate currentDate = LocalDate.now();
+        when(missionRepository.findApplyMissionsExceptTesterIdByDeadLine(testerId, currentDate))
                 .thenReturn(missions);
 
         //when
@@ -313,7 +319,8 @@ class MissionServiceTest {
         when(mockMission.getApplyInformationList()).thenReturn(applyInformations);
 
         UUID testerId = UUID.randomUUID();
-        when(missionRepository.findApplyMissionsExceptTesterIdByPopular(testerId))
+        LocalDate currentDate = LocalDate.now();
+        when(missionRepository.findApplyMissionsExceptTesterIdByPopular(testerId, currentDate))
                 .thenReturn(missions);
 
         //when
@@ -389,7 +396,7 @@ class MissionServiceTest {
         when(mockMission.getMaker()).thenReturn(mock(Maker.class));
         when(mockMission.getMissionDate()).thenReturn(mock(MissionDate.class));
         when(mockMission.getApplyInformationList()).thenReturn(new ArrayList<>());
-        when(missionRepository.findById(missionId)).thenReturn(mockMission);
+        when(missionRepository.findById(missionId)).thenReturn(Optional.of(mockMission));
 
         //when
         DetailMissionResponse response = missionService.detailMission(missionId);

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,11 +58,13 @@ class TesterReviewServiceTest {
         CreateTesterReviewListRequest request = CreateTesterReviewListRequest.newInstance(testerReviewDTOList);
 
         ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
-        when(applyInformationRepository.findById(applyInformationId)).thenReturn(mockApplyInformation);
+        when(applyInformationRepository.findById(applyInformationId)).thenReturn(Optional.ofNullable(mockApplyInformation));
 
 
         UUID expectedTesterReviewId = UUID.randomUUID();
-        when(testerReviewRepository.save(any(TesterReview.class))).thenReturn(expectedTesterReviewId);
+        TesterReview mockTesterReview = mock(TesterReview.class);
+        when(mockTesterReview.getId()).thenReturn(expectedTesterReviewId);
+        when(testerReviewRepository.save(any(TesterReview.class))).thenReturn(mockTesterReview);
 
         //when
         CreateTesterReviewListResponse response = testerReviewService.createTesterReview(makerId, request);

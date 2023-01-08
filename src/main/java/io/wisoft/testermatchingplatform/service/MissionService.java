@@ -2,6 +2,8 @@ package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.*;
 import io.wisoft.testermatchingplatform.handler.FileHandler;
+import io.wisoft.testermatchingplatform.handler.exception.service.MakerNotFoundException;
+import io.wisoft.testermatchingplatform.handler.exception.service.MissionNotFoundException;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.MakerRepository;
 import io.wisoft.testermatchingplatform.repository.MissionRepository;
@@ -29,20 +31,24 @@ public class MissionService {
 
     @Transactional
     public CreateMissionResponse createMission(UUID makerId, CreateMissionRequest request) {
-        Maker maker = makerRepository.findById(makerId);
+        Maker maker = makerRepository.findById(makerId).orElseThrow(
+                () -> new MakerNotFoundException("id: " + makerId + " not found")
+        );
         String imageFileURL = FileHandler.saveTestImageFileData(request.getImage());
         Mission mission = request.toTest(maker, imageFileURL);
 
-        UUID saveId = missionRepository.save(mission);
+        Mission storedMission = missionRepository.save(mission);
 
-        CreateMissionResponse response = CreateMissionResponse.fromMissionId(saveId);
+        CreateMissionResponse response = CreateMissionResponse.fromMission(storedMission);
 
         return response;
     }
 
     @Transactional
     public UpdateMissionIncludeImageResponse updateIncludeImageMission(UUID missionId, UpdateMissionIncludeImageRequest request) {
-        Mission mission = missionRepository.findById(missionId);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(
+                () -> new MissionNotFoundException("id: " + missionId + " not found")
+        );
         FileHandler.removeTestImage(mission.getImageURL());
         String imageFileURL = FileHandler.saveTestImageFileData(request.getImage());
 
@@ -64,7 +70,9 @@ public class MissionService {
 
     @Transactional
     public UpdateMissionExceptImageResponse updateExceptImageMission(UUID missionId, UpdateMissionExceptImageRequest request) {
-        Mission mission = missionRepository.findById(missionId);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(
+                () -> new MissionNotFoundException("id: " + missionId + " not found")
+        );
 
         mission.updateExceptImageMission(
                 request.getTitle(),
@@ -82,7 +90,9 @@ public class MissionService {
     }
 
     public DetailMissionResponse detailMission(UUID missionId) {
-        Mission mission = missionRepository.findById(missionId);
+        Mission mission = missionRepository.findById(missionId).orElseThrow(
+                () -> new MissionNotFoundException("id: " + missionId + " not found")
+        );
 
         DetailMissionResponse response = DetailMissionResponse.fromMission(mission);
         return response;
@@ -93,7 +103,8 @@ public class MissionService {
 //    }
 
     public SimpleMissionListResponse applyMissionList(UUID testerId) {
-        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterId(testerId);
+        LocalDate currentDate = LocalDate.now();
+        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterId(testerId, currentDate);
         SimpleMissionListResponse response = SimpleMissionListResponse.fromMissionList(missionList);
         return response;
     }
@@ -109,21 +120,24 @@ public class MissionService {
     }
 
     public SimpleMissionListResponse applyMissionListByCreated(UUID testerId) {
-        List<Mission> testList = missionRepository.findApplyMissionsExceptTesterIdByCreated(testerId);
+        LocalDate currentDate = LocalDate.now();
+        List<Mission> testList = missionRepository.findApplyMissionsExceptTesterIdByCreated(testerId, currentDate);
         SimpleMissionListResponse response = SimpleMissionListResponse.fromMissionList(testList);
 
         return response;
     }
 
     public SimpleMissionListResponse applyMissionListByDeadLine(UUID testerId) {
-        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterIdByDeadLine(testerId);
+        LocalDate currentDate = LocalDate.now();
+        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterIdByDeadLine(testerId, currentDate);
         SimpleMissionListResponse response = SimpleMissionListResponse.fromMissionList(missionList);
 
         return response;
     }
 
     public SimpleMissionListResponse applyMissionListByPopular(UUID testerId) {
-        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterIdByPopular(testerId);
+        LocalDate currentDate = LocalDate.now();
+        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterIdByPopular(testerId, currentDate);
         SimpleMissionListResponse response = SimpleMissionListResponse.fromMissionList(missionList);
 
         return response;

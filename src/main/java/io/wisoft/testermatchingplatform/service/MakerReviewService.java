@@ -2,6 +2,7 @@ package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.MakerReview;
+import io.wisoft.testermatchingplatform.handler.exception.service.ApplyInformationNotFoundException;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.MakerReviewRepository;
 import io.wisoft.testermatchingplatform.web.dto.request.CreateMakerReviewListRequest;
@@ -21,12 +22,14 @@ public class MakerReviewService {
 
     @Transactional
     public CreateMakerReviewListResponse createMakerReview(UUID makerId, CreateMakerReviewListRequest request) {
-        ApplyInformation applyInformation = applyInformationRepository.findById(request.getApplyInformationId());
+        ApplyInformation applyInformation = applyInformationRepository.findById(request.getApplyInformationId()).orElseThrow(
+                () -> new ApplyInformationNotFoundException("id: " + request.getApplyInformationId() + "not found")
+        );
 
         MakerReview makerReview = request.toMakerReview(applyInformation);
-        UUID savedId = makerReviewRepository.save(makerReview);
+        MakerReview storedMakerReview = makerReviewRepository.save(makerReview);
 
-        CreateMakerReviewListResponse response = CreateMakerReviewListResponse.fromMakerReviewId(savedId);
+        CreateMakerReviewListResponse response = CreateMakerReviewListResponse.fromMakerReview(storedMakerReview);
 
         return response;
     }

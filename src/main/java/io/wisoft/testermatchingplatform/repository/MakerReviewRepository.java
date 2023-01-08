@@ -3,34 +3,20 @@ package io.wisoft.testermatchingplatform.repository;
 import io.wisoft.testermatchingplatform.domain.MakerReview;
 import io.wisoft.testermatchingplatform.handler.exception.service.MakerReviewNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-@RequiredArgsConstructor
-public class MakerReviewRepository {
-    private final EntityManager em;
+public interface MakerReviewRepository extends JpaRepository<MakerReview, UUID> {
+    @Override
+    Optional<MakerReview> findById(UUID uuid);
 
-    public UUID save(MakerReview makerReview) {
-        em.persist(makerReview);
-        return makerReview.getId();
-    }
+    @Override
+    List<MakerReview> findAll();
 
-    public MakerReview findById(UUID id) {
-        MakerReview makerReview = em.find(MakerReview.class, id);
-        if (makerReview == null) {
-            throw new MakerReviewNotFoundException("id: " + id + " not found");
-        }
-        return makerReview;
-    }
-
-    public List<MakerReview> findAll(UUID id) {
-        return em.createQuery(
-                "select mr from MakerReview mr",
-                MakerReview.class
-        ).getResultList();
-    }
 }
