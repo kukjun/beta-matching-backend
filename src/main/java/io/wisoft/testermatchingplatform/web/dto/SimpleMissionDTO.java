@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -26,7 +27,7 @@ public class SimpleMissionDTO {
                 mission.getTitle(),
                 mission.getMaker().getNickname(),
                 mission.getMaker().getCompany(),
-                mission.remainApplyDays(),
+                mission.remainApplyDays(LocalDate.now()),
                 mission.getReward(),
                 mission.getApplyInformationList().size(),
                 mission.getImageURL(),

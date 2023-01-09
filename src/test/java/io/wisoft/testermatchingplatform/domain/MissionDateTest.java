@@ -90,7 +90,7 @@ class MissionDateTest {
         assertEquals(durationTimeEnd, missionDate.getDurationTimeEnd());
 
         //when
-        long remainDay = missionDate.remainApplyTime();
+        long remainDay = missionDate.remainApplyTime(LocalDate.now());
         long expectedDay = recruitmentTimeEnd.toEpochDay() - LocalDate.now().toEpochDay();
         System.out.println("expectedDay = " + expectedDay);
         //then

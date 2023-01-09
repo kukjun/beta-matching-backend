@@ -40,7 +40,7 @@ public class DetailMissionResponse {
                 mission.getReward(),
                 mission.getApplyInformationList().size(),
                 mission.getLimitPerformer(),
-                mission.remainApplyDays(),
+                mission.remainApplyDays(LocalDate.now()),
                 mission.getImageURL()
         );
         return response;

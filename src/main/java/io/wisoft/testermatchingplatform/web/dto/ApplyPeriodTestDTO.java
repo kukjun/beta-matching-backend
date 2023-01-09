@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -26,7 +27,7 @@ public class ApplyPeriodTestDTO {
                 test.getTitle(),
                 test.getMaker().getNickname(),
                 test.getMaker().getCompany(),
-                test.remainApplyDays(),
+                test.remainApplyDays(LocalDate.now()),
                 test.getReward(),
                 test.getApplyInformationList().size(),
                 test.getLimitPerformer(),

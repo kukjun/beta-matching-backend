@@ -227,7 +227,7 @@ class MissionTest {
         LocalDate updateRecruitmentTimeEnd = LocalDate.now().plusDays(20L);
         long expectedRemainDays = updateRecruitmentTimeEnd.toEpochDay() - currentDays.toEpochDay();
         //when
-        long remainDays = normalMission.remainApplyDays();
+        long remainDays = normalMission.remainApplyDays(currentDays);
         //then
         assertEquals(expectedRemainDays, remainDays);
     }

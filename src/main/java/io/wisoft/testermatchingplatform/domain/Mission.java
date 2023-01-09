@@ -155,8 +155,8 @@ public class Mission extends BaseEntity {
         updateEntity();
     }
 
-    public long remainApplyDays() {
-        long remainTime = missionDate.remainApplyTime();
+    public long remainApplyDays(LocalDate currentDate) {
+        long remainTime = missionDate.remainApplyTime(currentDate);
         return remainTime;
     }
 

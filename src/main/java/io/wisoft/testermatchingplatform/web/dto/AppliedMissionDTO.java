@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
@@ -27,7 +28,7 @@ public class AppliedMissionDTO {
                 applyInformation.getMission().getTitle(),
                 applyInformation.getMission().getMaker().getNickname(),
                 applyInformation.getMission().getMaker().getCompany(),
-                applyInformation.getMission().remainApplyDays(),
+                applyInformation.getMission().remainApplyDays(LocalDate.now()),
                 applyInformation.getMission().getReward(),
                 applyInformation.getMission().getApplyInformationList().size(),
                 applyInformation.getMission().getLimitPerformer(),

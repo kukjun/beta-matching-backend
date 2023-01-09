@@ -7,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.Validator;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class MakerTest {
@@ -43,7 +41,7 @@ class MakerTest {
 
         // then
         assertEquals(expectPoint, normalMaker.getPoint());
-        assertEquals(expectAccount, normalMaker.getAccount());
+        assertEquals(expectAccount, normalMaker.getAccountNumber());
     }
 
     @Test

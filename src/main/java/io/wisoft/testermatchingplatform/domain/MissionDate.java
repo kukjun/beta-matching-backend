@@ -42,10 +42,10 @@ public class MissionDate {
     /**
      * 비지니스 로직
      */
-    public long remainApplyTime() {
+    public long remainApplyTime(LocalDate currentDate) {
         isValidApplyPeriod();
         long applyLimitDay = recruitmentTimeEnd.toEpochDay();
-        long currentDay = LocalDate.now().toEpochDay();
+        long currentDay = currentDate.toEpochDay();
 
         long remainDay = applyLimitDay - currentDay;
             return remainDay;

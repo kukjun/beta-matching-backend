@@ -157,7 +157,7 @@ class MakerServiceTest {
         UUID makerId = UUID.randomUUID();
         Maker mockMaker = mock(Maker.class);
         when(mockMaker.getPoint()).thenReturn(point);
-        when(mockMaker.getAccount()).thenReturn(account);
+        when(mockMaker.getAccountNumber()).thenReturn(account);
         when(makerRepository.findById(makerId)).thenReturn(Optional.of(mockMaker));
         //when
         ExchangeInformationResponse response = makerService.exchangeView(makerId);

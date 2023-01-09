@@ -1,3 +1,9 @@
+buildscript {
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.0'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
@@ -23,6 +29,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
     implementation 'com.h2database:h2:2.1.214'
@@ -32,11 +39,23 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql:42.5.1'
 
     annotationProcessor 'org.projectlombok:lombok'
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor("javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-inline:4.8.0'
 
+}
 
+// QueryDSL
+sourceSets {
+    main {
+        java {
+            srcDirs = ["$projectDir/src/main/java", "$projectDir/build/generated"]
+        }
+    }
 }
 
 tasks.named('test') {
