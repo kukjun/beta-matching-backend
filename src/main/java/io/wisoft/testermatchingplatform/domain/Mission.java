@@ -4,6 +4,7 @@ import io.wisoft.testermatchingplatform.handler.exception.domain.NotNaturalNumbe
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,11 +20,13 @@ import java.util.UUID;
 public class Mission extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "mission_id")
     private UUID id;
 
     private String title;
+    @Column(columnDefinition = "text")
     private String content;
     private String imageURL;
     private long reward;
@@ -91,6 +94,7 @@ public class Mission extends BaseEntity {
         mission.limitPerformer = limitPerformer;
         mission.maker = maker;
         maker.usePoint(point * limitPerformer);
+        mission.refreshMissionStatus();
         mission.createEntity();
         return mission;
     }

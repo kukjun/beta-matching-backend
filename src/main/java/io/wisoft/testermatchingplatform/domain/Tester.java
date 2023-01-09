@@ -7,6 +7,7 @@ import io.wisoft.testermatchingplatform.handler.exception.domain.InsufficientPoi
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ import java.util.UUID;
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
 public class Tester extends BaseEntity{
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "tester_id")
     private UUID id;
 
@@ -30,11 +32,12 @@ public class Tester extends BaseEntity{
     @Column(unique = true)
     private String nickname;
 
-    private String phone;
+    @Column(unique = true)
+    private String phoneNumber;
 
-    private String introduce;
+    private String intro_Message;
     private long point;
-    private String account;
+    private String accountNumber;
 
     @OneToMany(mappedBy = "tester")
     private List<ApplyInformation> applyInformationList = new ArrayList<>();
@@ -53,10 +56,10 @@ public class Tester extends BaseEntity{
         tester.email = email;
         tester.password = password;
         tester.nickname = nickname;
-        tester.phone = phone;
-        tester.introduce = introduce;
+        tester.phoneNumber = phone;
+        tester.intro_Message = introduce;
         tester.point = 0L;
-        tester.account = "";
+        tester.accountNumber = "";
         tester.createEntity();
         return tester;
     }
@@ -69,7 +72,7 @@ public class Tester extends BaseEntity{
     }
 
     public String changeAccount(String account) {
-        this.account = account;
+        this.accountNumber = account;
         return account;
     }
 
@@ -103,7 +106,7 @@ public class Tester extends BaseEntity{
         }
     }
     private void isAccountEmpty() {
-        if (account == null) {
+        if (accountNumber == null) {
             throw new EmptyAccountException();
         }
     }

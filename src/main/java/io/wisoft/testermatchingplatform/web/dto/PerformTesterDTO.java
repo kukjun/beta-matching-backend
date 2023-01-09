@@ -20,7 +20,7 @@ public class PerformTesterDTO {
         PerformTesterDTO dto = new PerformTesterDTO(
                 applyInformation.getTester().getId(),
                 applyInformation.getTester().getNickname(),
-                applyInformation.getTester().getPhone(),
+                applyInformation.getTester().getPhoneNumber(),
                 applyInformation.getTester().getEmail(),
                 applyInformation.getStatus().toString()
         );

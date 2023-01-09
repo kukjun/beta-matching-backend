@@ -16,13 +16,13 @@ public class ExchangeInformationResponse {
 
     public static ExchangeInformationResponse fromTester(Tester tester) {
         return new ExchangeInformationResponse(
-                tester.getPoint(), tester.getAccount()
+                tester.getPoint(), tester.getAccountNumber()
         );
     }
 
     public static ExchangeInformationResponse fromMaker(Maker maker) {
         return new ExchangeInformationResponse(
-                maker.getPoint(), maker.getAccount()
+                maker.getPoint(), maker.getAccountNumber()
         );
     }
 }

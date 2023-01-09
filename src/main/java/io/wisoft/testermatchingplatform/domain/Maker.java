@@ -7,6 +7,7 @@ import io.wisoft.testermatchingplatform.handler.exception.domain.InsufficientPoi
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.UUID;
 public class Maker extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name="uuid2", strategy = "uuid2")
     @Column(name = "maker_id")
     private UUID id;
 
@@ -35,10 +37,10 @@ public class Maker extends BaseEntity {
     private String nickname;
 
     @Column(unique = true)
-    private String phone;
+    private String phoneNumber;
     private String company;
     private long point;
-    private String account;
+    private String accountNumber;
 
 
     /**
@@ -55,10 +57,10 @@ public class Maker extends BaseEntity {
         maker.email = email;
         maker.password = password;
         maker.nickname = nickname;
-        maker.phone = phone;
+        maker.phoneNumber = phone;
         maker.company = company;
         maker.point = 0L;
-        maker.account = "";
+        maker.accountNumber = "";
         maker.createEntity();
         return maker;
     }
@@ -73,7 +75,7 @@ public class Maker extends BaseEntity {
     }
 
     public String changeAccount(String account) {
-        this.account = account;
+        this.accountNumber = account;
         return account;
     }
 
@@ -114,7 +116,7 @@ public class Maker extends BaseEntity {
      * 예외 처리 로직
      */
     private void isAccountEmpty() {
-        if (account == null) {
+        if (accountNumber == null) {
             throw new EmptyAccountException();
         }
     }

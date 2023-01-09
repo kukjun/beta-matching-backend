@@ -1,6 +1,5 @@
 package io.wisoft.testermatchingplatform.web.dto.response;
 
-import io.wisoft.testermatchingplatform.domain.Maker;
 import io.wisoft.testermatchingplatform.domain.Tester;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,7 +12,7 @@ public class AccountResponse {
     private final String account;
 
     public static AccountResponse fromTester(Tester tester) {
-        AccountResponse response = new AccountResponse(tester.getAccount());
+        AccountResponse response = new AccountResponse(tester.getAccountNumber());
         return response;
     }
 
