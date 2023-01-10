@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateMakerReviewListResponse {
+public class CreateMakerReviewResponse {
     private final UUID makerReviewId;
 
-    public static CreateMakerReviewListResponse fromMakerReview(MakerReview makerReview) {
-        CreateMakerReviewListResponse response = new CreateMakerReviewListResponse(makerReview.getId());
+    public static CreateMakerReviewResponse fromMakerReview(MakerReview makerReview) {
+        CreateMakerReviewResponse response = new CreateMakerReviewResponse(makerReview.getId());
         return response;
     }
 }

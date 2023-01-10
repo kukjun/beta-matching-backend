@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.naming.event.NamingExceptionEvent;
 import javax.persistence.EntityManager;
 
 import java.time.LocalDate;
@@ -107,17 +106,17 @@ class MissionRepositoryTest {
     }
 
     @Test
-    @DisplayName("현재 신청 기간 내에서 본인이 신청한 mission을 제외하고 조회하는 Test")
+    @DisplayName("현재 신청 기간 내에서 mission을 조회하는 Test")
     public void findApplyMissionsExceptTesterIdSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
         LocalDate currentDate = LocalDate.parse("2023-01-02");
 
         //when
-        List<Mission> appliedMissions = missionRepository.findApplyMissionsExceptTesterId(testerId, currentDate);
+        List<Mission> appliedMissions = missionRepository.findApplyMissions(currentDate);
 
         //then
-        assertEquals(2, appliedMissions.size());
+        assertEquals(3, appliedMissions.size());
     }
 
     @Test

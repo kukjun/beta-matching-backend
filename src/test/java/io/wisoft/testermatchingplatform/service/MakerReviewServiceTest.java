@@ -2,11 +2,10 @@ package io.wisoft.testermatchingplatform.service;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.MakerReview;
-import io.wisoft.testermatchingplatform.domain.MissionStatus;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.MakerReviewRepository;
-import io.wisoft.testermatchingplatform.web.dto.request.CreateMakerReviewListRequest;
-import io.wisoft.testermatchingplatform.web.dto.response.CreateMakerReviewListResponse;
+import io.wisoft.testermatchingplatform.web.dto.request.CreateMakerReviewRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.CreateMakerReviewResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,10 +39,10 @@ class MakerReviewServiceTest {
         UUID applyInformationId = UUID.randomUUID();
         int starPoint = 3;
         String testComment = "test Comment";
-        CreateMakerReviewListRequest request = CreateMakerReviewListRequest.newInstance(applyInformationId, starPoint, testComment);
+        CreateMakerReviewRequest request = CreateMakerReviewRequest.newInstance(applyInformationId, starPoint, testComment);
 
         ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
-        when(applyInformationRepository.findById(request.getApplyInformationId())).thenReturn(Optional.ofNullable(mockApplyInformation));
+        when(applyInformationRepository.findById(applyInformationId)).thenReturn(Optional.ofNullable(mockApplyInformation));
 
         UUID makerReviewId = UUID.randomUUID();
         MakerReview mockMakerReview = mock(MakerReview.class);
@@ -52,7 +51,7 @@ class MakerReviewServiceTest {
         when(makerReviewRepository.save(any(MakerReview.class))).thenReturn(mockMakerReview);
 
         //when
-        CreateMakerReviewListResponse response = makerReviewService.createMakerReview(makerId, request);
+        CreateMakerReviewResponse response = makerReviewService.createMakerReview(applyInformationId, request);
 
         //then
         assertEquals(makerReviewId, response.getMakerReviewId());

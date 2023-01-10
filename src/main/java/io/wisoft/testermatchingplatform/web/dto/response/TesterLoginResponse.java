@@ -21,4 +21,16 @@ public class TesterLoginResponse {
         );
         return response;
     }
+
+    public static TesterLoginResponse newInstance(
+            final String token,
+            final UUID id,
+            final String nickname
+    ) {
+
+        TesterLoginResponse response = new TesterLoginResponse(
+                "mock Token", id, nickname
+        );
+        return response;
+    }
 }

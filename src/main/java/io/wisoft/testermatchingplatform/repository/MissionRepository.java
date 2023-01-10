@@ -32,14 +32,14 @@ public interface MissionRepository extends JpaRepository<Mission, UUID>, Mission
 //            @Param("currentDate") LocalDate currentDate
 //    );
 
-    @Query("select m " +
-            "from Mission m " +
-            "where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate " +
-            "and m <> (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId)")
-    List<Mission> findApplyMissionsExceptTesterId(
-            @Param("testerId") UUID testerId,
-            @Param("currentDate") LocalDate currentDate
-    );
+//    @Query("select m " +
+//            "from Mission m " +
+//            "where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate " +
+//            "and m <> (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId)")
+//    List<Mission> findApplyMissions(
+//            @Param("testerId") UUID testerId,
+//            @Param("currentDate") LocalDate currentDate
+//    );
 
 
     @Query("select m " +

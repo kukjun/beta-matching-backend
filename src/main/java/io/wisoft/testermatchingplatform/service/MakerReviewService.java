@@ -5,8 +5,8 @@ import io.wisoft.testermatchingplatform.domain.MakerReview;
 import io.wisoft.testermatchingplatform.handler.exception.service.ApplyInformationNotFoundException;
 import io.wisoft.testermatchingplatform.repository.ApplyInformationRepository;
 import io.wisoft.testermatchingplatform.repository.MakerReviewRepository;
-import io.wisoft.testermatchingplatform.web.dto.request.CreateMakerReviewListRequest;
-import io.wisoft.testermatchingplatform.web.dto.response.CreateMakerReviewListResponse;
+import io.wisoft.testermatchingplatform.web.dto.request.CreateMakerReviewRequest;
+import io.wisoft.testermatchingplatform.web.dto.response.CreateMakerReviewResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +21,15 @@ public class MakerReviewService {
     private final ApplyInformationRepository applyInformationRepository;
 
     @Transactional
-    public CreateMakerReviewListResponse createMakerReview(UUID makerId, CreateMakerReviewListRequest request) {
-        ApplyInformation applyInformation = applyInformationRepository.findById(request.getApplyInformationId()).orElseThrow(
-                () -> new ApplyInformationNotFoundException("id: " + request.getApplyInformationId() + "not found")
+    public CreateMakerReviewResponse createMakerReview(UUID applyInformationId, CreateMakerReviewRequest request) {
+        ApplyInformation applyInformation = applyInformationRepository.findById(applyInformationId).orElseThrow(
+                () -> new ApplyInformationNotFoundException("id: " + applyInformationId + "not found")
         );
 
         MakerReview makerReview = request.toMakerReview(applyInformation);
         MakerReview storedMakerReview = makerReviewRepository.save(makerReview);
 
-        CreateMakerReviewListResponse response = CreateMakerReviewListResponse.fromMakerReview(storedMakerReview);
+        CreateMakerReviewResponse response = CreateMakerReviewResponse.fromMakerReview(storedMakerReview);
 
         return response;
     }

@@ -3,17 +3,18 @@ package io.wisoft.testermatchingplatform.web.dto.request;
 import io.wisoft.testermatchingplatform.domain.Maker;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateMakerRequest {
 
-    private final String email;
-    private final String password;
-    private final String nickname;
-    private final String phoneNumber;
-    private final String company;
+    private String email;
+    private String password;
+    private String nickname;
+    private String phoneNumber;
+    private String company;
 
     public Maker toMaker() {
         Maker maker = Maker.newInstance(
@@ -33,12 +34,13 @@ public class CreateMakerRequest {
             final String phoneNumber,
             final String company
     ) {
-        return new CreateMakerRequest(
-                email,
-                password,
-                nickname,
-                phoneNumber,
-                company
-        );
+        CreateMakerRequest request = new CreateMakerRequest();
+        request.email = email;
+        request.password = password;
+        request.nickname = nickname;
+        request.phoneNumber = phoneNumber;
+        request.company = company;
+
+        return request;
     }
 }

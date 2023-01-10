@@ -99,9 +99,9 @@ public class MissionService {
     }
 
 
-    public SimpleMissionListResponse applyMissionList(UUID testerId) {
+    public SimpleMissionListResponse applyMissionList() {
         LocalDate currentDate = LocalDate.now();
-        List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterId(testerId, currentDate);
+        List<Mission> missionList = missionRepository.findApplyMissions(currentDate);
         SimpleMissionListResponse response = SimpleMissionListResponse.fromMissionList(missionList);
         return response;
     }

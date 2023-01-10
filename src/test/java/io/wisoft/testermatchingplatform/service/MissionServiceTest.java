@@ -152,7 +152,6 @@ class MissionServiceTest {
         assertEquals(missionId, response.getId());
     }
 
-    // Unit Test 진행을 할 수 없음
     @Test
     @DisplayName("신청기간의 Mission List 조회 - 성공")
     public void applyMissionListSuccessTest() throws Exception {
@@ -172,13 +171,12 @@ class MissionServiceTest {
         when(mockMission.getMaker()).thenReturn(mockMaker);
         when(mockMission.getApplyInformationList()).thenReturn(applyInformations);
 
-        UUID testerId = UUID.randomUUID();
         LocalDate currentDate = LocalDate.now();
-        when(missionRepository.findApplyMissionsExceptTesterId((testerId), currentDate))
+        when(missionRepository.findApplyMissions(currentDate))
                 .thenReturn(missions);
 
         //when
-        SimpleMissionListResponse response = missionService.applyMissionList(testerId);
+        SimpleMissionListResponse response = missionService.applyMissionList();
 
         //then
         assertEquals(expectMissionId, response.getDtoList().get(0).getId());

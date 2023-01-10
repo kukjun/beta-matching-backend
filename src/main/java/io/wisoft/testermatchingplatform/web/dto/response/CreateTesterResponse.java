@@ -16,4 +16,9 @@ public class CreateTesterResponse {
         CreateTesterResponse response = new CreateTesterResponse(tester.getId());
         return response;
     }
+
+    public static CreateTesterResponse newInstance(UUID testerId) {
+        CreateTesterResponse response = new CreateTesterResponse(testerId);
+        return response;
+    }
 }

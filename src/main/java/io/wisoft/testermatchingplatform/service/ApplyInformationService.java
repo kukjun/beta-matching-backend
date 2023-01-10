@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -164,4 +161,11 @@ public class ApplyInformationService {
     }
 
 
+    public UUID findApplyInformationId(UUID testerId, UUID missionId) {
+        ApplyInformation applyInformation = applyInformationRepository.findApplyInformationByTesterIdAndMissionId(testerId, missionId).orElseThrow(
+                () -> new ApplyInformationNotFoundException("tester id: " + testerId + ", mission id: " + missionId + " not found")
+        );
+        return applyInformation.getId();
+
+    }
 }

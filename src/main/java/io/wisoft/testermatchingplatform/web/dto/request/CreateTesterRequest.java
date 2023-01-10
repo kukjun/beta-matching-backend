@@ -3,17 +3,18 @@ package io.wisoft.testermatchingplatform.web.dto.request;
 import io.wisoft.testermatchingplatform.domain.Tester;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateTesterRequest {
 
-    private final String email;
-    private final String password;
-    private final String nickname;
-    private final String phoneNumber;
-    private final String introMessage;
+    private String email;
+    private String password;
+    private String nickname;
+    private String phoneNumber;
+    private String introMessage;
 
     public Tester toTester() {
         Tester tester = Tester.newInstance(
@@ -33,12 +34,12 @@ public class CreateTesterRequest {
             final String phoneNumber,
             final String introMessage
     ) {
-        return new CreateTesterRequest(
-                email,
-                password,
-                nickname,
-                phoneNumber,
-                introMessage
-        );
+        CreateTesterRequest request = new CreateTesterRequest();
+        request.email = email;
+        request.password = password;
+        request.nickname = nickname;
+        request.phoneNumber = phoneNumber;
+        request.introMessage = introMessage;
+        return request;
     }
 }

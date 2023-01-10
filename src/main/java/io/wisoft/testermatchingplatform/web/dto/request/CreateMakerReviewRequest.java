@@ -10,14 +10,12 @@ import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
-public class CreateMakerReviewListRequest {
-    private final UUID applyInformationId;
+public class CreateMakerReviewRequest {
     private final int starPoint;
     private final String comment;
 
-    public static CreateMakerReviewListRequest newInstance(UUID applyInformationId, int starPoint, String testComment) {
-        CreateMakerReviewListRequest request = new CreateMakerReviewListRequest(
-                applyInformationId,
+    public static CreateMakerReviewRequest newInstance(UUID applyInformationId, int starPoint, String testComment) {
+        CreateMakerReviewRequest request = new CreateMakerReviewRequest(
                 starPoint,
                 testComment
         );

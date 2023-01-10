@@ -3,21 +3,23 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 import io.wisoft.testermatchingplatform.domain.Maker;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MakerLoginResponse {
-    private final String token;
-    private final UUID id;
-    private final String nickname;
+    private String token;
+    private UUID id;
+    private String nickname;
 
     public static MakerLoginResponse fromMaker(Maker maker) {
-        MakerLoginResponse response = new MakerLoginResponse(
-                "mock Token", maker.getId(), maker.getNickname()
-        );
+        MakerLoginResponse response = new MakerLoginResponse();
+        response.token = "mock Token";
+        response.id = maker.getId();
+        response.nickname = maker.getNickname();
         return response;
     }
 }
