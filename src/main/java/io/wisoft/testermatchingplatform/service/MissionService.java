@@ -98,9 +98,6 @@ public class MissionService {
         return response;
     }
 
-//    public List<SimpleTestResponse> PopularTop4Tests() {
-//        List<Tests> popularTop4Tests = testsRepository.findPopularTop4();
-//    }
 
     public SimpleMissionListResponse applyMissionList(UUID testerId) {
         LocalDate currentDate = LocalDate.now();
@@ -150,9 +147,23 @@ public class MissionService {
         return response;
     }
 
-//    public Top4MissionListResponse top4Popular() {
-//        missionRepository.findDeadLineTop4Mission();
-//    }
+    public Top4MissionListResponse top4Popular() {
+        LocalDate currentDate = LocalDate.now();
+        List<Mission> popularTop4MissionList = missionRepository.findPopularTop4Mission(currentDate);
+
+        Top4MissionListResponse response = Top4MissionListResponse.toMissionList(popularTop4MissionList);
+
+        return response;
+    }
+
+    public Top4MissionListResponse top4Deadline() {
+        LocalDate currentDate = LocalDate.now();
+        List<Mission> deadLineTop4MissionList = missionRepository.findDeadlineTop4Mission(currentDate);
+
+        Top4MissionListResponse response = Top4MissionListResponse.toMissionList(deadLineTop4MissionList);
+
+        return response;
+    }
 
 
 

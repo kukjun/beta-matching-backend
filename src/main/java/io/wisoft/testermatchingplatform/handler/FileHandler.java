@@ -41,7 +41,7 @@ public class FileHandler {
         removeFile(fileName);
     }
 
-    public static byte[] getTestRepresentationFileData(final String fileName) {
+    public static byte[] getMissionRepresentationFileData(final String fileName) {
         try {
             final File file = new File(DEFAULT_TEST_REPRESENTATION_IMAGE_FILE_PATH + fileName);
 

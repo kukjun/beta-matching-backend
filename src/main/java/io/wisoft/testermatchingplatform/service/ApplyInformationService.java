@@ -63,6 +63,16 @@ public class ApplyInformationService {
     }
 
     @Transactional
+    public void cancelApply(UUID testerId, UUID missionId) {
+        ApplyInformation applyInformation = applyInformationRepository.findApplyInformationByTesterIdAndMissionId(testerId, missionId).orElseThrow(
+                () -> new ApplyInformationNotFoundException("tester id: " + testerId + ", mission id: " + missionId + " not found")
+        );
+
+        applyInformation.disconnect();
+        applyInformationRepository.deleteById(applyInformation.getId());
+    }
+
+    @Transactional
     public ChangeApplyToApproveResponse applyToApprove(UUID missionId, ChangeApplyToApproveRequest request) {
         Mission mission = missionRepository.findById(missionId).orElseThrow(
                 () -> new MissionNotFoundException("id: " + missionId + " not found")

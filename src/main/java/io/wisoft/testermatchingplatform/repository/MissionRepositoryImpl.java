@@ -22,7 +22,7 @@ public class MissionRepositoryImpl implements MissionCustomRepository{
     private final EntityManager entityManager;
 
     @Override
-    public List<Mission> findDeadLineTop4Mission(LocalDate currentDate) {
+    public List<Mission> findDeadlineTop4Mission(LocalDate currentDate) {
         String jpql = "select m " +
                 "from Mission m " +
                 "where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate " +

@@ -20,13 +20,18 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
     @Override
     Optional<ApplyInformation> findById(UUID uuid);
 
+    Optional<ApplyInformation> findApplyInformationByTesterIdAndMissionId(UUID testerId, UUID missionId);
+
     @Override
     List<ApplyInformation> findAll();
 
     @Query("select a from ApplyInformation a where a.tester.id=:testerId")
     List<ApplyInformation> findByTesterId(@Param("testerId") UUID testerId);
 
+
     @Override
     void deleteById(UUID applyInformationId);
+
+    void deleteApplyInformationByTesterIdAndMissionId(UUID testerId, UUID missionId);
 
 }

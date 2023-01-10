@@ -7,6 +7,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface MissionCustomRepository {
-    List<Mission> findDeadLineTop4Mission(@Param("currentDate") LocalDate currentDate);
+    List<Mission> findDeadlineTop4Mission(@Param("currentDate") LocalDate currentDate);
     List<Mission> findPopularTop4Mission(@Param("currentDate") LocalDate currentDate);
 }

@@ -5,6 +5,7 @@ import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.domain.Tester;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,6 +84,41 @@ class ApplyInformationRepositoryTest {
 
         //then
         assertNull(deleteApplyInformation);
+    }
+
+    @Test
+    @DisplayName("TestserId, MissionId를 이용해서 ApplyInformation 제거 테스트 - 성공")
+    public void deleteByTesterIdAndMissionIdSuccessTest() throws Exception {
+        //given
+        UUID applyInformationId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d0");
+        UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c1");
+        UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+
+        //when
+        applyInformationRepository.deleteApplyInformationByTesterIdAndMissionId(
+                testerId, missionId
+        );
+        ApplyInformation deleteApplyInformation = em.find(ApplyInformation.class, applyInformationId);
+
+        //then
+        assertNull(deleteApplyInformation);
+    }
+
+    @Test
+    @DisplayName("TesterId, MissionId를 이용해서 ApplyInformation 조회 테스트 - 성공")
+    public void findApplyInformationByTesterIdByMissionIdSuccessTest() throws Exception {
+        //given
+        UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c1");
+        UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        UUID expectedApplyInformationId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d0");
+
+        //when
+        ApplyInformation applyInformation = applyInformationRepository.findApplyInformationByTesterIdAndMissionId(
+                testerId, missionId
+        ).get();
+
+        //then
+        assertEquals(expectedApplyInformationId, applyInformation.getId());
     }
 
 
