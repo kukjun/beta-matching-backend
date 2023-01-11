@@ -21,12 +21,12 @@ public class MissionController {
     private final MissionService missionService;
 
     @GetMapping("")
-    public ResponseEntity<SimpleMissionListResponse> testList() {
+    public ResponseEntity<SimpleMissionListResponse> missionList() {
         return ResponseEntity.ok().body(missionService.applyMissionList());
     }
 
     @GetMapping("/")
-    public ResponseEntity<DetailMissionResponse> detailMission(@RequestParam final UUID missionId) {
+    public ResponseEntity<DetailMissionResponse> detailMission(@RequestParam("mission_id") final UUID missionId) {
         return ResponseEntity.ok().body(missionService.detailMission(missionId));
     }
 

@@ -2,15 +2,18 @@ package io.wisoft.testermatchingplatform.web.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChangeCashToPointRequest {
-    private final long cash;
+    private long cash;
 
-    public static ChangeCashToPointRequest newInstance(final long cash) {
-        return new ChangeCashToPointRequest(cash);
+    public static ChangeCashToPointRequest newInstance(
+            final long point
+    ) {
+        ChangeCashToPointRequest request = new ChangeCashToPointRequest();
+        request.cash = point;
+        return request;
     }
-
 }

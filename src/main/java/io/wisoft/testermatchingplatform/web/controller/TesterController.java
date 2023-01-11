@@ -33,7 +33,7 @@ public class TesterController {
         return ResponseEntity.ok().body(missionService.applyMissionListFromTester(testerId));
     }
 
-    @PostMapping("/{tester_id}/mission/{mission_id}/apply")
+    @PostMapping("/{tester_id}/missions/{mission_id}/apply")
     public ResponseEntity<ApplyMissionResponse> applyMission(
             @PathVariable("tester_id") UUID testerId,
             @PathVariable("mission_id") UUID missionId,
@@ -42,7 +42,7 @@ public class TesterController {
         return ResponseEntity.ok().body(applyInformationService.applyMission(testerId, request.getMissionId()));
     }
 
-    @DeleteMapping("/{tester_id}/mission/{mission_id}/apply")
+    @DeleteMapping("/{tester_id}/missions/{mission_id}/apply")
     // 다르게 처리할 수 있는가?
     public ResponseEntity cancelApply(
             @PathVariable("tester_id") UUID testerId,
@@ -65,7 +65,7 @@ public class TesterController {
     public ResponseEntity<SimpleMissionListResponse> findTestListByDeadLine(
             @PathVariable("tester_id") UUID testerId
     ) {
-        return ResponseEntity.ok().body(missionService.applyMissionListByDeadLine(testerId));
+        return ResponseEntity.ok().body(missionService.applyMissionListByDeadline(testerId));
     }
 
     @GetMapping("/{tester_id}/missions/popular")
@@ -89,7 +89,7 @@ public class TesterController {
         return ResponseEntity.ok().body(missionService.applyMissionListByCreated(testerId));
     }
 
-    @GetMapping("/apply/{apply_id}/review")
+    @PostMapping("/apply/{apply_id}/review")
     public ResponseEntity<CreateMakerReviewResponse> createReview(
             @PathVariable("apply_id") UUID applyInformationId,
             CreateMakerReviewRequest request

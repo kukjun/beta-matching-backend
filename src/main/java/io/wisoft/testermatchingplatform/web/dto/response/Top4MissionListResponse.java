@@ -4,13 +4,14 @@ import io.wisoft.testermatchingplatform.domain.Mission;
 import io.wisoft.testermatchingplatform.web.dto.SimpleMissionDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Top4MissionListResponse {
     private final List<SimpleMissionDTO> simpleMissionDTOList = new ArrayList<>();
 

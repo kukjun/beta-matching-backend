@@ -291,7 +291,7 @@ class MissionServiceTest {
                 .thenReturn(missions);
 
         //when
-        SimpleMissionListResponse response = missionService.applyMissionListByDeadLine(testerId);
+        SimpleMissionListResponse response = missionService.applyMissionListByDeadline(testerId);
 
         //then
         assertEquals(expectMissionId, response.getDtoList().get(0).getId());

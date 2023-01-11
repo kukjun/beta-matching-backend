@@ -2,19 +2,21 @@ package io.wisoft.testermatchingplatform.web.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChangeApplyToApproveRequest {
 
-    private final List<UUID> approveTesterIdList;
+    private List<UUID> approveTesterIdList;
 
     public static ChangeApplyToApproveRequest newInstance(List<UUID> idList) {
-        ChangeApplyToApproveRequest request = new ChangeApplyToApproveRequest(idList);
+        ChangeApplyToApproveRequest request = new ChangeApplyToApproveRequest();
+        request.approveTesterIdList = idList;
         return request;
     }
 

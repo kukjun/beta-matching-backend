@@ -124,7 +124,7 @@ public class MissionService {
         return response;
     }
 
-    public SimpleMissionListResponse applyMissionListByDeadLine(UUID testerId) {
+    public SimpleMissionListResponse applyMissionListByDeadline(UUID testerId) {
         LocalDate currentDate = LocalDate.now();
         List<Mission> missionList = missionRepository.findApplyMissionsExceptTesterIdByDeadLine(testerId, currentDate);
         SimpleMissionListResponse response = SimpleMissionListResponse.fromMissionList(missionList);

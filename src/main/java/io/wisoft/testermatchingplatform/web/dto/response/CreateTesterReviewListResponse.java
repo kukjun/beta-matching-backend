@@ -2,19 +2,21 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateTesterReviewListResponse {
 
-    private final List<UUID> testerReviewIdDTOList;
+    private List<UUID> testerReviewIdDTOList;
 
     public static CreateTesterReviewListResponse fromTesterReviewIdList(List<UUID> dtoList) {
-        CreateTesterReviewListResponse response = new CreateTesterReviewListResponse(dtoList);
+        CreateTesterReviewListResponse response = new CreateTesterReviewListResponse();
+        response.testerReviewIdDTOList = dtoList;
         return response;
     }
 }

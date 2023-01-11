@@ -2,17 +2,19 @@ package io.wisoft.testermatchingplatform.web.dto.request;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ApplyMissionRequest {
-    private final UUID missionId;
+    private UUID missionId;
 
     public static ApplyMissionRequest newInstance(final UUID missionId) {
-        ApplyMissionRequest request = new ApplyMissionRequest(missionId);
+        ApplyMissionRequest request = new ApplyMissionRequest();
+        request.missionId = missionId;
         return request;
     }
 }

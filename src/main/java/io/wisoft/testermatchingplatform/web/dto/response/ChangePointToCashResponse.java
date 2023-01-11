@@ -2,14 +2,17 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChangePointToCashResponse {
-    private final long cash;
+    private long cash;
 
     public static ChangePointToCashResponse newInstance(long cash) {
-        return new ChangePointToCashResponse(cash);
+        ChangePointToCashResponse response = new ChangePointToCashResponse();
+        response.cash = cash;
+        return response;
     }
 }

@@ -3,46 +3,46 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 import io.wisoft.testermatchingplatform.domain.Mission;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DetailMissionResponse {
-    private final UUID id;
-    private final String title;
-    private final String makerNickname;
-    private final String company;
-    private final LocalDate recruitmentTimeStart;
-    private final LocalDate recruitmentTimeLimit;
-    private final LocalDate durationTimeStart;
-    private final LocalDate durationTimeLimit;
-    private final String content;
-    private final long reward;
-    private final long apply;
-    private final int participantCapacity;
-    private final long deadLine;
-    private final String symbolImageRoot;
+    private UUID id;
+    private String title;
+    private String makerNickname;
+    private String company;
+    private LocalDate recruitmentTimeStart;
+    private LocalDate recruitmentTimeLimit;
+    private LocalDate durationTimeStart;
+    private LocalDate durationTimeLimit;
+    private String content;
+    private long reward;
+    private long apply;
+    private int participantCapacity;
+    private long deadLine;
+    private String symbolImageRoot;
 
     public static DetailMissionResponse fromMission(Mission mission) {
-        DetailMissionResponse response = new DetailMissionResponse(
-                mission.getId(),
-                mission.getTitle(),
-                mission.getMaker().getNickname(),
-                mission.getMaker().getCompany(),
-                mission.getMissionDate().getRecruitmentTimeStart(),
-                mission.getMissionDate().getRecruitmentTimeEnd(),
-                mission.getMissionDate().getDurationTimeStart(),
-                mission.getMissionDate().getDurationTimeEnd(),
-                mission.getContent(),
-                mission.getReward(),
-                mission.getApplyInformationList().size(),
-                mission.getLimitPerformer(),
-                mission.remainApplyDays(LocalDate.now()),
-                mission.getImageURL()
-        );
+        DetailMissionResponse response = new DetailMissionResponse();
+        response.id = mission.getId();
+        response.title = mission.getTitle();
+        response.makerNickname = mission.getMaker().getNickname();
+        response.company = mission.getMaker().getCompany();
+        response.recruitmentTimeStart = mission.getMissionDate().getRecruitmentTimeStart();
+        response.recruitmentTimeLimit = mission.getMissionDate().getRecruitmentTimeEnd();
+        response.durationTimeStart = mission.getMissionDate().getDurationTimeStart();
+        response.durationTimeLimit = mission.getMissionDate().getDurationTimeEnd();
+        response.content = mission.getContent();
+        response.reward = mission.getReward();
+        response.apply = mission.getApplyInformationList().size();
+        response.participantCapacity = mission.getLimitPerformer();
+        response.deadLine = mission.remainApplyDays(LocalDate.now());
+        response.symbolImageRoot = mission.getImageURL();
         return response;
     }
 }

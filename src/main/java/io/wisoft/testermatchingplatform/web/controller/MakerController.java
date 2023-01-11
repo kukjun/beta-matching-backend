@@ -3,9 +3,11 @@ package io.wisoft.testermatchingplatform.web.controller;
 import io.wisoft.testermatchingplatform.service.ApplyInformationService;
 import io.wisoft.testermatchingplatform.service.MakerService;
 import io.wisoft.testermatchingplatform.service.MissionService;
+import io.wisoft.testermatchingplatform.service.TesterReviewService;
 import io.wisoft.testermatchingplatform.web.dto.request.*;
 import io.wisoft.testermatchingplatform.web.dto.response.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,7 @@ public class MakerController {
     private final MakerService makerService;
     private final MissionService missionService;
     private final ApplyInformationService applyInformationService;
+    private final TesterReviewService testerReviewService;
 
     @PostMapping("/{maker_id}/missions")
     public ResponseEntity<CreateMissionResponse> createMission(
@@ -27,8 +30,7 @@ public class MakerController {
             CreateMissionRequest request
     ) {
         CreateMissionResponse response = missionService.createMission(makerId, request);
-        URI createdLocation = URI.create("/mission/" + response.getId().toString());
-        return ResponseEntity.created(createdLocation).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/{maker_id}/missions/{mission_id}")
@@ -37,12 +39,11 @@ public class MakerController {
             UpdateMissionIncludeImageRequest request
     ) {
         UpdateMissionIncludeImageResponse response = missionService.updateIncludeImageMission(missionId, request);
-        URI createdLocation = URI.create("/missions/" + response.getId().toString());
-        return ResponseEntity.created(createdLocation).body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/{maker_id}/missions/{mission_id}/no_image")
-    public ResponseEntity<UpdateMissionExceptImageResponse> updateMissionIncludeImage(
+    public ResponseEntity<UpdateMissionExceptImageResponse> updateMissionExceptImage(
             @PathVariable("maker_id") UUID makerId,
             @PathVariable("mission_id") UUID missionId,
             UpdateMissionExceptImageRequest request
@@ -113,20 +114,27 @@ public class MakerController {
 
     @PostMapping("/missions/{mission_id}/perform")
     public ResponseEntity<ChangeApplyToApproveResponse> changeApplyToPerform(
-            @PathVariable("mission_id") UUID makerId,
+            @PathVariable("mission_id") UUID missionId,
             @RequestBody final ChangeApplyToApproveRequest request
     ) {
-        return ResponseEntity.ok().body(applyInformationService.applyToApprove(makerId, request));
+        return ResponseEntity.ok().body(applyInformationService.applyToApprove(missionId, request));
     }
 
 
     @PostMapping("/missions/{mission_id}/complete")
     public ResponseEntity<ChangePerformToCompleteResponse> changePerformToComplete(
-            @PathVariable("mission_id") UUID makerId,
+            @PathVariable("mission_id") UUID missionId,
             @RequestBody final ChangePerformToCompleteRequest request
 
     ) {
-        return ResponseEntity.ok().body(applyInformationService.performToComplete(makerId, request));
+        return ResponseEntity.ok().body(applyInformationService.performToComplete(missionId, request));
     }
 
+    @PostMapping("/{maker_id}/missions/perform/review")
+    public ResponseEntity<CreateTesterReviewListResponse> createReview(
+            @PathVariable("maker_id") UUID makerId,
+            @RequestBody final CreateTesterReviewListRequest request
+    ) {
+        return ResponseEntity.ok().body(testerReviewService.createTesterReview(makerId, request));
+    }
 }
