@@ -1,6 +1,6 @@
 package io.wisoft.testermatchingplatform.domain;
 
-import io.wisoft.testermatchingplatform.handler.exception.domain.MissionDateMisMatchException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MissionDateMismatchException;
 import io.wisoft.testermatchingplatform.handler.exception.domain.MissionDateCurrentTimeBeforeApplyException;
 import io.wisoft.testermatchingplatform.handler.exception.domain.NotApplyPeriodException;
 import lombok.AccessLevel;
@@ -61,7 +61,7 @@ public class MissionDate {
                 return;
             }
         }
-        throw new MissionDateMisMatchException();
+        throw new MissionDateMismatchException();
     }
     private void isValidTimeAfterCurrentTime() {
         LocalDate localDate = LocalDate.now();

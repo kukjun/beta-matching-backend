@@ -1,15 +1,11 @@
 package io.wisoft.testermatchingplatform.domain;
 
 import io.wisoft.testermatchingplatform.handler.exception.domain.InsufficientPointException;
-import io.wisoft.testermatchingplatform.handler.exception.domain.MissMatchPasswordException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MismatchPasswordException;
 import io.wisoft.testermatchingplatform.handler.exception.domain.NotNaturalNumberException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import javax.validation.Validation;
-import javax.validation.Validator;
 
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -65,7 +61,7 @@ class TesterTest {
         String password = "abcd12345";
 
         // when, then
-        assertThrows(MissMatchPasswordException.class, () -> normalTester.verifyPassword(password));
+        assertThrows(MismatchPasswordException.class, () -> normalTester.verifyPassword(password));
     }
 
     @Test

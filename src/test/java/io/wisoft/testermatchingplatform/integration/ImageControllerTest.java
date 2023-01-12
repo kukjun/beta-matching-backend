@@ -14,6 +14,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 import java.io.File;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,11 +51,11 @@ class ImageControllerTest {
         //when
         //then
 
-            mvc.perform(
-                    get("/api/image/" + fieldName)
-            ).andExpect(
-                    status().isOk()
-            );
+        mvc.perform(
+                get("/api/image/" + fieldName)
+        ).andExpect(
+                status().isOk()
+        );
 
     }
 

@@ -1,10 +1,10 @@
 package io.wisoft.testermatchingplatform.handler.exception.domain;
 
-public class MissionDateMisMatchException extends RuntimeException {
-    public MissionDateMisMatchException(String s) {
+public class MissionDateMismatchException extends RuntimeException {
+    public MissionDateMismatchException(String s) {
         super(s);
     }
-    public MissionDateMisMatchException() {
+    public MissionDateMismatchException() {
         super("시간 순서대로 입력을 받지 못했습니다.");
     }
 }

@@ -1,7 +1,7 @@
 package io.wisoft.testermatchingplatform.domain;
 
 import io.wisoft.testermatchingplatform.handler.exception.domain.EmptyAccountException;
-import io.wisoft.testermatchingplatform.handler.exception.domain.MissMatchPasswordException;
+import io.wisoft.testermatchingplatform.handler.exception.domain.MismatchPasswordException;
 import io.wisoft.testermatchingplatform.handler.exception.domain.NotNaturalNumberException;
 import io.wisoft.testermatchingplatform.handler.exception.domain.InsufficientPointException;
 import lombok.AccessLevel;
@@ -107,12 +107,12 @@ public class Tester extends BaseEntity{
     }
     private void isAccountEmpty() {
         if (accountNumber == null) {
-            throw new EmptyAccountException();
+            throw new EmptyAccountException("account value is null");
         }
     }
     private void isValidPassword(String password) {
         if (!this.password.equals(password)) {
-            throw new MissMatchPasswordException(password);
+            throw new MismatchPasswordException(password);
         }
     }
 }
