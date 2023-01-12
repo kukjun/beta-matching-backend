@@ -43,7 +43,7 @@ public class MissionDate {
      * 비지니스 로직
      */
     public long remainApplyTime(LocalDate currentDate) {
-        isValidApplyPeriod();
+        isValidApplyPeriod(currentDate);
         long applyLimitDay = recruitmentTimeEnd.toEpochDay();
         long currentDay = currentDate.toEpochDay();
 
@@ -70,15 +70,16 @@ public class MissionDate {
         }
     }
 
-    private void isValidApplyPeriod() {
-        long currentDay = LocalDate.now().toEpochDay();
+    private void isValidApplyPeriod(LocalDate currentDate) {
+        long currentDay = currentDate.toEpochDay();
         long applyLimitDay = recruitmentTimeEnd.toEpochDay();
         long applyStartDay = recruitmentTimeStart.toEpochDay();
 
-        if (currentDay < applyStartDay || currentDay > applyLimitDay) {
+        if (currentDay > applyLimitDay) {
             throw new NotApplyPeriodException(
                     "ApplyStart: " + recruitmentTimeStart
                             + "\nApplyEnd: " + recruitmentTimeEnd
+                            + "\nCurrent: " + currentDate
             );
         }
     }

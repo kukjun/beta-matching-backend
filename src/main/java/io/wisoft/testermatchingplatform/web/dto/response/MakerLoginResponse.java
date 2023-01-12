@@ -22,4 +22,16 @@ public class MakerLoginResponse {
         response.nickname = maker.getNickname();
         return response;
     }
+
+    public static MakerLoginResponse newInstance(
+        final String token,
+        final UUID id,
+        final String nickname
+    ) {
+        MakerLoginResponse response = new MakerLoginResponse();
+        response.token = "mock Token";
+        response.id = id;
+        response.nickname = nickname;
+        return response;
+    }
 }

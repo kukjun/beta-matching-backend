@@ -10,10 +10,10 @@ public class ChangePointToCashRequest {
     private long point;
 
     public static ChangePointToCashRequest newInstance(
-            final long cash
+            final long point
     ) {
         ChangePointToCashRequest request = new ChangePointToCashRequest();
-        request.point = cash;
+        request.point = point;
         return request;
     }
 }

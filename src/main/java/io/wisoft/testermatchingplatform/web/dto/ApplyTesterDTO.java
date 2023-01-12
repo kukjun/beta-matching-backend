@@ -29,7 +29,9 @@ public class ApplyTesterDTO {
         List<ApplyInformation> applyInformationList = applyInformation.getTester().getApplyInformationList();
         for (ApplyInformation testerApplyInformation : applyInformationList) {
             TesterReview review = testerApplyInformation.getTesterReview();
-            dto.getBeforeMissions().add(SimpleReviewDTO.fromTesterReview(review));
+            if (review != null) {
+                dto.getBeforeMissions().add(SimpleReviewDTO.fromTesterReview(review));
+            }
         }
         return dto;
     }

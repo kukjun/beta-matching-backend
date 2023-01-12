@@ -2,6 +2,7 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 
 import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.ApplyInformationStatus;
+import io.wisoft.testermatchingplatform.domain.MissionStatus;
 import io.wisoft.testermatchingplatform.web.dto.AppliedMissionDTO;
 import io.wisoft.testermatchingplatform.web.dto.ApprovedMissionDTO;
 import io.wisoft.testermatchingplatform.web.dto.ExecutedMissionDTO;
@@ -25,17 +26,27 @@ public class ApplyMissionListFromTesterResponse {
         ApplyMissionListFromTesterResponse response = new ApplyMissionListFromTesterResponse();
 
         for (ApplyInformation applyInformation : applyInformationList) {
-            ApplyInformationStatus status = applyInformation.getStatus();
-            switch (status) {
+            MissionStatus missionStatus = applyInformation.getMission().getStatus();
+            ApplyInformationStatus applyStatus = applyInformation.getStatus();
+            switch (missionStatus) {
                 case APPLY:
                     response.appliedMissionDTOList.add(AppliedMissionDTO.fromApplyInformation(applyInformation));
                     break;
-                case APPROVE_SUCCESS:
-                    response.approvedMissionDTOList.add(ApprovedMissionDTO.fromApplyInformation(applyInformation));
+                case APPROVE:
+                case PROGRESS:
+                    if(applyStatus == ApplyInformationStatus.APPROVE_SUCCESS ||
+                            applyStatus == ApplyInformationStatus.EXECUTE_SUCCESS ||
+                            applyStatus == ApplyInformationStatus.EXECUTE_FAIL
+                    ) {
+                        response.approvedMissionDTOList.add(ApprovedMissionDTO.fromApplyInformation(applyInformation));
+                    }
                     break;
-                case EXECUTE_SUCCESS:
-                case EXECUTE_FAIL:
-                    response.executedMissionDTOList.add(ExecutedMissionDTO.fromApplyInformation(applyInformation));
+                case COMPLETE:
+                    if (applyStatus == ApplyInformationStatus.EXECUTE_SUCCESS ||
+                            applyStatus == ApplyInformationStatus.EXECUTE_FAIL
+                    ) {
+                        response.executedMissionDTOList.add(ExecutedMissionDTO.fromApplyInformation(applyInformation));
+                    }
             }
         }
 

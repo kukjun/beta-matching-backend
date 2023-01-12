@@ -2,15 +2,16 @@ package io.wisoft.testermatchingplatform.web.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CountResponse {
-    private final long testerCount;
-    private final long makerCount;
-    private final long continueTestCount;
-    private final long completeTestCount;
+    private long testerCount;
+    private long makerCount;
+    private long continueTestCount;
+    private long completeTestCount;
 
     public static CountResponse newInstance(
         final long testerCount,
@@ -18,12 +19,11 @@ public class CountResponse {
         final long continueTestCount,
         final long completeTestCount
     ) {
-        CountResponse response = new CountResponse(
-                testerCount,
-                makerCount,
-                continueTestCount,
-                completeTestCount
-        );
+        CountResponse response = new CountResponse();
+        response.testerCount = testerCount;
+        response.makerCount = makerCount;
+        response.continueTestCount = continueTestCount;
+        response.completeTestCount = completeTestCount;
         return response;
     }
 }

@@ -210,13 +210,16 @@ class MissionServiceTest {
             switch (i) {
                 case 0:
                     when(mockApplyInformations[i].getStatus()).thenReturn(ApplyInformationStatus.APPLY);
+                    when(mockMissions[i].getStatus()).thenReturn(MissionStatus.APPLY);
                     when(mockMissions[i].getApplyInformationList()).thenReturn(innerApplyInformation);
                     break;
                 case 1:
                     when(mockApplyInformations[i].getStatus()).thenReturn(ApplyInformationStatus.APPROVE_SUCCESS);
+                    when(mockMissions[i].getStatus()).thenReturn(MissionStatus.APPROVE);
                     break;
                 case 2:
                     when(mockApplyInformations[i].getStatus()).thenReturn(ApplyInformationStatus.EXECUTE_SUCCESS);
+                    when(mockMissions[i].getStatus()).thenReturn(MissionStatus.COMPLETE);
                     break;
             }
 
