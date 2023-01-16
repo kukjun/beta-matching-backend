@@ -87,7 +87,7 @@ class VisitorControllerTest {
         String jsonRequest = gson.toJson(request);
 
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b2");
-        TesterLoginResponse response = TesterLoginResponse.newInstance("token", testerId, "임세나");
+        TesterLoginResponse response = TesterLoginResponse.newInstance(testerId, "임세나");
         String jsonResponse = gson.toJson(response);
 
 

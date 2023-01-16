@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.web.controller;
 
 import com.google.gson.Gson;
+import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import io.wisoft.testermatchingplatform.service.ApplyInformationService;
 import io.wisoft.testermatchingplatform.service.MakerReviewService;
 import io.wisoft.testermatchingplatform.service.MissionService;
@@ -40,6 +41,9 @@ class TesterControllerTest {
 
     private final Gson gson = new Gson();
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
     @Test
     @DisplayName("신청 Mission 조회")
     public void findApplyMissionSuccessTest() throws Exception {
@@ -47,10 +51,17 @@ class TesterControllerTest {
         when(missionService.applyMissionListFromTester(UUID.randomUUID()))
                 .thenReturn(mock(ApplyMissionListFromTesterResponse.class));
         UUID testerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
-        mvc.perform(get("/testers/" + testerId + "/apply"))
-                .andExpect(status().isOk());
+        mvc.perform(
+                get("/testers/" + testerId + "/apply")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+        ).andExpect(
+                status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
+        );
     }
 
     @Test
@@ -64,6 +75,7 @@ class TesterControllerTest {
         UUID missionId = UUID.randomUUID();
         ApplyMissionRequest request = mock(ApplyMissionRequest.class);
         String jsonRequest = gson.toJson(request);
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
 
         //when
         //then
@@ -71,8 +83,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/missions/" + missionId + "/apply")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -84,12 +99,16 @@ class TesterControllerTest {
         UUID testerId = UUID.randomUUID();
         UUID missionId = UUID.randomUUID();
 
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 delete("/testers/" + testerId + "/missions/" + missionId + "/apply")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().is2xxSuccessful()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -106,14 +125,19 @@ class TesterControllerTest {
 
         when(applyInformationService.findApplyInformationId(any(UUID.class), any(UUID.class)))
                 .thenReturn(applyInformationId);
+
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/" + missionId)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
                 content().string(jsonResponse)
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -128,12 +152,16 @@ class TesterControllerTest {
         when(missionService.applyMissionListByDeadline(testerId))
                 .thenReturn(response);
 
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/deadline")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -146,13 +174,16 @@ class TesterControllerTest {
         SimpleMissionListResponse response = mock(SimpleMissionListResponse.class);
         when(missionService.applyMissionListByPopular(testerId))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/popular")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -165,13 +196,16 @@ class TesterControllerTest {
         SimpleMissionListResponse response = mock(SimpleMissionListResponse.class);
         when(missionService.applyMissionListByCreated(testerId))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/created")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -184,13 +218,16 @@ class TesterControllerTest {
         SimpleMissionListResponse response = mock(SimpleMissionListResponse.class);
         when(missionService.applyMissionListByCreated(testerId))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -204,9 +241,10 @@ class TesterControllerTest {
         String jsonRequest = gson.toJson(request);
         CreateMakerReviewResponse response = mock(CreateMakerReviewResponse.class);
         String jsonResponse = gson.toJson(response);
-
         when(makerReviewService.createMakerReview(any(UUID.class), any(CreateMakerReviewRequest.class)))
                 .thenReturn(response);
+        UUID testerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
 
         //when
         //then
@@ -214,8 +252,11 @@ class TesterControllerTest {
                 post("/testers/apply/" + applyInformationId + "/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -229,12 +270,16 @@ class TesterControllerTest {
         ExchangeInformationResponse response = mock(ExchangeInformationResponse.class);
         when(testerService.exchangeView(any(UUID.class)))
                 .thenReturn(response);
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/exchange")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -248,15 +293,18 @@ class TesterControllerTest {
         AccountResponse response = mock(AccountResponse.class);
         when(testerService.updateAccount(any(UUID.class), any(AccountRequest.class)))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 patch("/testers/" + testerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -271,20 +319,21 @@ class TesterControllerTest {
         ChangePointToCashResponse response = mock(ChangePointToCashResponse.class);
         when(testerService.changePointToCash(any(UUID.class), any(ChangePointToCashRequest.class)))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         mvc.perform(
                 post("/testers/" + testerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
-
-
 
 
 }

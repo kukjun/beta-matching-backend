@@ -28,8 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = VisitorController.class)
 class VisitorControllerTest {
@@ -77,7 +76,7 @@ class VisitorControllerTest {
         String jsonRequest = gson.toJson(request);
 
         UUID testerId = UUID.randomUUID();
-        TesterLoginResponse response = TesterLoginResponse.newInstance("token", testerId, "nickname");
+        TesterLoginResponse response = TesterLoginResponse.newInstance(testerId, "nickname");
         String jsonResponse = gson.toJson(response);
 
         when(testerService.login(any(TesterLoginRequest.class))).thenReturn(response);
@@ -87,7 +86,10 @@ class VisitorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
                 .andExpect(status().isOk())
-                .andExpect(content().string(jsonResponse));
+                .andExpect(content().string(jsonResponse))
+                .andExpect(
+                        header().exists("ACCESS_TOKEN")
+                );
 
         //then
     }
@@ -129,10 +131,13 @@ class VisitorControllerTest {
         when(makerService.login(any(MakerLoginRequest.class))).thenReturn(response);
 
         //when
-        mvc.perform(post("/visitor/testers/login")
+        mvc.perform(post("/visitor/makers/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(
+                        header().exists("ACCESS_TOKEN")
+                );
 
         //then
     }

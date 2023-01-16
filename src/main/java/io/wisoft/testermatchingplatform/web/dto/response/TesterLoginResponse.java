@@ -23,7 +23,6 @@ public class TesterLoginResponse {
     }
 
     public static TesterLoginResponse newInstance(
-            final String token,
             final UUID id,
             final String nickname
     ) {

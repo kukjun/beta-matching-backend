@@ -1,6 +1,7 @@
 package io.wisoft.testermatchingplatform.web.controller;
 
 import com.google.gson.Gson;
+import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import io.wisoft.testermatchingplatform.service.*;
 import io.wisoft.testermatchingplatform.web.dto.request.*;
 import io.wisoft.testermatchingplatform.web.dto.response.*;
@@ -36,6 +37,8 @@ class MakerControllerTest {
     private TesterReviewService testerReviewService;
 
     private final Gson gson = new Gson();
+    @Autowired
+    private JwtProvider jwtProvider;
 
     // Test 생성, 수정에 대해서는 MultipartForm의 형태로 request를 만드는 법을 몰라서 Pass
 
@@ -48,11 +51,16 @@ class MakerControllerTest {
         when(missionService.madeMissionListFromMaker(any(UUID.class)))
                 .thenReturn(response);
 
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
+
         //when
         mvc.perform(
                 get("/makers/" + makerId + "/missions")
+                .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
         //then
@@ -67,13 +75,18 @@ class MakerControllerTest {
         ApplyTesterListResponse response = mock(ApplyTesterListResponse.class);
         when(applyInformationService.findApplyTesterList(any(UUID.class)))
                 .thenReturn(response);
+        UUID makerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
 
         //when
         //then
         mvc.perform(
                 get("/makers/missions/" + missionId + "/apply")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -85,12 +98,18 @@ class MakerControllerTest {
         PerformTesterListResponse response = mock(PerformTesterListResponse.class);
         when(applyInformationService.findPerformTesterList(any(UUID.class)))
                 .thenReturn(response);
+
+        UUID makerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 get("/makers/missions/" + missionId + "/perform")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -102,12 +121,17 @@ class MakerControllerTest {
         TesterListOfClosedMissionResponse response = mock(TesterListOfClosedMissionResponse.class);
         when(applyInformationService.findTesterListOfClosedMission(any(UUID.class)))
                 .thenReturn(response);
+        UUID makerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 get("/makers/missions/" + missionId + "/perform/review")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -120,12 +144,16 @@ class MakerControllerTest {
         ExchangeInformationResponse response = mock(ExchangeInformationResponse.class);
         when(makerService.exchangeView(any(UUID.class)))
                 .thenReturn(response);
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 get("/makers/" + makerId + "/exchange")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -141,14 +169,18 @@ class MakerControllerTest {
         when(makerService.updateAccount(any(UUID.class), any(AccountRequest.class)))
                 .thenReturn(response);
 
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 patch("/makers/" + makerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -163,15 +195,18 @@ class MakerControllerTest {
         ChangePointToCashResponse response = mock(ChangePointToCashResponse.class);
         when(makerService.changePointToCash(any(UUID.class), any(ChangePointToCashRequest.class)))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 post("/makers/" + makerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -187,14 +222,18 @@ class MakerControllerTest {
         when(makerService.changeCashToPoint(any(UUID.class), any(ChangeCashToPointRequest.class)))
                 .thenReturn(response);
 
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 post("/makers/" + makerId + "/exchange/cash")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -208,15 +247,19 @@ class MakerControllerTest {
         ChangeApplyToApproveResponse response = mock(ChangeApplyToApproveResponse.class);
         when(applyInformationService.applyToApprove(any(UUID.class), any(ChangeApplyToApproveRequest.class)))
                 .thenReturn(response);
-
+        UUID makerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 post("/makers/missions/" + missionId + "/perform")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -231,14 +274,19 @@ class MakerControllerTest {
         when(applyInformationService.performToComplete(any(UUID.class), any(ChangePerformToCompleteRequest.class)))
                 .thenReturn(response);
 
+        UUID makerId = UUID.randomUUID();
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 post("/makers/missions/" + missionId + "/complete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -252,15 +300,18 @@ class MakerControllerTest {
         CreateTesterReviewListResponse response = mock(CreateTesterReviewListResponse.class);
         when(testerReviewService.createTesterReview(any(UUID.class), any(CreateTesterReviewListRequest.class)))
                 .thenReturn(response);
-
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         mvc.perform(
                 post("/makers/" + makerId + "/missions/perform/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
