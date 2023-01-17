@@ -2,6 +2,7 @@ package io.wisoft.testermatchingplatform.handler;
 
 import io.wisoft.testermatchingplatform.handler.exception.domain.*;
 import io.wisoft.testermatchingplatform.handler.exception.service.*;
+import io.wisoft.testermatchingplatform.jwt.JwtAuthException;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -110,6 +111,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> testerReviewNotFound(final TesterReviewNotFoundException e) {
         ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(JwtAuthException.class)
+    public ResponseEntity<ErrorResponse> jwtAuthFail(final JwtAuthException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(errorResponse);
     }
 

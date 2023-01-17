@@ -43,7 +43,7 @@ public class MissionDate {
      * 비지니스 로직
      */
     public long remainApplyTime(LocalDate currentDate) {
-        isValidApplyPeriod(currentDate);
+//        isValidApplyPeriod(currentDate);
         long applyLimitDay = recruitmentTimeEnd.toEpochDay();
         long currentDay = currentDate.toEpochDay();
 

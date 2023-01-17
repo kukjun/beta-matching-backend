@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +80,7 @@ public class ApplyInformationService {
 
         HashSet<UUID> set = new HashSet<>(request.getApproveTesterIdList());
         for (ApplyInformation applyInformation : applyInformationList) {
-            if (set.contains(applyInformation.getId())) {
+            if (set.contains(applyInformation.getTester().getId())) {
                 applyInformation.applyApprove();
                 responseList.add(applyInformation);
             } else {
@@ -101,7 +102,7 @@ public class ApplyInformationService {
 
         HashSet<UUID> set = new HashSet<>(request.getApproveTestIdList());
         for (ApplyInformation applyInformation : applyInformationList) {
-            if (set.contains(applyInformation.getId())) {
+            if (set.contains(applyInformation.getTester().getId())) {
                 applyInformation.executeApprove();
                 responseList.add(applyInformation);
             } else {

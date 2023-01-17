@@ -14,7 +14,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TesterAuthCheckInterceptor implements HandlerInterceptor {
 
-    public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
+    public static final String Authorization = "AUTHORIZATION";
+    public static final String REFRESH_TOKEN = "REFRESH_TOKEN";
     public static final String BEARER_PREFIX = "Bearer ";
     private final JwtProvider jwtProvider;
 
@@ -26,35 +27,19 @@ public class TesterAuthCheckInterceptor implements HandlerInterceptor {
     ) throws Exception {
 
         // 인가 처리하기
-
-        // jwt token이 있는지 확인하기
-        String bearerToken = request.getHeader(ACCESS_TOKEN);
-        String accessToken;
-        if (bearerToken == null) {
-            throw new JwtAuthException("not found access token");
+        if (request.getMethod().equals("OPTIONS")) {
+            return true;
         }
+
+        String bearerToken = request.getHeader(Authorization);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
-            accessToken = bearerToken.substring(7);
-        } else {
-            throw new JwtAuthException("not created access token");
-        }
-
-        // jwt token이 유효한지 확인하기
-        if (!jwtProvider.isValidToken(accessToken)) {
-            throw new JwtAuthException("valid time out access token");
-        }
-        else {
-            if (!jwtProvider.getTokenData(accessToken).get("roles").equals("tester")) {
-                throw new JwtAuthException("mismatch access token");
+            String token = bearerToken.substring(7);
+            if (jwtProvider.validTesterToken(token)) {
+                String refreshToken = jwtProvider.refreshTesterToken(token);
+                response.setHeader(Authorization, BEARER_PREFIX + refreshToken);
+                return true;
             }
-
-            Claims accessTokenData = jwtProvider.getTokenData(accessToken);
-            UUID id = UUID.fromString(String.valueOf(accessTokenData.getSubject()));
-            // refresh token
-            accessToken = jwtProvider.createJwtAccessToken(id, "tester");
         }
-
-        response.setHeader(ACCESS_TOKEN, BEARER_PREFIX + accessToken);
-        return true;
+        throw new JwtAuthException("Auth Fail");
     }
 }

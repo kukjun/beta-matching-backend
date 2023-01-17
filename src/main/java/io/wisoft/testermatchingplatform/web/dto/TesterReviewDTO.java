@@ -4,18 +4,18 @@ import io.wisoft.testermatchingplatform.domain.ApplyInformation;
 import io.wisoft.testermatchingplatform.domain.TesterReview;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TesterReviewDTO {
-    private final UUID applyInformationId;
-    private final String nickname;
-    private final int starPoint;
-    private final String comment;
-    private final String status;
+    private UUID id;
+    private String nickname;
+    private int starPoint;
+    private String comment;
+    private String status;
 
     public TesterReview toTesterReview(ApplyInformation applyInformation) {
         TesterReview testerReview = TesterReview.newInstance(applyInformation, starPoint, comment);
@@ -23,19 +23,18 @@ public class TesterReviewDTO {
     }
 
     public static TesterReviewDTO newInstance(
-            final UUID applyInformationId,
+            final UUID testerId,
             final String nickname,
             final int starPoint,
             final String comment,
             final String status
     ) {
-        TesterReviewDTO dto = new TesterReviewDTO(
-                applyInformationId,
-                nickname,
-                starPoint,
-                comment,
-                status
-        );
+        TesterReviewDTO dto = new TesterReviewDTO();
+        dto.id = testerId;
+        dto.nickname = nickname;
+        dto.starPoint = starPoint;
+        dto.comment = comment;
+        dto.status = status;
 
         return dto;
     }

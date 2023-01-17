@@ -2,6 +2,7 @@ package io.wisoft.testermatchingplatform.integration;
 
 import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
+import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import io.wisoft.testermatchingplatform.service.ApplyInformationService;
 import io.wisoft.testermatchingplatform.service.MakerService;
 import io.wisoft.testermatchingplatform.service.MissionService;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,6 +47,9 @@ class MakerControllerTest {
     private WebApplicationContext ctx;
 
     private final Gson gson = new Gson();
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @BeforeEach
     public void prepareTest() {
@@ -61,13 +66,16 @@ class MakerControllerTest {
     public void findMadeMissionList() throws Exception {
         //given
         UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
-
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/" + makerId + "/missions")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -80,13 +88,17 @@ class MakerControllerTest {
     public void findApplyTestSuccessTest() throws Exception {
         //given
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c1");
-
+        UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/missions/" + missionId + "/apply")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -98,12 +110,17 @@ class MakerControllerTest {
     public void findPerformTestersSuccessTest() throws Exception {
         //given
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c3");
+        UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/missions/" + missionId + "/perform")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -114,12 +131,17 @@ class MakerControllerTest {
     public void findCompleteTestersSuccessTest() throws Exception {
         //given
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c4");
+        UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/missions/" + missionId + "/perform/review")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -130,14 +152,18 @@ class MakerControllerTest {
     public void exchangeViewSuccessTest() throws Exception {
         //given
         UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         long expectedPoint = 177856L;
         String expectedAccount = "52820204064486";
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/" + makerId + "/exchange")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -161,14 +187,18 @@ class MakerControllerTest {
                 expectedAccount
         );
         String jsonRequest = gson.toJson(request);
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         //when
         //then
         String jsonResponse = mvc.perform(
                 patch("/makers/" + makerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         String account = JsonPath.parse(jsonResponse).read("$.account");
@@ -181,6 +211,7 @@ class MakerControllerTest {
     public void changePointToCashSuccessTest() throws Exception {
         //given
         UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         long requestPoint = 5000L;
         ChangePointToCashRequest request = ChangePointToCashRequest.newInstance(
                 requestPoint
@@ -194,8 +225,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         int intCash = JsonPath.parse(jsonResponse).read("cash");
@@ -210,6 +244,7 @@ class MakerControllerTest {
     public void changeCashToPointSuccessTest() throws Exception {
         //given
         UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
         long requestCash = 50000L;
         ChangeCashToPointRequest request = ChangeCashToPointRequest.newInstance(
                 requestCash
@@ -223,8 +258,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/exchange/cash")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         int intPoint = JsonPath.parse(jsonResponse).read("point");
@@ -245,6 +283,8 @@ class MakerControllerTest {
                 expectedApprovedList
         );
         String jsonRequest = gson.toJson(request);
+        UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
 
         //when
         //then
@@ -252,8 +292,11 @@ class MakerControllerTest {
                 post("/makers/missions/" + missionId + "/perform")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -275,6 +318,8 @@ class MakerControllerTest {
                 expectedExecutedList
         );
         String jsonRequest = gson.toJson(request);
+        UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
+        String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
 
         //when
         //then
@@ -282,8 +327,11 @@ class MakerControllerTest {
                 post("/makers/missions/" + missionId + "/complete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
         System.out.println("jsonResponse = " + jsonResponse);
         List<String> executedIdList = JsonPath.parse(jsonResponse).read("$.completeTesterIdList[*]");

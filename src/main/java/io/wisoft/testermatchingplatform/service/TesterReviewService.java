@@ -30,8 +30,11 @@ public class TesterReviewService {
         List<UUID> responseDTOList = new ArrayList<>();
 
         for (TesterReviewDTO testerReviewDTO : requestDTOList) {
-            ApplyInformation applyInformation = applyInformationRepository.findById(testerReviewDTO.getApplyInformationId()).orElseThrow(
-                    () -> new ApplyInformationNotFoundException("id: " + testerReviewDTO.getApplyInformationId() + "not found")
+            if (testerReviewDTO.getStarPoint() == 0) {
+                continue;
+            }
+            ApplyInformation applyInformation = applyInformationRepository.findById(testerReviewDTO.getId()).orElseThrow(
+                    () -> new ApplyInformationNotFoundException("id: " + testerReviewDTO.getId() + "not found")
             );
 
             TesterReview testerReview = testerReviewDTO.toTesterReview(applyInformation);

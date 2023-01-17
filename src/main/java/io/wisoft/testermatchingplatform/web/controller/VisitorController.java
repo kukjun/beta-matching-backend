@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.net.URI;
 
 @RestController
 @RequestMapping("/visitor")
@@ -47,7 +46,7 @@ public class VisitorController {
     ) {
         TesterLoginResponse response = testerService.login(request);
         String accessToken = jwtProvider.createJwtAccessToken(response.getId(), "tester");
-        header.setHeader("ACCESS_TOKEN", BEARER_PREFIX + accessToken);
+        header.setHeader("AUTHORIZATION", BEARER_PREFIX + accessToken);
         return ResponseEntity.ok().body(response);
     }
 
@@ -67,7 +66,7 @@ public class VisitorController {
     ) {
         MakerLoginResponse response = makerService.login(request);
         String accessToken = jwtProvider.createJwtAccessToken(response.getId(), "maker");
-        header.setHeader("ACCESS_TOKEN", BEARER_PREFIX + accessToken);
+        header.setHeader("AUTHORIZATION", BEARER_PREFIX + accessToken);
         return ResponseEntity.ok().body(response);
     }
 

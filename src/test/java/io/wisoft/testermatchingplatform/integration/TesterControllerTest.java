@@ -2,6 +2,7 @@ package io.wisoft.testermatchingplatform.integration;
 
 import com.google.gson.Gson;
 import com.jayway.jsonpath.JsonPath;
+import io.wisoft.testermatchingplatform.jwt.JwtProvider;
 import io.wisoft.testermatchingplatform.service.ApplyInformationService;
 import io.wisoft.testermatchingplatform.service.MakerReviewService;
 import io.wisoft.testermatchingplatform.service.MissionService;
@@ -37,8 +38,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
@@ -50,6 +50,9 @@ class TesterControllerTest {
     private WebApplicationContext ctx;
 
     private final Gson gson = new Gson();
+
+    @Autowired
+    private JwtProvider jwtProvider;
 
     @BeforeEach
     public void prepareTest() {
@@ -64,6 +67,7 @@ class TesterControllerTest {
     public void findApplyMissionSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b2");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
 
         int expectedAppliedListSize = 2;
         String stringExpectedApprovedId = "5c3c4895-8ca6-435a-95f8-487a0784b5c3";
@@ -71,8 +75,14 @@ class TesterControllerTest {
 
         //when
         //then
-        MvcResult result = mvc.perform(get("/testers/" + testerId + "/apply"))
+        MvcResult result = mvc.perform(
+                get("/testers/" + testerId + "/apply")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                )
                 .andExpect(status().isOk())
+                .andExpect(
+                        header().exists("ACCESS_TOKEN")
+                )
                 .andReturn();
 
         String content = result.getResponse().getContentAsString();
@@ -94,6 +104,7 @@ class TesterControllerTest {
         );
 
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b3");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5f1");
         String jsonRequest = gson.toJson(request);
 
@@ -103,8 +114,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/missions/" + missionId + "/apply")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -114,14 +128,18 @@ class TesterControllerTest {
     public void cancelApplySuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b2");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5f0");
 
         //when
         //then
         mvc.perform(
                 delete("/testers/" + testerId + "/missions/" + missionId + "/apply")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().is2xxSuccessful()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
 
     }
@@ -131,6 +149,7 @@ class TesterControllerTest {
     public void findApplyIdSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c1");
         UUID expectedApplyInformationId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d0");
 
@@ -138,8 +157,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/" + missionId)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
         String response = jsonResponse.replaceAll("\"", "");
 
@@ -154,13 +176,17 @@ class TesterControllerTest {
     public void findTestListByDeadlineSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
 
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/deadline")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -175,13 +201,16 @@ class TesterControllerTest {
     public void findTestListByPopularSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/popular")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         List<Integer> applyCounts = JsonPath.parse(jsonResponse).read("$.dtoList[*].apply");
@@ -194,13 +223,16 @@ class TesterControllerTest {
     public void findTestListByCreatedSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         //when
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/created")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         // 2022-12-01 15:00:00.000000 +00:00
@@ -213,14 +245,17 @@ class TesterControllerTest {
     public void findTestListByNormalSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
-
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
 
         //when
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         );
     }
 
@@ -235,6 +270,8 @@ class TesterControllerTest {
                 5, "good"
         );
         String jsonRequest = gson.toJson(request);
+        UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
 
 
         //when
@@ -243,8 +280,11 @@ class TesterControllerTest {
                 post("/testers/apply/" + applyInformationId + "/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -256,6 +296,7 @@ class TesterControllerTest {
     public void exchangeViewSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         long expectPoint = 5000L;
         String expectAccount = "2";
 
@@ -263,8 +304,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/exchange")
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         int intPoint = JsonPath.parse(jsonResponse).read("$.point");
@@ -281,6 +325,7 @@ class TesterControllerTest {
     public void updateAccountSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         String expectedAccount = "1275-43178521-5124";
         AccountRequest request = AccountRequest.newInstance(
                 expectedAccount
@@ -293,8 +338,11 @@ class TesterControllerTest {
                 patch("/testers/" + testerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -310,6 +358,7 @@ class TesterControllerTest {
     public void changePointToCashSuccessTest() throws Exception {
         //given
         UUID testerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1");
+        String accessToken = jwtProvider.createJwtAccessToken(testerId, "tester");
         long requestPoint = 5000L;
         ChangePointToCashRequest request = ChangePointToCashRequest.newInstance(
                 requestPoint
@@ -323,8 +372,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
+                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
+        ).andExpect(
+                header().exists("ACCESS_TOKEN")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
