@@ -121,6 +121,18 @@ public class GlobalExceptionHandler {
                 .body(errorResponse);
     }
 
+    @ExceptionHandler(MakerReviewOverlapException.class)
+    public ResponseEntity<ErrorResponse> makerReviewOverlap(final MakerReviewOverlapException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(ApplyInformationOverlapException.class)
+    public ResponseEntity<ErrorResponse> applyInformationOverlap(final ApplyInformationOverlapException e) {
+        ErrorResponse errorResponse = generateErrorResponseWithMessage(e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
 
     private ErrorResponse generateErrorResponseWithMessage(String errorMessage) {
         final ErrorResponse errorResponse = new ErrorResponse();

@@ -36,6 +36,7 @@ public class MakerController {
     @PatchMapping("/{maker_id}/missions/{mission_id}")
     public ResponseEntity<UpdateMissionIncludeImageResponse> updateMissionIncludeImage(
             @PathVariable("mission_id") UUID missionId,
+            @PathVariable String maker_id,
             UpdateMissionIncludeImageRequest request
     ) {
         UpdateMissionIncludeImageResponse response = missionService.updateIncludeImageMission(missionId, request);

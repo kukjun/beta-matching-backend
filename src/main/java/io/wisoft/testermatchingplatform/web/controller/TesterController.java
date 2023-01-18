@@ -92,7 +92,7 @@ public class TesterController {
     @PostMapping("/apply/{apply_id}/review")
     public ResponseEntity<CreateMakerReviewResponse> createReview(
             @PathVariable("apply_id") UUID applyInformationId,
-            CreateMakerReviewRequest request
+            @RequestBody CreateMakerReviewRequest request
     ) {
         return ResponseEntity.ok().body(makerReviewService.createMakerReview(applyInformationId, request));
     }

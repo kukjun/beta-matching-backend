@@ -17,4 +17,7 @@ public interface MakerReviewRepository extends JpaRepository<MakerReview, UUID> 
     @Override
     List<MakerReview> findAll();
 
+
+    boolean existsByApplyInformation_Id(UUID applyInformationId);
+
 }

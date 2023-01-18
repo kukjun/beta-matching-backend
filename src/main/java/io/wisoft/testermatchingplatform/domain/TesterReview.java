@@ -21,8 +21,9 @@ public class TesterReview extends BaseEntity {
     private int starPoint;
     private String comment;
 
-    @JoinColumn(name = "apply_information_id")
+    @JoinColumn(name = "apply_information_id", unique = true)
     @OneToOne(fetch = FetchType.LAZY)
+
     private ApplyInformation applyInformation;
 
     public static TesterReview newInstance(

@@ -29,4 +29,9 @@ public interface ApplyInformationRepository extends JpaRepository<ApplyInformati
 
     void deleteApplyInformationByTesterIdAndMissionId(UUID testerId, UUID missionId);
 
+    @Query("select count(a) from ApplyInformation a join a.mission m where m.id = :missionId and a.approveTime is not null")
+    long existsApplyInformationByMissionIdAndApproveTimeIsNull(@Param("missionId") UUID missionId);
+
+    @Query("select count(a) from ApplyInformation a join a.mission m where m.id = :missionId and a.executionTime is not null")
+    long existsApplyInformationByMissionIdAndExecutionTimeIsNull(@Param("missionId")UUID missionId);
 }

@@ -12,18 +12,20 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateMakerReviewRequest {
-    private int starPoint;
     private String comment;
+    private int starPoint;
 
-    public static CreateMakerReviewRequest newInstance(UUID applyInformationId, int starPoint, String testComment) {
+
+    public static CreateMakerReviewRequest newInstance(int starPoint, String testComment) {
         CreateMakerReviewRequest request = new CreateMakerReviewRequest();
         request.starPoint = starPoint;
         request.comment = testComment;
-
         return request;
     }
 
     public MakerReview toMakerReview(ApplyInformation applyInformation) {
+        System.out.println("getStarPoint = " + getStarPoint());
+        System.out.println("getComment() = " + getComment());
         MakerReview makerReview = MakerReview.newInstance(applyInformation, getStarPoint(), getComment());
         return makerReview;
     }
