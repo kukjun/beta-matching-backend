@@ -45,7 +45,7 @@ public interface MissionRepository extends JpaRepository<Mission, UUID>, Mission
     @Query("select m " +
             "from Mission m " +
             "where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate " +
-            "and m <> (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId) " +
+            "and m not in (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId) " +
             "order by m.createDateTime")
     List<Mission> findApplyMissionsExceptTesterIdByCreated(
             @Param("testerId") UUID testerId,
@@ -55,7 +55,7 @@ public interface MissionRepository extends JpaRepository<Mission, UUID>, Mission
     @Query("select m " +
             "from Mission m " +
             "where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate " +
-            "and m <> (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId) " +
+            "and m not in (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId) " +
             "order by m.applyInformationList.size desc")
     List<Mission> findApplyMissionsExceptTesterIdByPopular(
             @Param("testerId") UUID testerId,
@@ -66,7 +66,7 @@ public interface MissionRepository extends JpaRepository<Mission, UUID>, Mission
     @Query("select m " +
             "from Mission m " +
             "where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate " +
-            "and m <> (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId) " +
+            "and m not in (select m from Mission m join m.applyInformationList a join a.tester te where m.missionDate.recruitmentTimeStart <= :currentDate and m.missionDate.recruitmentTimeEnd >= :currentDate and te.id = :testerId) " +
             "order by m.missionDate.recruitmentTimeEnd-:currentDate")
     List<Mission> findApplyMissionsExceptTesterIdByDeadLine(
             @Param("testerId") UUID testerId,
