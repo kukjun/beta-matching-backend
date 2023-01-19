@@ -71,11 +71,11 @@ class MakerControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/" + makerId + "/missions")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -94,11 +94,11 @@ class MakerControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/missions/" + missionId + "/apply")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -116,11 +116,11 @@ class MakerControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/missions/" + missionId + "/perform")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -137,11 +137,11 @@ class MakerControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/missions/" + missionId + "/perform/review")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -159,11 +159,11 @@ class MakerControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/makers/" + makerId + "/exchange")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -194,11 +194,11 @@ class MakerControllerTest {
                 patch("/makers/" + makerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         String account = JsonPath.parse(jsonResponse).read("$.account");
@@ -225,11 +225,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         int intCash = JsonPath.parse(jsonResponse).read("cash");
@@ -258,11 +258,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/exchange/cash")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         int intPoint = JsonPath.parse(jsonResponse).read("point");
@@ -276,12 +276,16 @@ class MakerControllerTest {
     public void changeApplyToPerformSuccessTest() throws Exception {
         //given
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c2");
-        List<UUID> expectedApprovedList = new ArrayList<>();
-        expectedApprovedList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d4"));
-        expectedApprovedList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d5"));
+        List<UUID> approvedTesterList = new ArrayList<>();
+        approvedTesterList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1"));
+        approvedTesterList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b2"));
         ChangeApplyToApproveRequest request = ChangeApplyToApproveRequest.newInstance(
-                expectedApprovedList
+                approvedTesterList
         );
+        List<UUID> expectedApplyInformationList = new ArrayList<>();
+        expectedApplyInformationList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d4"));
+        expectedApplyInformationList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d5"));
+
         String jsonRequest = gson.toJson(request);
         UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
         String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
@@ -292,18 +296,18 @@ class MakerControllerTest {
                 post("/makers/missions/" + missionId + "/perform")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
         List<String> approveIdList = JsonPath.parse(jsonResponse).read("$.successApplyInformationIdList[*]");
 
-        assertEquals(expectedApprovedList.get(0).toString(), approveIdList.get(0));
-        assertEquals(expectedApprovedList.get(1).toString(), approveIdList.get(1));
+        assertEquals(expectedApplyInformationList.get(0).toString(), approveIdList.get(0));
+        assertEquals(expectedApplyInformationList.get(1).toString(), approveIdList.get(1));
     }
 
     @Test
@@ -311,12 +315,16 @@ class MakerControllerTest {
     public void changePerformToCompleteSuccessTest() throws Exception {
         //given
         UUID missionId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5c3");
-        List<UUID> expectedExecutedList = new ArrayList<>();
-        expectedExecutedList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d8"));
-        expectedExecutedList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d9"));
+        List<UUID> executeTesterList = new ArrayList<>();
+        executeTesterList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b1"));
+        executeTesterList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5b2"));
         ChangePerformToCompleteRequest request = ChangePerformToCompleteRequest.newInstance(
-                expectedExecutedList
+                executeTesterList
         );
+        List<UUID> expectedApplyInformationList = new ArrayList<>();
+        expectedApplyInformationList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d8"));
+        expectedApplyInformationList.add(UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5d9"));
+
         String jsonRequest = gson.toJson(request);
         UUID makerId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5a0");
         String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
@@ -327,17 +335,17 @@ class MakerControllerTest {
                 post("/makers/missions/" + missionId + "/complete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
         System.out.println("jsonResponse = " + jsonResponse);
         List<String> executedIdList = JsonPath.parse(jsonResponse).read("$.completeTesterIdList[*]");
 
-        assertEquals(expectedExecutedList.get(0).toString(), executedIdList.get(0));
-        assertEquals(expectedExecutedList.get(1).toString(), executedIdList.get(1));
+        assertEquals(expectedApplyInformationList.get(0).toString(), executedIdList.get(0));
+        assertEquals(expectedApplyInformationList.get(1).toString(), executedIdList.get(1));
 
     }
 

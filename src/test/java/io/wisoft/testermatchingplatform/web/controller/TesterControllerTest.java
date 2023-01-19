@@ -56,11 +56,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/apply")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -83,11 +83,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/missions/" + missionId + "/apply")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -104,11 +104,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 delete("/testers/" + testerId + "/missions/" + missionId + "/apply")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().is2xxSuccessful()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -131,13 +131,13 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/" + missionId)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
                 content().string(jsonResponse)
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -157,11 +157,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/deadline")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -179,11 +179,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/popular")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -201,11 +201,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions/created")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -223,11 +223,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -252,11 +252,11 @@ class TesterControllerTest {
                 post("/testers/apply/" + applyInformationId + "/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -275,11 +275,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/exchange")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -300,11 +300,11 @@ class TesterControllerTest {
                 patch("/testers/" + testerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -326,11 +326,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }

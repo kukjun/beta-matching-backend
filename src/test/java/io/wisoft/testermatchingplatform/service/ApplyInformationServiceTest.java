@@ -92,18 +92,26 @@ class ApplyInformationServiceTest {
         Mission mockMission = mock(Mission.class);
         when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
+        when(applyInformationRepository.existsApplyInformationByMissionIdAndApproveTimeIsNull(missionId)).thenReturn(0L);
+        Tester[] mockTesterList = new Tester[3];
+        UUID[] mockTesterIdList = new UUID[3];
+        UUID[] mockApplyInformationIdList = new UUID[3];
+
         List<ApplyInformation> mockApplyInformations = new ArrayList<>();
-        UUID[] expectedIds = new UUID[3];
         for (int i = 0; i < 3; i++) {
             ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
-            expectedIds[i] = UUID.randomUUID();
-            when(mockApplyInformation.getId()).thenReturn(expectedIds[i]);
+            mockApplyInformationIdList[i] = UUID.randomUUID();
+            lenient().when(mockApplyInformation.getId()).thenReturn(mockApplyInformationIdList[i]);
+            mockTesterList[i] = mock(Tester.class);
+            mockTesterIdList[i] = UUID.randomUUID();
+            when(mockApplyInformation.getTester()).thenReturn(mockTesterList[i]);
+            when(mockTesterList[i].getId()).thenReturn(mockTesterIdList[i]);
             mockApplyInformations.add(mockApplyInformation);
         }
         when(mockMission.getApplyInformationList()).thenReturn(mockApplyInformations);
 
         List<UUID> requestList = new ArrayList<>();
-        requestList.add(expectedIds[0]);
+        requestList.add(mockTesterList[0].getId());
 
         ChangeApplyToApproveRequest request = ChangeApplyToApproveRequest.newInstance(requestList);
 
@@ -112,7 +120,7 @@ class ApplyInformationServiceTest {
 
         //then
         assertEquals(request.getApproveTesterIdList().size(), response.getSuccessApplyInformationIdList().size());
-        assertEquals(expectedIds[0], response.getSuccessApplyInformationIdList().get(0));
+        assertEquals(mockApplyInformationIdList[0], response.getSuccessApplyInformationIdList().get(0));
 
     }
 
@@ -125,18 +133,26 @@ class ApplyInformationServiceTest {
         Mission mockMission = mock(Mission.class);
         when(missionRepository.findById(missionId)).thenReturn(Optional.ofNullable(mockMission));
 
+        when(applyInformationRepository.existsApplyInformationByMissionIdAndExecutionTimeIsNull(missionId)).thenReturn(0L);
+        Tester[] mockTesterList = new Tester[3];
+        UUID[] mockTesterIdList = new UUID[3];
+        UUID[] mockApplyInformationIdList = new UUID[3];
+
         List<ApplyInformation> mockApplyInformations = new ArrayList<>();
-        UUID[] expectedIds = new UUID[3];
         for (int i = 0; i < 3; i++) {
             ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
-            expectedIds[i] = UUID.randomUUID();
-            when(mockApplyInformation.getId()).thenReturn(expectedIds[i]);
+            mockApplyInformationIdList[i] = UUID.randomUUID();
+            lenient().when(mockApplyInformation.getId()).thenReturn(mockApplyInformationIdList[i]);
+            mockTesterList[i] = mock(Tester.class);
+            mockTesterIdList[i] = UUID.randomUUID();
+            when(mockApplyInformation.getTester()).thenReturn(mockTesterList[i]);
+            when(mockTesterList[i].getId()).thenReturn(mockTesterIdList[i]);
             mockApplyInformations.add(mockApplyInformation);
         }
         when(mockMission.getApplyInformationList()).thenReturn(mockApplyInformations);
 
         List<UUID> requestList = new ArrayList<>();
-        requestList.add(expectedIds[0]);
+        requestList.add(mockTesterList[0].getId());
 
         ChangePerformToCompleteRequest request = ChangePerformToCompleteRequest.newInstance(requestList);
 
@@ -145,7 +161,7 @@ class ApplyInformationServiceTest {
 
         //then
         assertEquals(request.getApproveTestIdList().size(), response.getCompleteTesterIdList().size());
-        assertEquals(expectedIds[0], response.getCompleteTesterIdList().get(0));
+        assertEquals(mockApplyInformationIdList[0], response.getCompleteTesterIdList().get(0));
     }
 
     @Test

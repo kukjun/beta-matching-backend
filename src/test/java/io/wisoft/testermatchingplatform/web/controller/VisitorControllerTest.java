@@ -88,7 +88,7 @@ class VisitorControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(jsonResponse))
                 .andExpect(
-                        header().exists("ACCESS_TOKEN")
+                        header().exists("AUTHORIZATION")
                 );
 
         //then
@@ -136,7 +136,7 @@ class VisitorControllerTest {
                         .content(jsonRequest))
                 .andExpect(status().isOk())
                 .andExpect(
-                        header().exists("ACCESS_TOKEN")
+                        header().exists("AUTHORIZATION")
                 );
 
         //then

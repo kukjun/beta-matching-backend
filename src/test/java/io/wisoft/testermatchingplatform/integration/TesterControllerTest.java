@@ -77,11 +77,11 @@ class TesterControllerTest {
         //then
         MvcResult result = mvc.perform(
                 get("/testers/" + testerId + "/apply")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
                 )
                 .andExpect(status().isOk())
                 .andExpect(
-                        header().exists("ACCESS_TOKEN")
+                        header().exists("AUTHORIZATION")
                 )
                 .andReturn();
 
@@ -114,11 +114,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/missions/" + missionId + "/apply")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -135,11 +135,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 delete("/testers/" + testerId + "/missions/" + missionId + "/apply")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().is2xxSuccessful()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -157,11 +157,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/" + missionId)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
         String response = jsonResponse.replaceAll("\"", "");
 
@@ -182,11 +182,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/deadline")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -206,11 +206,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/popular")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         List<Integer> applyCounts = JsonPath.parse(jsonResponse).read("$.dtoList[*].apply");
@@ -228,11 +228,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/missions/created")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         // 2022-12-01 15:00:00.000000 +00:00
@@ -251,11 +251,11 @@ class TesterControllerTest {
         //then
         mvc.perform(
                 get("/testers/" + testerId + "/missions")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -266,7 +266,6 @@ class TesterControllerTest {
         //given
         UUID applyInformationId = UUID.fromString("5c3c4895-8ca6-435a-95f8-487a0784b5e5");
         CreateMakerReviewRequest request = CreateMakerReviewRequest.newInstance(
-                applyInformationId,
                 5, "good"
         );
         String jsonRequest = gson.toJson(request);
@@ -280,11 +279,11 @@ class TesterControllerTest {
                 post("/testers/apply/" + applyInformationId + "/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -304,11 +303,11 @@ class TesterControllerTest {
         //then
         String jsonResponse = mvc.perform(
                 get("/testers/" + testerId + "/exchange")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         int intPoint = JsonPath.parse(jsonResponse).read("$.point");
@@ -338,11 +337,11 @@ class TesterControllerTest {
                 patch("/testers/" + testerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);
@@ -372,11 +371,11 @@ class TesterControllerTest {
                 post("/testers/" + testerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         ).andReturn().getResponse().getContentAsString();
 
         System.out.println("jsonResponse = " + jsonResponse);

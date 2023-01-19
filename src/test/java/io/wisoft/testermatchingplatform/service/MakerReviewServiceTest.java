@@ -39,7 +39,7 @@ class MakerReviewServiceTest {
         UUID applyInformationId = UUID.randomUUID();
         int starPoint = 3;
         String testComment = "test Comment";
-        CreateMakerReviewRequest request = CreateMakerReviewRequest.newInstance(applyInformationId, starPoint, testComment);
+        CreateMakerReviewRequest request = CreateMakerReviewRequest.newInstance(starPoint, testComment);
 
         ApplyInformation mockApplyInformation = mock(ApplyInformation.class);
         when(applyInformationRepository.findById(applyInformationId)).thenReturn(Optional.ofNullable(mockApplyInformation));

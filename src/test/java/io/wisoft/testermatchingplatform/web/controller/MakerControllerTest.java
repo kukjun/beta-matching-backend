@@ -56,11 +56,11 @@ class MakerControllerTest {
         //when
         mvc.perform(
                 get("/makers/" + makerId + "/missions")
-                .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
         //then
@@ -82,11 +82,11 @@ class MakerControllerTest {
         //then
         mvc.perform(
                 get("/makers/missions/" + missionId + "/apply")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -105,11 +105,11 @@ class MakerControllerTest {
         //then
         mvc.perform(
                 get("/makers/missions/" + missionId + "/perform")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -127,11 +127,11 @@ class MakerControllerTest {
         //then
         mvc.perform(
                 get("/makers/missions/" + missionId + "/perform/review")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -149,11 +149,11 @@ class MakerControllerTest {
         //then
         mvc.perform(
                 get("/makers/" + makerId + "/exchange")
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -168,19 +168,19 @@ class MakerControllerTest {
         AccountResponse response = mock(AccountResponse.class);
         when(makerService.updateAccount(any(UUID.class), any(AccountRequest.class)))
                 .thenReturn(response);
-
         String accessToken = jwtProvider.createJwtAccessToken(makerId, "maker");
+
         //when
         //then
         mvc.perform(
                 patch("/makers/" + makerId + "/account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -202,11 +202,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/exchange/point")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
 
     }
@@ -229,11 +229,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/exchange/cash")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -255,11 +255,11 @@ class MakerControllerTest {
                 post("/makers/missions/" + missionId + "/perform")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -282,11 +282,11 @@ class MakerControllerTest {
                 post("/makers/missions/" + missionId + "/complete")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
@@ -307,11 +307,11 @@ class MakerControllerTest {
                 post("/makers/" + makerId + "/missions/perform/review")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRequest)
-                        .header("ACCESS_TOKEN", "Bearer " + accessToken)
+                        .header("AUTHORIZATION", "Bearer " + accessToken)
         ).andExpect(
                 status().isOk()
         ).andExpect(
-                header().exists("ACCESS_TOKEN")
+                header().exists("AUTHORIZATION")
         );
     }
 
