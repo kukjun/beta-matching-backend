@@ -61,5 +61,5 @@ Spring 사용과, SOLID 원칙에 맞게 작성하는 것을 최우선 목표로
 ### Entity 개발 현황
 1. Entity 설계 - 완료
 2. Entity 구조화 - 완료
-3. Entity 비지니스 메소드 작성 - 진행중
-4. TestCode 작성
+3. Entity 비지니스 메소드 작성 - 완료
+4. TestCode 완료
